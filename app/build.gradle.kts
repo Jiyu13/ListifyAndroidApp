@@ -2,6 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -39,6 +42,11 @@ android {
     }
 }
 
+hilt {
+    enableAggregatingTask = false
+}
+
+
 dependencies {
 
     implementation(libs.androidx.core.ktx)
@@ -56,4 +64,40 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    //Dependency Injection:Dagger - Hilt
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation (libs.hilt.android)
+    ksp(libs.hilt.compiler)
+    ksp(libs.hilt.android.compiler)
+
+    //material icons - use with caution!
+    //implementation "androidx.compose.material:material-icons-extended:$compose_version"
+
+    // Coroutines (Async Programming)
+    implementation (libs.kotlinx.coroutines.core)
+    implementation (libs.kotlinx.coroutines.android)
+    implementation (libs.kotlinx.coroutines.play.services)
+
+    // Lifecycle + ViewModel (with Coroutine support)
+    implementation (libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx.v240)
+
+    // Coil (Image Loading for Compose)
+    implementation(libs.coil.compose)
+
+
+    // Networking: Retrofit + GSON converter
+    implementation (libs.retrofit)
+    implementation (libs.converter.gson)
+
+    // Networking: OkHttp
+    implementation(libs.okhttp)
+
+    // Local Database: Room
+    implementation(libs.androidx.room.runtime)
+    implementation (libs.androidx.room.ktx)
+    annotationProcessor(libs.androidx.room.compiler) // For Java projects
+    ksp(libs.androidx.room.compiler)                 // For Kotlin (using ksp)
 }
