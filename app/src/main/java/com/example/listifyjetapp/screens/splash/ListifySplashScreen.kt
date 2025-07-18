@@ -17,6 +17,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.listifyjetapp.navigation.ListifyScreens
 import com.example.listifyjetapp.ui.theme.ListifyColor
 import com.example.listifyjetapp.ui.theme.barriecitoFont
 import kotlinx.coroutines.delay
@@ -39,6 +40,7 @@ fun ListifySplashScreen(navController: NavHostController) {
         // when the animation is over, delay 2s before going to next screen
         delay(2000L)
         // TODO: Navigate to MainScreen
+        navController.navigate(ListifyScreens.ListsScreen.route)
     })
 
 
