@@ -101,4 +101,8 @@ dependencies {
     implementation (libs.androidx.room.ktx)
     annotationProcessor(libs.androidx.room.compiler) // For Java projects
     ksp(libs.androidx.room.compiler)                 // For Kotlin (using ksp)
+
+    // google font
+    implementation(libs.androidx.ui.text.google.fonts)
+
 }
