@@ -35,7 +35,7 @@ fun ListifyApp() {
     ListifyJetAppTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             Surface(
-                modifier = Modifier.padding(innerPadding).fillMaxSize()
+                modifier = Modifier.fillMaxSize()
             ) {
                 Column(
                     verticalArrangement = Arrangement.Center,
