@@ -1,11 +1,14 @@
 package com.example.listifyjetapp.model
 
-import java.time.LocalDateTime
+import com.google.gson.annotations.SerializedName
 
 data class ListModel(
     val id: Int,
     val name: String,
     val share: Boolean,
-    val shareCode: String,  // can be UUID or String
-    val createdAt: LocalDateTime
+    //val sharedCode: String,  // can be UUID or String
+    //val createdAt: LocalDateTime
+    @SerializedName("shared_code") val sharedCode: String,
+    @SerializedName("created_at") val createdAt: String,
+    @SerializedName("item_count") val itemCount: Int,
 )
