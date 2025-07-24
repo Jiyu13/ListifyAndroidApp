@@ -17,12 +17,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.listifyjetapp.components.FormDialog
 import com.example.listifyjetapp.utils.filterListItems
 import com.example.listifyjetapp.widgets.ListifySearchBar
 import com.example.listifyjetapp.widgets.ListifyTopBar
@@ -33,11 +33,14 @@ fun ListifyListsScreen(
 ) {
     LaunchedEffect(Unit) { viewModel.getUserLists(4) }
 
+    val isDialogShown = remember { mutableStateOf(false) }
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = { ListifyTopBar(
             title = "Lists",
             isListsScreen = true,
+            onAddButtonClick = { isDialogShown.value = true }
         ) }
     ) { innerPadding ->
 
@@ -63,7 +66,6 @@ fun ListifyListsScreen(
                         keyboardController?.hide()              // hide keyboard
                     }
                 )
-                //Text(text = "You don't have any lists yet.")
 
                 if (viewModel.isLoading.value) {
                     Box(
@@ -87,6 +89,13 @@ fun ListifyListsScreen(
                         }
                     }
                 }
+            }
+
+            if (isDialogShown.value) {
+                FormDialog(
+                    onDismiss = { isDialogShown.value = false },
+                    onConfirm = {}
+                )
             }
         }
     }
