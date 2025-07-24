@@ -42,7 +42,10 @@ fun ListRow(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             // List info
-            Column {
+            Column(
+                modifier = Modifier.padding(horizontal = 8.dp),
+
+            ) {
                 Text(
                     text = list.name,
                     color = ListifyColor.TextBlack,
@@ -51,7 +54,9 @@ fun ListRow(
                 )
 
                 if (list.share) {
-                    Row {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                         Icon(
                             modifier = Modifier.size(16.dp),
                             tint = ListifyColor.IconGreen,
@@ -59,9 +64,11 @@ fun ListRow(
                             contentDescription = "Shared with"
                         )
                         Text(
-                            text = list.sharedWith.take(8).joinToString(", ") { it.username },
+                            text = list.sharedWith.take(3).joinToString(", ") { it.username },
                             maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
+                            overflow = TextOverflow.Ellipsis,
+                            color = ListifyColor.TextGrey,
+                            fontSize = 16.sp
                         )
                     }
                 }
