@@ -26,7 +26,8 @@ fun ListifyTopBar(
     title: String = "Screen Tittle",
     isListsScreen: Boolean = true,
     goBackIcon: ImageVector? = null,
-    onGoBackButtonClicked: () -> Unit = {}
+    onGoBackButtonClicked: () -> Unit = {},
+    onAddButtonClick: () -> Unit = {}
 ) {
 
     CenterAlignedTopAppBar(
@@ -35,17 +36,17 @@ fun ListifyTopBar(
         title = {
             Text(text = title, fontWeight = FontWeight.ExtraBold, fontSize = 24.sp)
         },
+
         actions = {
-            if (isListsScreen) {
-                IconButton(onClick = {  }) {
-                    Icon(
-                        modifier = Modifier.size(24.dp),
-                        imageVector = Icons.Default.Add,
-                        contentDescription = "Add list icon"
-                    )
-                }
+            IconButton(onClick = { onAddButtonClick() }) {
+                Icon(
+                    modifier = Modifier.size(24.dp),
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Add list icon"
+                )
             }
         },
+
         navigationIcon = {
             if (goBackIcon != null) {
                 Icon(
