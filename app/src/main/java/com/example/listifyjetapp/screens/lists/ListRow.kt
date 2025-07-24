@@ -25,7 +25,7 @@ import com.example.listifyjetapp.model.ListModel
 import com.example.listifyjetapp.ui.theme.ListifyColor
 
 @Composable
-fun ListItemComposable(
+fun ListRow(
     list: ListModel,
     //viewModel: User
 ) {
