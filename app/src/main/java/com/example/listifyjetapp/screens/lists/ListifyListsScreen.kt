@@ -16,12 +16,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.listifyjetapp.utils.filterListItems
 import com.example.listifyjetapp.widgets.ListifySearchBar
 import com.example.listifyjetapp.widgets.ListifyTopBar
 
@@ -47,9 +49,8 @@ fun ListifyListsScreen(
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                //val lists =viewModel.lists
-                //Log.d("Lists", lists.toString())
-                val searchTextState = rememberSaveable { mutableStateOf("") }
+
+                val searchTextState = remember { mutableStateOf("") }
                 val keyboardController = LocalSoftwareKeyboardController.current
 
                 ListifySearchBar(
@@ -78,11 +79,11 @@ fun ListifyListsScreen(
                         vertical = 16.dp,
                         horizontal = 8.dp
                     )){
+                        // Filter lists by search input
+                        val results = filterListItems(searchTextState.value, viewModel.lists)
 
-                        items(viewModel.lists) {list ->
-
+                        items(results) {list ->
                             ListRow(list)
-
                         }
                     }
                 }
