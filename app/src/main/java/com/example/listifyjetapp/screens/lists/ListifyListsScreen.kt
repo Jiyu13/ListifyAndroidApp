@@ -59,7 +59,7 @@ fun ListifyListsScreen(
                     keyboardAction = KeyboardActions{
                         // Trigger search logic or hide keyboard
                         searchTextState.value.trim()            // perform the search
-                        searchTextState.value = ""              // clear text field when click Done, Next, etc
+                        //searchTextState.value = ""            // clear text field when click Done, Next, etc
                         keyboardController?.hide()              // hide keyboard
                     }
                 )
