@@ -1,25 +1,15 @@
 package com.example.listifyjetapp.screens.lists
 
 import android.util.Log
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -29,12 +19,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.listifyjetapp.ui.theme.ListifyColor
 import com.example.listifyjetapp.widgets.ListifySearchBar
 import com.example.listifyjetapp.widgets.ListifyTopBar
 
@@ -93,66 +80,8 @@ fun ListifyListsScreen(
                     )){
 
                         items(viewModel.lists) {list ->
-                            Log.d("list", list.itemCount.toString())
-                            Row(
-                                modifier = Modifier
-                                    .clickable {  }
-                                    .padding(vertical = 16.dp)
-                                    .fillMaxWidth()
-                                    .background(Color.Transparent)
-                            ) {
-                                Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    horizontalArrangement = Arrangement.SpaceBetween
-                                ) {
-                                    // List info
-                                    Column {
-                                        Text(
-                                            text = list.name,
-                                            color = ListifyColor.TextBlack,
-                                            fontSize = 20.sp,
-                                            //fontWeight = FontWeight.SemiBold
-                                        )
 
-                                        if (list.share) {
-                                            Row {
-                                                Icon(
-                                                    modifier = Modifier.size(16.dp),
-                                                    tint = ListifyColor.IconGreen,
-                                                    imageVector = Icons.Default.Share,
-                                                    contentDescription = "Shared with"
-
-                                                )
-                                            }
-                                        }
-
-                                        Text(
-                                            text = list.createdAt,
-                                            color = ListifyColor.TextGrey,
-                                            fontSize = 16.sp
-                                        )
-                                    }
-                                    // List setting menu
-
-                                    Row() {
-                                        Text(
-                                            text = list.itemCount.toString(),
-                                            color = ListifyColor.TextGrey,
-                                            fontSize = 16.sp
-                                        )
-
-                                        Icon(
-                                            imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                                            contentDescription = "Forward icon"
-                                        )
-
-                                    }
-
-                                }
-
-                            }
-                            HorizontalDivider()
+                            ListRow(list)
 
                         }
                     }
