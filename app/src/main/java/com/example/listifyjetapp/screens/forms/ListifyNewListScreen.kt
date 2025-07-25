@@ -38,7 +38,7 @@ fun ListifyNewListScreen(
             onGoBackButtonClicked = {navController.popBackStack()},
             leftText = "Cancel",
             rightText = "Save",
-            onAddButtonClick = { onConfirm() }
+            onRightButtonClick = { onConfirm() }
         ) }
     ) { innerPadding ->
 

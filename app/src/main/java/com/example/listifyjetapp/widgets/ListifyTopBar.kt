@@ -32,7 +32,7 @@ fun ListifyTopBar(
     rightIcon: ImageVector? = null,
     rightText: String? = "",
     onGoBackButtonClicked: () -> Unit = {},
-    onAddButtonClick: () -> Unit = {}
+    onRightButtonClick: () -> Unit = {}
 ) {
 
     CenterAlignedTopAppBar(
@@ -44,7 +44,7 @@ fun ListifyTopBar(
 
         actions = {
             if (rightIcon != null) {
-                IconButton(onClick = { onAddButtonClick() }) {
+                IconButton(onClick = { onRightButtonClick() }) {
                     Icon(
                         modifier = Modifier.size(24.dp),
                         imageVector = rightIcon, //Icons.Default.Add,
