@@ -33,17 +33,13 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun ListifyApp() {
     ListifyJetAppTheme {
-        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-            Surface(
-                modifier = Modifier.fillMaxSize()
-            ) {
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    ListifyNavigation()
-                }
-            }
+        Column(
+            modifier = Modifier
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            ListifyNavigation()
         }
     }
 }
