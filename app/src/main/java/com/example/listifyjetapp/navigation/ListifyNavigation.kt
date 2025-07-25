@@ -10,7 +10,6 @@ import com.example.listifyjetapp.screens.splash.ListifySplashScreen
 
 @Composable
 fun ListifyNavigation() {
-
     // Create a controller for navigating between screens
     val navController = rememberNavController()
 
