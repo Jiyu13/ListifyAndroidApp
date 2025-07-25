@@ -1,4 +1,4 @@
-package com.example.listifyjetapp.navigation
+package com.example.listifyjetapp.ui.navigation
 
 enum class ListifyScreens(val route: String) {
     SplashScreen("splash"),

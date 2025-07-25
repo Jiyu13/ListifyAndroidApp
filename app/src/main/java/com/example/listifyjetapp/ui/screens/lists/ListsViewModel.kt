@@ -1,4 +1,4 @@
-package com.example.listifyjetapp.screens.lists
+package com.example.listifyjetapp.ui.screens.lists
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel

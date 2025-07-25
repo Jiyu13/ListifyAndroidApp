@@ -15,7 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.listifyjetapp.navigation.ListifyNavigation
+import com.example.listifyjetapp.ui.navigation.ListifyNavigation
 import com.example.listifyjetapp.ui.theme.ListifyJetAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -33,17 +33,13 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun ListifyApp() {
     ListifyJetAppTheme {
-        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-            Surface(
-                modifier = Modifier.fillMaxSize()
-            ) {
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    ListifyNavigation()
-                }
-            }
+        Column(
+            modifier = Modifier
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            ListifyNavigation()
         }
     }
 }
