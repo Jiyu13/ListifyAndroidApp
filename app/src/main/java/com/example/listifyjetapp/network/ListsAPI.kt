@@ -1,11 +1,8 @@
 package com.example.listifyjetapp.network
 
-import androidx.room.Update
 import com.example.listifyjetapp.model.ListModel
-//import com.example.listifyjetapp.model.User
 import retrofit2.http.DELETE
 import retrofit2.http.GET
-import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 import javax.inject.Singleton
