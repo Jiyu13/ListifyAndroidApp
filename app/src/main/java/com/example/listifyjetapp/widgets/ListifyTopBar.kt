@@ -1,6 +1,7 @@
 package com.example.listifyjetapp.widgets
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -18,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.listifyjetapp.ui.theme.ListifyColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
@@ -26,6 +28,9 @@ fun ListifyTopBar(
     title: String = "Screen Tittle",
     isListsScreen: Boolean = true,
     goBackIcon: ImageVector? = null,
+    leftText: String? = "",
+    rightIcon: ImageVector? = null,
+    rightText: String? = "",
     onGoBackButtonClicked: () -> Unit = {},
     onAddButtonClick: () -> Unit = {}
 ) {
@@ -38,11 +43,22 @@ fun ListifyTopBar(
         },
 
         actions = {
-            IconButton(onClick = { onAddButtonClick() }) {
-                Icon(
-                    modifier = Modifier.size(24.dp),
-                    imageVector = Icons.Default.Add,
-                    contentDescription = "Add list icon"
+            if (rightIcon != null) {
+                IconButton(onClick = { onAddButtonClick() }) {
+                    Icon(
+                        modifier = Modifier.size(24.dp),
+                        imageVector = rightIcon, //Icons.Default.Add,
+                        contentDescription = "Add icon"
+                    )
+                }
+            }
+
+            if (rightText.toString().isNotEmpty() && rightText != null) {
+                Text(
+                    text = rightText,
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    fontSize = 20.sp,
+                    color = ListifyColor.SplashYellow
                 )
             }
         },
@@ -55,6 +71,17 @@ fun ListifyTopBar(
                     modifier = Modifier.size(24.dp).clickable { onGoBackButtonClicked.invoke() }
                 )
             }
+            if (leftText.toString().isNotEmpty() && leftText != null) {
+                Text(
+                    text = leftText,
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .clickable { onGoBackButtonClicked.invoke() },
+                    fontSize = 20.sp,
+                    color = ListifyColor.SplashYellow
+                )
+            }
+
         }
     )
 }
