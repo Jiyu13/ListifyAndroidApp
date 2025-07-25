@@ -1,6 +1,5 @@
 package com.example.listifyjetapp.screens.lists
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,6 +8,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -22,25 +23,29 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.listifyjetapp.components.FormDialog
+import androidx.navigation.NavController
+import com.example.listifyjetapp.navigation.ListifyScreens
 import com.example.listifyjetapp.utils.filterListItems
 import com.example.listifyjetapp.widgets.ListifySearchBar
 import com.example.listifyjetapp.widgets.ListifyTopBar
 
 @Composable
 fun ListifyListsScreen(
+    navController: NavController,
     viewModel: ListsViewModel = hiltViewModel()
 ) {
     LaunchedEffect(Unit) { viewModel.getUserLists(4) }
 
-    val isDialogShown = remember { mutableStateOf(false) }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = { ListifyTopBar(
             title = "Lists",
             isListsScreen = true,
-            onAddButtonClick = { isDialogShown.value = true }
+            rightIcon = Icons.Default.Add,
+            onRightButtonClick = {
+                navController.navigate(ListifyScreens.NewListScreen.route)
+            }
         ) }
     ) { innerPadding ->
 
@@ -62,7 +67,6 @@ fun ListifyListsScreen(
                     keyboardAction = KeyboardActions{
                         // Trigger search logic or hide keyboard
                         searchTextState.value.trim()            // perform the search
-                        //searchTextState.value = ""            // clear text field when click Done, Next, etc
                         keyboardController?.hide()              // hide keyboard
                     }
                 )
@@ -91,12 +95,6 @@ fun ListifyListsScreen(
                 }
             }
 
-            if (isDialogShown.value) {
-                FormDialog(
-                    onDismiss = { isDialogShown.value = false },
-                    onConfirm = {}
-                )
-            }
         }
     }
 }
