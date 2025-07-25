@@ -14,9 +14,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.listifyjetapp.R
 import com.example.listifyjetapp.navigation.ListifyScreens
 import com.example.listifyjetapp.ui.theme.ListifyColor
 import com.example.listifyjetapp.ui.theme.barriecitoFont
@@ -24,7 +26,6 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun ListifySplashScreen(navController: NavHostController) {
-
     // TODO: Create an Animated object that holds a Float value starting at 0f
     val scale = remember { Animatable(initialValue = 0f) }
 
@@ -33,7 +34,7 @@ fun ListifySplashScreen(navController: NavHostController) {
             targetValue = 0.8f,           // scale from 0f to 0.9f
             animationSpec = tween(         // animation timing,
                 durationMillis = 800,      // time based interpolation of 800ms
-                easing = {OvershootInterpolator(8f).getInterpolation(it)}  // a "bounce" effect
+                easing = { OvershootInterpolator(8f).getInterpolation(it) }  // a "bounce" effect
             )
         )
 
@@ -42,7 +43,6 @@ fun ListifySplashScreen(navController: NavHostController) {
         // TODO: Navigate to MainScreen
         navController.navigate(ListifyScreens.ListsScreen.route)
     })
-
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -53,7 +53,7 @@ fun ListifySplashScreen(navController: NavHostController) {
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = "Listify",
+                text = stringResource(R.string.app_title),
                 color = ListifyColor.TextDark,
                 fontFamily = barriecitoFont,
                 fontWeight = FontWeight.ExtraBold,
@@ -61,10 +61,9 @@ fun ListifySplashScreen(navController: NavHostController) {
                 modifier = Modifier.scale(scale.value)
             )
             Text(
-                text = "From To-Dos to Ta-Das!",
+                text = stringResource(R.string.app_tagline),
                 color = ListifyColor.TextGrey
             )
         }
     }
-
 }

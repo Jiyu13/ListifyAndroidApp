@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ListifyJetApp</string>
+	<string name="app_title">Listify</string>
+	<string name="app_tagline">From To-Dos to Ta-Das!</string>
 </resources>
