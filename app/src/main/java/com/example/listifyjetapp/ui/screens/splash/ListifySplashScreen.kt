@@ -1,4 +1,4 @@
-package com.example.listifyjetapp.screens.splash
+package com.example.listifyjetapp.ui.screens.splash
 
 import android.view.animation.OvershootInterpolator
 import androidx.compose.animation.core.Animatable
@@ -19,7 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.listifyjetapp.R
-import com.example.listifyjetapp.navigation.ListifyScreens
+import com.example.listifyjetapp.ui.navigation.ListifyScreens
 import com.example.listifyjetapp.ui.theme.ListifyColor
 import com.example.listifyjetapp.ui.theme.barriecitoFont
 import kotlinx.coroutines.delay

@@ -1,4 +1,4 @@
-package com.example.listifyjetapp.screens.lists
+package com.example.listifyjetapp.ui.screens.lists
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
