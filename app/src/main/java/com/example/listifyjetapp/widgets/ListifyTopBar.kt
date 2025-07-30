@@ -56,7 +56,7 @@ fun ListifyTopBar(
             if (rightText.toString().isNotEmpty() && rightText != null) {
                 Text(
                     text = rightText,
-                    modifier = Modifier.padding(horizontal = 16.dp),
+                    modifier = Modifier.padding(horizontal = 16.dp).clickable { onRightButtonClick() },
                     fontSize = 20.sp,
                     color = ListifyColor.SplashYellow
                 )
