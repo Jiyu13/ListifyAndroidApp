@@ -2,7 +2,9 @@ package com.example.listifyjetapp.network
 
 import androidx.room.Update
 import com.example.listifyjetapp.model.ListModel
+import com.example.listifyjetapp.model.ListName
 import com.example.listifyjetapp.model.User
+import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.PATCH
@@ -59,7 +61,10 @@ interface ListifyAPI {
 
     // Post new list
     @POST("lists/{user_id}")
-    suspend fun createList(@Path("user_id") userId: Int) {}
+    suspend fun insertList(
+        @Path("user_id") userId: Int,
+        @Body request: ListName
+    ): ListModel
 
     // Get items by list id
     @GET("lists/{list_id}")
