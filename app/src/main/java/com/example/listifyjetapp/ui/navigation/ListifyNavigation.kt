@@ -1,17 +1,15 @@
-package com.example.listifyjetapp.navigation
+package com.example.listifyjetapp.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.listifyjetapp.screens.lists.ListifyListsScreen
-import com.example.listifyjetapp.screens.profile.ListifyProfileScreen
-import com.example.listifyjetapp.screens.splash.ListifySplashScreen
+import com.example.listifyjetapp.ui.screens.lists.ListifyListsScreen
+import com.example.listifyjetapp.ui.screens.splash.ListifySplashScreen
 
 
 @Composable
 fun ListifyNavigation() {
-
     // Create a controller for navigating between screens
     val navController = rememberNavController()
 
