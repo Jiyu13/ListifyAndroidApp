@@ -1,6 +1,5 @@
 package com.example.listifyjetapp.network
 
-import androidx.room.Update
 import com.example.listifyjetapp.model.ListModel
 import com.example.listifyjetapp.model.ListName
 import com.example.listifyjetapp.model.User

@@ -1,4 +1,4 @@
-package com.example.listifyjetapp.screens.newList
+package com.example.listifyjetapp.ui.screens.newList
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.listifyjetapp.model.ListName
-import com.example.listifyjetapp.screens.lists.ListsViewModel
+import com.example.listifyjetapp.ui.screens.lists.ListsViewModel
 import com.example.listifyjetapp.widgets.FormInputField
 import com.example.listifyjetapp.widgets.ListifyTopBar
 

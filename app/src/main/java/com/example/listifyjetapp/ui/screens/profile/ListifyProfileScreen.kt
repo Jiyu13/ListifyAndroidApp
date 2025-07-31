@@ -1,4 +1,4 @@
-package com.example.listifyjetapp.screens.profile
+package com.example.listifyjetapp.ui.screens.profile
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
