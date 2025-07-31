@@ -28,7 +28,7 @@ import com.example.listifyjetapp.ui.navigation.ListifyScreens
 import com.example.listifyjetapp.ui.theme.ListifyColor
 
 @Composable
-fun authButtons(navController: NavController) {
+fun AuthButtons(navController: NavController) {
     Column(
         modifier = Modifier.fillMaxSize().padding(16.dp),
         verticalArrangement = Arrangement.Bottom,

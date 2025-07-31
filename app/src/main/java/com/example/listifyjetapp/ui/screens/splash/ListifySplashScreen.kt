@@ -20,7 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.listifyjetapp.R
-import com.example.listifyjetapp.components.authButtons.authButtons
+import com.example.listifyjetapp.components.authButtons.AuthButtons
 import com.example.listifyjetapp.ui.theme.ListifyColor
 import com.example.listifyjetapp.ui.theme.barriecitoFont
 import kotlinx.coroutines.delay
@@ -73,7 +73,7 @@ fun ListifySplashScreen(navController: NavHostController) {
         }
 
         if (isShowButtons.value) {
-            authButtons(navController)
+            AuthButtons(navController)
         }
     }
 }
