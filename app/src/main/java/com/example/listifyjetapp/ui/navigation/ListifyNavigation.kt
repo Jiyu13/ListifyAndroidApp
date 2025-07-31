@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.listifyjetapp.ui.screens.lists.ListifyListsScreen
+import com.example.listifyjetapp.ui.screens.newList.ListifyNewListScreen
 import com.example.listifyjetapp.ui.screens.splash.ListifySplashScreen
 
 
@@ -26,7 +27,12 @@ fun ListifyNavigation() {
 
         // TODO: Define a navigation route for ListsScreen
         composable(ListifyScreens.ListsScreen.route) {
-            ListifyListsScreen()
+            ListifyListsScreen(navController = navController)
+        }
+
+        // TODO: Define a navigation route for NewListScreen
+        composable(ListifyScreens.NewListScreen.route) {
+            ListifyNewListScreen(navController = navController)
         }
 
         // TODO: Define a navigation route for DetailScreen
