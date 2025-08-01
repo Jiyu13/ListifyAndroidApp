@@ -2,6 +2,7 @@ package com.example.listifyjetapp.widgets
 
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -32,7 +33,7 @@ fun ListifySearchBar(
     keyboardAction: KeyboardActions = KeyboardActions.Default // what to do when an action is triggered
 ) {
     TextField(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
         shape = RoundedCornerShape(12.dp),
         colors = TextFieldDefaults.colors(
             unfocusedIndicatorColor = Color.Transparent,
