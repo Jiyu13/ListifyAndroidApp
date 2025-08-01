@@ -15,7 +15,8 @@ fun ValidatingInputTextField(
     validatorHasError: Boolean
 ) {
     OutlinedTextField(
-        modifier = Modifier.fillMaxWidth().padding(16.dp),
+        modifier = Modifier.fillMaxWidth()
+            .padding(start = 16.dp, end=16.dp, top = 16.dp),
         value = email,
         onValueChange = onValueChange,
         label = { Text("Email") },
