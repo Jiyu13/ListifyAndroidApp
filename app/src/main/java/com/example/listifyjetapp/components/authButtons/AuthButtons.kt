@@ -26,16 +26,21 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.listifyjetapp.ui.navigation.ListifyScreens
 import com.example.listifyjetapp.ui.theme.ListifyColor
+import com.example.listifyjetapp.widgets.FilledButton
 
 @Composable
 fun AuthButtons(navController: NavController) {
     Column(
-        modifier = Modifier.fillMaxSize().padding(16.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
         verticalArrangement = Arrangement.Bottom,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         OutlinedButton(
-            modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 6.dp),
             shape = RoundedCornerShape(10.dp),
             border = BorderStroke(2.dp, color = Color.White),
 
@@ -55,29 +60,41 @@ fun AuthButtons(navController: NavController) {
                 )
         }
 
-        Button(
-            modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp),
+        FilledButton(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 6.dp),
             shape = RoundedCornerShape(10.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color.White,
-                contentColor = ListifyColor.TextDark
-            ),
-            onClick = {
-                navController.navigate(ListifyScreens.LoginScreen.route)
-            }
-        ) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.ExitToApp,
-                modifier = Modifier.size(20.dp),
-                contentDescription = "Log In"
-            )
-
-            Text(
-                text = "LOG IN ",
-                fontWeight = FontWeight.ExtraBold,
-                fontSize = 18.sp,
-                modifier = Modifier.padding(8.dp)
-            )
-        }
+            containerColor = Color.White,
+            contentColor = ListifyColor.TextDark,
+            text = "LOG IN",
+            buttonIcon = Icons.AutoMirrored.Filled.ExitToApp,
+            iconDescription = "Log In",
+            onClick = { navController.navigate(ListifyScreens.LoginScreen.route) }
+        )
+//        Button(
+//            modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp),
+//            shape = RoundedCornerShape(10.dp),
+//            colors = ButtonDefaults.buttonColors(
+//                containerColor = Color.White,
+//                contentColor = ListifyColor.TextDark
+//            ),
+//            onClick = {
+//                navController.navigate(ListifyScreens.LoginScreen.route)
+//            }
+//        ) {
+//            Icon(
+//                imageVector = Icons.AutoMirrored.Filled.ExitToApp,
+//                modifier = Modifier.size(20.dp),
+//                contentDescription = "Log In"
+//            )
+//
+//            Text(
+//                text = "LOG IN",
+//                fontWeight = FontWeight.ExtraBold,
+//                fontSize = 18.sp,
+//                modifier = Modifier.padding(8.dp)
+//            )
+//        }
     }
 }
