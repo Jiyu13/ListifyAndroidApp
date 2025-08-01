@@ -37,7 +37,7 @@ fun ListifyTopBar(
 
     CenterAlignedTopAppBar(
         //modifier = Modifier.shadow(elevation = 5.dp),
-        colors = topAppBarColors(containerColor = Color.Transparent),
+        colors = topAppBarColors(containerColor = ListifyColor.SplashYellow),
         title = {
             Text(text = title, fontWeight = FontWeight.ExtraBold, fontSize = 24.sp)
         },
@@ -58,7 +58,7 @@ fun ListifyTopBar(
                     text = rightText,
                     modifier = Modifier.padding(horizontal = 16.dp).clickable { onRightButtonClick() },
                     fontSize = 20.sp,
-                    color = ListifyColor.SplashYellow
+                    color = ListifyColor.TextDark
                 )
             }
         },
@@ -78,7 +78,7 @@ fun ListifyTopBar(
                         .padding(horizontal = 16.dp)
                         .clickable { onGoBackButtonClicked.invoke() },
                     fontSize = 20.sp,
-                    color = ListifyColor.SplashYellow
+                    color = ListifyColor.TextDark
                 )
             }
 
