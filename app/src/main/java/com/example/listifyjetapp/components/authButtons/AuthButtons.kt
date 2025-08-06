@@ -70,7 +70,7 @@ fun AuthButtons(navController: NavController) {
             text = "LOG IN",
             buttonIcon = Icons.AutoMirrored.Filled.ExitToApp,
             iconDescription = "Log In",
-            onClick = { navController.navigate(ListifyScreens.LoginScreen.route) }
+            onClick = { navController.navigate(ListifyScreens.LoginScreen) }
         )
 //        Button(
 //            modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp),
