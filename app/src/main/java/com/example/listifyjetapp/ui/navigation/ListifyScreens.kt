@@ -7,7 +7,7 @@ enum class ListifyScreens(val route: String) {
     ProfileScreen("profile"),
     LoginScreen("login"),
     SignupScreen("signup"),
-    NewListScreen("new-list")
+    NewListScreen("new-list"),
 }
 
 // navController.navigate(ListifyScreens.LoginScreen.route)
