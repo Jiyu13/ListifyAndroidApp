@@ -26,8 +26,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.listifyjetapp.R
-import com.example.listifyjetapp.ui.screens.lists.ListRow
+import com.example.listifyjetapp.data.ListifyState
 import com.example.listifyjetapp.ui.navigation.ListifyScreens
+import com.example.listifyjetapp.ui.screens.auth.LoginViewModel
 import com.example.listifyjetapp.utils.filterListItems
 import com.example.listifyjetapp.widgets.ListifySearchBar
 import com.example.listifyjetapp.widgets.ListifyTopBar
@@ -35,9 +36,13 @@ import com.example.listifyjetapp.widgets.ListifyTopBar
 @Composable
 fun ListifyListsScreen(
     navController: NavController,
-    viewModel: ListsViewModel = hiltViewModel()
+    viewModel: ListsViewModel = hiltViewModel(),
+    loginViewModel: LoginViewModel = hiltViewModel()
 ) {
-    LaunchedEffect(Unit) { viewModel.getUserLists(4) }
+    LaunchedEffect(Unit) {
+        ListifyState.currentUser?.id?.let { viewModel.getUserLists(it) }
+        //loginViewModel.currentUser.value?.let { viewModel.getUserLists(it.id) }
+    }
 
 
     Scaffold(
@@ -47,7 +52,7 @@ fun ListifyListsScreen(
             isListsScreen = true,
             rightIcon = Icons.Default.Add,
             onRightButtonClick = {
-                navController.navigate(ListifyScreens.NewListScreen.route)
+                navController.navigate(ListifyScreens.NewListScreen)
             }
         ) }
     ) { innerPadding ->
