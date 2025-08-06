@@ -2,6 +2,8 @@ package com.example.listifyjetapp.network
 
 import com.example.listifyjetapp.model.ListModel
 import com.example.listifyjetapp.model.ListName
+import com.example.listifyjetapp.model.LoginInfo
+import com.example.listifyjetapp.model.LoginSuccess
 import com.example.listifyjetapp.model.User
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -13,6 +15,10 @@ import javax.inject.Singleton
 
 @Singleton
 interface ListifyAPI {
+    // =============================================== Auth ========================================
+    @POST("auth/login")
+    suspend fun login(@Body request: LoginInfo): LoginSuccess
+
     // =============================================== Users =======================================
     @PATCH("users/{user_id}")
     suspend fun patchUserById(@Path("user_id") userId: Int): User
