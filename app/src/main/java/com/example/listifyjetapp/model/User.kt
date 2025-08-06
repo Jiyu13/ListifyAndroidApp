@@ -10,6 +10,13 @@ data class User(
     @SerializedName("created_at") val createdAt: String
 )
 
+data class UserWithoutPassword(
+    val id: Int,
+    val username: String,
+    val email: String,
+    @SerializedName("created_at") val createdAt: String
+)
+
 data class SharedUsers(
     @SerializedName("user_id") val userId: Int,
     val username: String,
