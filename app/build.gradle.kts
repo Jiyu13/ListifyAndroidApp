@@ -127,4 +127,7 @@ dependencies {
 
     // JSON serialization library, works with the Kotlin serialization plugin
     implementation(libs.kotlinx.serialization.json)
+
+    // Typed DataStore (Typed API surface, such as Proto)
+    implementation(libs.androidx.datastore.preferences)
 }
