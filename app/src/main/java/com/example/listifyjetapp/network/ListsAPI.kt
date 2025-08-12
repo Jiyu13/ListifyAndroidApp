@@ -8,6 +8,7 @@ import com.example.listifyjetapp.model.User
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -18,6 +19,9 @@ interface ListifyAPI {
     // =============================================== Auth ========================================
     @POST("auth/login")
     suspend fun login(@Body request: LoginInfo): LoginSuccess
+
+    @POST("refresh")
+    suspend fun refresh(@Header("x-refresh-token") refreshToken: String): LoginSuccess
 
     // =============================================== Users =======================================
     @PATCH("users/{user_id}")
