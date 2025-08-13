@@ -11,6 +11,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -26,9 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.listifyjetapp.R
-import com.example.listifyjetapp.data.ListifyState
 import com.example.listifyjetapp.ui.navigation.ListifyScreens
-import com.example.listifyjetapp.ui.screens.auth.LoginViewModel
 import com.example.listifyjetapp.utils.filterListItems
 import com.example.listifyjetapp.widgets.ListifySearchBar
 import com.example.listifyjetapp.widgets.ListifyTopBar
@@ -37,13 +36,8 @@ import com.example.listifyjetapp.widgets.ListifyTopBar
 fun ListifyListsScreen(
     navController: NavController,
     viewModel: ListsViewModel = hiltViewModel(),
-    loginViewModel: LoginViewModel = hiltViewModel()
 ) {
-    LaunchedEffect(Unit) {
-        ListifyState.currentUser?.id?.let { viewModel.getUserLists(it) }
-        //loginViewModel.currentUser.value?.let { viewModel.getUserLists(it.id) }
-    }
-
+    LaunchedEffect(Unit) { viewModel.getUserLists() }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -79,7 +73,14 @@ fun ListifyListsScreen(
                     }
                 )
 
-                if (viewModel.isLoading.value) {
+                viewModel.errorMessage?.let { msg ->
+                    Text(msg,
+                        Modifier.padding(16.dp),
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+
+                if (viewModel.isLoading) {
                     Box(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
