@@ -32,7 +32,7 @@ fun ListifyLoginScreen(
     loginViewModel: LoginViewModel = hiltViewModel()
 ) {
 
-    val loginState = loginViewModel.loginState.value
+    val loginState = loginViewModel.loginState
 
     fun onLoginClick() {
         if (loginViewModel.email.isNotBlank() && loginViewModel.password.isNotBlank()) {
