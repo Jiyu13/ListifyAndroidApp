@@ -10,6 +10,14 @@ data class UserToken(
     @SerializedName("created_at") val createdAt: String
 )
 
+data class UserDataStore(
+    val userId: Int,
+    val email: String,
+    val accessToken: String,
+    val refreshToken: String,
+    val isLogin: Boolean = false,
+)
+
 data class LoginInfo(
     val email: String,
     val password: String,
@@ -17,6 +25,7 @@ data class LoginInfo(
 
 data class LoginSuccess(
     val message: String,
-    val token: String,
+    val accessToken: String,
+    val refreshToken: String,
     val user:  UserWithoutPassword
 )
