@@ -1,5 +1,6 @@
 package com.example.listifyjetapp.ui.screens.lists
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,7 +29,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.listifyjetapp.R
 import com.example.listifyjetapp.ui.navigation.ListifyScreens
-import com.example.listifyjetapp.utils.filterListItems
+import com.example.listifyjetapp.utils.filterLists
 import com.example.listifyjetapp.widgets.ListifySearchBar
 import com.example.listifyjetapp.widgets.ListifyTopBar
 
@@ -38,6 +39,10 @@ fun ListifyListsScreen(
     viewModel: ListsViewModel = hiltViewModel(),
 ) {
     LaunchedEffect(Unit) { viewModel.getUserLists() }
+
+    fun onListRowClick(listId: Int, listName: String) {
+        navController.navigate(ListifyScreens.ListItemScreen(listId, listName))
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -95,10 +100,13 @@ fun ListifyListsScreen(
                         horizontal = 8.dp
                     )){
                         // Filter lists by search input
-                        val results = filterListItems(searchTextState.value, viewModel.lists)
-
+                        val results = filterLists(searchTextState.value, viewModel.lists)
                         items(results) {list ->
-                            ListRow(list)
+                            val listName = list.name.replace(" ", "-")
+                            ListRow(
+                                list = list,
+                                onListRowClick = { onListRowClick(list.id, listName) }
+                            )
                         }
                     }
                 }
