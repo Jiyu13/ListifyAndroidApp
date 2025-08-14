@@ -25,3 +25,11 @@ data class ListModel(
     @SerializedName("item_count") val itemCount: Int,
     @SerializedName("shared_with") val sharedWith: List<SharedUsers>
 )
+
+data class ListItem(
+    val id: Int,
+    val description: String,
+    val units: String,
+    val checked: Boolean,
+    @SerializedName("list_id") val listId: Int,
+)
