@@ -27,11 +27,11 @@ import com.example.listifyjetapp.ui.theme.ListifyColor
 @Composable
 fun ListRow(
     list: ListModel,
-    //viewModel: User
+    onListRowClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
-            .clickable {  }
+            .clickable { onListRowClick() }
             .padding(vertical = 16.dp)
             .fillMaxWidth()
             .background(Color.Transparent)
