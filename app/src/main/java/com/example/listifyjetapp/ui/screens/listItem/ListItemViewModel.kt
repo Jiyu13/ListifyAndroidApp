@@ -22,6 +22,8 @@ class ListItemViewModel @Inject constructor(
     var isLoading  by mutableStateOf(false)
     var errorMessage by mutableStateOf<String?>(null)
 
+    var activeItemId by mutableStateOf<Int?>(null)
+    var activeItemDescription by mutableStateOf("")
 
     fun getAllItems(listId: Int) {
         viewModelScope.launch {
