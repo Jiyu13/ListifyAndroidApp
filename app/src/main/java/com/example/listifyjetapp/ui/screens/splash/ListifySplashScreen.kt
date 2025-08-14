@@ -10,6 +10,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,17 +18,23 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.listifyjetapp.R
+import com.example.listifyjetapp.components.authButtons.AuthButtons
 import com.example.listifyjetapp.ui.navigation.ListifyScreens
 import com.example.listifyjetapp.ui.theme.ListifyColor
 import com.example.listifyjetapp.ui.theme.barriecitoFont
 import kotlinx.coroutines.delay
 
 @Composable
-fun ListifySplashScreen(navController: NavHostController) {
+fun ListifySplashScreen(
+    navController: NavHostController,
+    splashViewModel: SplashViewModel = hiltViewModel()
+) {
     // TODO: Create an Animated object that holds a Float value starting at 0f
     val scale = remember { Animatable(initialValue = 0f) }
+    val isShowButtons = remember { mutableStateOf(false) }
 
     LaunchedEffect(key1 = true, block = { // key1 = true ensure it runs once only
         scale.animateTo(
@@ -40,8 +47,19 @@ fun ListifySplashScreen(navController: NavHostController) {
 
         // when the animation is over, delay 2s before going to next screen
         delay(2000L)
-        // TODO: Navigate to MainScreen
-        navController.navigate(ListifyScreens.ListsScreen.route)
+
+        val isLoggedIn = splashViewModel.isLoggedIn()
+        if (isLoggedIn && splashViewModel.checkAccessToken()) {
+            // TODO: Navigate to MainScreen
+            navController.navigate(ListifyScreens.ListsScreen(splashViewModel.getUserId())) {
+                // Remove Splash from the back stack when go to Lists Screen
+                popUpTo(ListifyScreens.SplashScreen) { inclusive = true }
+                launchSingleTop = true
+            }
+        } else {
+            // TODO: Show login + SignIn button at the bottom
+            isShowButtons.value = true
+        }
     })
 
     Surface(
@@ -64,6 +82,10 @@ fun ListifySplashScreen(navController: NavHostController) {
                 text = stringResource(R.string.app_tagline),
                 color = ListifyColor.TextGrey
             )
+        }
+
+        if (isShowButtons.value) {
+            AuthButtons(navController)
         }
     }
 }
