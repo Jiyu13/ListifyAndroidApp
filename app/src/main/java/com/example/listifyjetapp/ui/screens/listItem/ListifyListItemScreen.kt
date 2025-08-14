@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.listifyjetapp.R
+import com.example.listifyjetapp.components.buttomMenus.ListItemActionSheet
 import com.example.listifyjetapp.utils.filterListItems
 import com.example.listifyjetapp.widgets.ListifySearchBar
 import com.example.listifyjetapp.widgets.ListifyTopBar
@@ -103,6 +104,13 @@ fun ListifyListItemScreen(
                             ListItemRow(item)
                         }
                     }
+                }
+
+                if (viewModel.activeItemId != null) {
+                    // show ModalBottomSheet
+                    ListItemActionSheet(
+                        onDismissSheet = { viewModel.activeItemId = null }
+                    )
                 }
             }
 
