@@ -1,5 +1,6 @@
 package com.example.listifyjetapp.network
 
+import com.example.listifyjetapp.model.ListItem
 import com.example.listifyjetapp.model.ListModel
 import com.example.listifyjetapp.model.ListName
 import com.example.listifyjetapp.model.LoginInfo
@@ -77,7 +78,7 @@ interface ListifyAPI {
 
     // Get items by list id
     @GET("lists/{list_id}")
-    suspend fun getAList(@Path("list_id") listId: Int) {}
+    suspend fun getListItems(@Path("list_id") listId: Int): List<ListItem>
 
     // update a list
     @POST("lists/{list_id}")
