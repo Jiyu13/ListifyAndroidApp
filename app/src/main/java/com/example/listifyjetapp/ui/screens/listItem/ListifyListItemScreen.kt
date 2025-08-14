@@ -95,12 +95,12 @@ fun ListifyListItemScreen(
                 } else {
                     LazyColumn(modifier = Modifier.padding(
                         vertical = 16.dp,
-                        horizontal = 8.dp
+                        horizontal = 4.dp
                     )){
                         val results = filterListItems(searchTextState.value, viewModel.listItems)
                         items(results) {item ->
                             // TODO: ItemRow
-                            Text(item.description)
+                            ListItemRow(item)
                         }
                     }
                 }
