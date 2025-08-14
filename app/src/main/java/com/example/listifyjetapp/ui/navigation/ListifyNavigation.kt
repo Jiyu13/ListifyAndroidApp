@@ -4,7 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.example.listifyjetapp.ui.screens.auth.ListifyLoginScreen
+import com.example.listifyjetapp.ui.screens.listItem.ListifyListItemScreen
 import com.example.listifyjetapp.ui.screens.lists.ListifyListsScreen
 import com.example.listifyjetapp.ui.screens.newList.ListifyNewListScreen
 import com.example.listifyjetapp.ui.screens.splash.ListifySplashScreen
@@ -37,8 +39,15 @@ fun ListifyNavigation() {
         }
 
         // TODO: Define a navigation route for DetailScreen
-        composable<ListifyScreens.DetailScreen>() {
-            //ListifyDetailScreen(navController = navController)
+        composable<ListifyScreens.ListItemScreen> {backStackEntry ->
+            val args = backStackEntry.toRoute<ListifyScreens.ListItemScreen>()
+            val listId = args.listId
+            val listName = args.listName
+            ListifyListItemScreen(
+                navController = navController,
+                listId = listId,
+                listName = listName
+            )
         }
 
         // TODO: Define a navigation route for ProfileScreen
