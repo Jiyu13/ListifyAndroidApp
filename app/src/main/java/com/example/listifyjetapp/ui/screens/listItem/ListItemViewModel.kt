@@ -8,6 +8,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.listifyjetapp.data.ListifyResult
+import com.example.listifyjetapp.model.CheckedItem
 import com.example.listifyjetapp.model.ListItem
 import com.example.listifyjetapp.repository.ListItemRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -45,6 +46,25 @@ class ListItemViewModel @Inject constructor(
                 }
             } finally {
                 isLoading = false
+            }
+        }
+    }
+
+    fun checkListItem(
+        itemId: Int,
+        listId: Int,
+        updatedData: CheckedItem
+    ) = viewModelScope.launch {
+        val result = repository.checkListItem(listId = listId, itemId = itemId, updatedData = updatedData)
+        when (result) {
+            is ListifyResult.Success -> {
+                val updated =  result.data
+                listItems.replaceAll { if(it.id == updated.id) updated else it }
+            }
+
+            is ListifyResult.Failure -> {
+                errorMessage = result.errorMessage
+                Log.d("Fail to fetch list items by list id", result.toString())
             }
         }
     }

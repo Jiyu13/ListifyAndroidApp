@@ -1,5 +1,6 @@
 package com.example.listifyjetapp.network
 
+import com.example.listifyjetapp.model.CheckedItem
 import com.example.listifyjetapp.model.ListItem
 import com.example.listifyjetapp.model.ListModel
 import com.example.listifyjetapp.model.ListName
@@ -89,11 +90,12 @@ interface ListifyAPI {
     suspend fun createListItem(@Path("list_id") listId: Int) {}
 
     // Patch list item
-    @POST("lists/{list_id}/{item_id}")
-    suspend fun patchListItem(
+    @PATCH("lists/{list_id}/{item_id}")
+    suspend fun checkListItem(
         @Path("list_id") listId: Int,
-        @Path("item_id") itemId: Int
-    ) {}
+        @Path("item_id") itemId: Int,
+        @Body request: CheckedItem
+    ):ListItem
 
     // Delete list item
     @DELETE("/lists//{item_id}")

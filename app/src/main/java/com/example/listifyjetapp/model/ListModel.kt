@@ -33,3 +33,7 @@ data class ListItem(
     val checked: Boolean,
     @SerializedName("list_id") val listId: Int,
 )
+
+data class CheckedItem(
+    val checked: Boolean
+)
