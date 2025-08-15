@@ -37,3 +37,8 @@ data class ListItem(
 data class CheckedItem(
     val checked: Boolean
 )
+
+data class UpdateItemInfo(
+    val description: String,
+    val units: String
+)

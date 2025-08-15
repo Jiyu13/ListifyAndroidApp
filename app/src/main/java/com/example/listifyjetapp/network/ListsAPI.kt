@@ -6,6 +6,7 @@ import com.example.listifyjetapp.model.ListModel
 import com.example.listifyjetapp.model.ListName
 import com.example.listifyjetapp.model.LoginInfo
 import com.example.listifyjetapp.model.LoginSuccess
+import com.example.listifyjetapp.model.UpdateItemInfo
 import com.example.listifyjetapp.model.User
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -95,6 +96,13 @@ interface ListifyAPI {
         @Path("list_id") listId: Int,
         @Path("item_id") itemId: Int,
         @Body request: CheckedItem
+    ):ListItem
+
+    @PATCH("lists/{list_id}/{item_id}")
+    suspend fun patchListItem(
+        @Path("list_id") listId: Int,
+        @Path("item_id") itemId: Int,
+        @Body request: UpdateItemInfo
     ):ListItem
 
     // Delete list item

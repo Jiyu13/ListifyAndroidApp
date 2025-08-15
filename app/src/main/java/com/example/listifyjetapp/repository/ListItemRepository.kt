@@ -3,6 +3,7 @@ package com.example.listifyjetapp.repository
 import com.example.listifyjetapp.data.ListifyResult
 import com.example.listifyjetapp.model.CheckedItem
 import com.example.listifyjetapp.model.ListItem
+import com.example.listifyjetapp.model.UpdateItemInfo
 import com.example.listifyjetapp.network.ListifyAPI
 import javax.inject.Inject
 
@@ -25,6 +26,19 @@ class ListItemRepository @Inject constructor(
     ): ListifyResult<ListItem> {
         try {
             val response = api.checkListItem(listId = listId, itemId = itemId, request = updatedData)
+            return ListifyResult.Success(data = response)
+        } catch (e: Exception) {
+            return ListifyResult.Failure(e.message ?: "Error checking item")
+        }
+    }
+
+    suspend fun patchListItem(
+        itemId: Int,
+        listId: Int,
+        updatedInfo: UpdateItemInfo
+    ): ListifyResult<ListItem> {
+        try {
+            val response = api.patchListItem(listId = listId, itemId = itemId, request = updatedInfo)
             return ListifyResult.Success(data = response)
         } catch (e: Exception) {
             return ListifyResult.Failure(e.message ?: "Error checking item")

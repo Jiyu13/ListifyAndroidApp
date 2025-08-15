@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.listifyjetapp.data.ListifyResult
 import com.example.listifyjetapp.model.CheckedItem
 import com.example.listifyjetapp.model.ListItem
+import com.example.listifyjetapp.model.UpdateItemInfo
 import com.example.listifyjetapp.repository.ListItemRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -25,6 +26,7 @@ class ListItemViewModel @Inject constructor(
 
     var activeItemId by mutableStateOf<Int?>(null)
     var activeItemDescription by mutableStateOf("")
+    var isActionSheetShown by mutableStateOf<Boolean>(false)
 
     fun getAllItems(listId: Int) {
         viewModelScope.launch {
@@ -64,7 +66,26 @@ class ListItemViewModel @Inject constructor(
 
             is ListifyResult.Failure -> {
                 errorMessage = result.errorMessage
-                Log.d("Fail to fetch list items by list id", result.toString())
+                Log.d("Fail to update item checked state", result.toString())
+            }
+        }
+    }
+
+    fun patchListItemInfo(
+        itemId: Int,
+        listId: Int,
+        updatedInfo: UpdateItemInfo
+    ) = viewModelScope.launch {
+        val result = repository.patchListItem(listId = listId, itemId = itemId, updatedInfo = updatedInfo)
+        when (result) {
+            is ListifyResult.Success -> {
+                val updated =  result.data
+                listItems.replaceAll { if(it.id == updated.id) updated else it }
+            }
+
+            is ListifyResult.Failure -> {
+                errorMessage = result.errorMessage
+                Log.d("Fail to update item description and units", result.toString())
             }
         }
     }
