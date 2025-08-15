@@ -53,7 +53,7 @@ fun EditItemForm(
         CustomOutlinedButton(
             modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp),
             shape = RoundedCornerShape(10.dp),
-            border = BorderStroke(2.dp, color = ListifyColor.TextDark),
+            border = BorderStroke(2.dp, color = Color.Red),
             text = "Delete",
             textColor = Color.Red,
             onClick = {  }
