@@ -92,13 +92,7 @@ fun ListItemRow (
         Row(
             modifier = Modifier.fillMaxWidth().combinedClickable(
                     onClick = { isEditFormShown = !isEditFormShown },
-                    onLongClick = {
-                        viewModel.activeItemId = item.id
-                        viewModel.activeItemDescription = item.description
-                        viewModel.isActionSheetShown = true
-                        haptics.performHapticFeedback(HapticFeedbackType.LongPress)
-                        Log.d("Long press", viewModel.activeItemId.toString())
-                    },
+                    onLongClick = { viewModel.activeItemDescription = item.description },
                     onLongClickLabel = item.description
                 ),
             verticalAlignment = Alignment.CenterVertically,

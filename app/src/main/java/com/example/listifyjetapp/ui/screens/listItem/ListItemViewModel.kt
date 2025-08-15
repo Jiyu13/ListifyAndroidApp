@@ -23,10 +23,7 @@ class ListItemViewModel @Inject constructor(
     val listItems = mutableStateListOf<ListItem>()
     var isLoading  by mutableStateOf(false)
     var errorMessage by mutableStateOf<String?>(null)
-
-    var activeItemId by mutableStateOf<Int?>(null)
     var activeItemDescription by mutableStateOf("")
-    var isActionSheetShown by mutableStateOf<Boolean>(false)
 
     fun getAllItems(listId: Int) {
         viewModelScope.launch {
