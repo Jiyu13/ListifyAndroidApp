@@ -88,11 +88,9 @@ fun ListItemRow (
         .padding(vertical = 16.dp)
         .fillMaxWidth()
         .background(Color.Transparent),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Row(
-            modifier = Modifier.combinedClickable(
+            modifier = Modifier.fillMaxWidth().combinedClickable(
                     onClick = {},
                     onLongClick = {
                         viewModel.activeItemId = item.id
@@ -104,42 +102,44 @@ fun ListItemRow (
                     onLongClickLabel = item.description
                 ),
             verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            // remove checkbox default paddings
-            CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides Dp.Unspecified) {
-                Checkbox(
-                    colors = CheckboxDefaults.colors(Color.Red),
-                    checked = isChecked,
-                    onCheckedChange = { onCheckBoxClick() }
-                )
-            }
-
-            Column(modifier = Modifier.padding(horizontal = 16.dp)) {
-                Text(
-                    text = description,
-                    color = if (isChecked) { ListifyColor.TextGrey } else { ListifyColor.TextBlack },
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    style = TextStyle(
-                        textDecoration = if (isChecked) { TextDecoration.LineThrough } else { null },
+            Row(verticalAlignment = Alignment.CenterVertically){
+                // remove checkbox default paddings
+                CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides Dp.Unspecified) {
+                    Checkbox(
+                        colors = CheckboxDefaults.colors(Color.Red),
+                        checked = isChecked,
+                        onCheckedChange = { onCheckBoxClick() }
                     )
-                )
-                Text(
-                    text = if (item.units.isNotEmpty()) { "QTY ${item.units}" } else { "QTY 1" },
-                    textAlign = TextAlign.End,
-                    color = ListifyColor.TextGrey,
-                    fontSize = 16.sp
-                )
-            }
-        }
+                }
 
-        Icon(
-            imageVector = Icons.Default.KeyboardArrowDown,
-            contentDescription = "GO back icon",
-            modifier = Modifier
-                .size(24.dp)
-                .clickable { onEditFormDismiss() }
-        )
+                Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+                    Text(
+                        text = description,
+                        color = if (isChecked) { ListifyColor.TextGrey } else { ListifyColor.TextBlack },
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        style = TextStyle(
+                            textDecoration = if (isChecked) { TextDecoration.LineThrough } else { null },
+                        )
+                    )
+                    Text(
+                        text = if (item.units.isNotEmpty()) { "QTY ${item.units}" } else { "QTY 1" },
+                        textAlign = TextAlign.End,
+                        color = ListifyColor.TextGrey,
+                        fontSize = 16.sp
+                    )
+                }
+            }
+            Icon(
+                imageVector = Icons.Default.KeyboardArrowDown,
+                contentDescription = "GO back icon",
+                modifier = Modifier
+                    .size(24.dp)
+                    .clickable { onEditFormDismiss() }
+            )
+        }
     }
     
     if (isEditFormShown) {
