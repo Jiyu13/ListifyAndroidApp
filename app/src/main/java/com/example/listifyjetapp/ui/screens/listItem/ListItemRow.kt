@@ -91,7 +91,7 @@ fun ListItemRow (
     ) {
         Row(
             modifier = Modifier.fillMaxWidth().combinedClickable(
-                    onClick = {},
+                    onClick = { isEditFormShown = !isEditFormShown },
                     onLongClick = {
                         viewModel.activeItemId = item.id
                         viewModel.activeItemDescription = item.description
