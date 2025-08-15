@@ -25,6 +25,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.listifyjetapp.model.CheckedItem
 import com.example.listifyjetapp.model.ListItem
 import com.example.listifyjetapp.ui.theme.ListifyColor
 
@@ -38,8 +39,17 @@ fun ListItemRow (
     } else {
         item.description
     }
-    val isChecked by remember { mutableStateOf(item.checked) }
+    val isChecked by remember(item) { mutableStateOf(item.checked) }
     val haptics = LocalHapticFeedback.current
+
+
+    fun onCheckBoxClick() {
+        viewModel.checkListItem(
+            listId = item.listId,
+            itemId = item.id,
+            updatedData = CheckedItem(checked = !isChecked),
+        )
+    }
 
     Row(modifier = Modifier
         .padding(vertical = 16.dp)
@@ -69,9 +79,7 @@ fun ListItemRow (
         ) {
             Checkbox(
                 checked = isChecked,
-                onCheckedChange = {
-                    // TODO: call patchListItem()
-                },
+                onCheckedChange = { onCheckBoxClick() }
             )
 
             Text(
