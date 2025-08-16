@@ -106,9 +106,9 @@ interface ListifyAPI {
     ):ListItem
 
     // Delete list item
-    @DELETE("/lists//{item_id}")
+    @DELETE("lists/{list_id}/{item_id}")
     suspend fun deleteListItem(
         @Path("list_id") listId: Int,
         @Path("item_id") itemId: Int
-    ) {}
+    ): List<ListItem>
 }

@@ -24,7 +24,8 @@ fun EditItemForm(
     units: MutableState<String>,
     onDescriptionChange: (String) -> Unit,
     onUnitsChange: (String) -> Unit,
-    onEditFormSubmit: () -> Unit
+    onEditFormSubmit: () -> Unit,
+    onDeleteItem: () -> Unit
 ) {
 
     Column(
@@ -56,7 +57,7 @@ fun EditItemForm(
             border = BorderStroke(2.dp, color = Color.Red),
             text = "Delete",
             textColor = Color.Red,
-            onClick = {  }
+            onClick = { onDeleteItem() }
         )
     }
 }

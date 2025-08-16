@@ -45,4 +45,13 @@ class ListItemRepository @Inject constructor(
         }
     }
 
+    suspend fun deleteListItem( itemId: Int, listId: Int ): ListifyResult<List<ListItem>> {
+        try {
+            val response = api.deleteListItem(listId = listId, itemId = itemId)
+            return ListifyResult.Success(data = response)
+        } catch (e: Exception) {
+            return ListifyResult.Failure(e.message ?: "Error deleting item by item id")
+        }
+    }
+
 }

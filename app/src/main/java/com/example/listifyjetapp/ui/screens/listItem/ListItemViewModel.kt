@@ -8,6 +8,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.listifyjetapp.data.ListifyResult
+import com.example.listifyjetapp.data.ListifyStorageManager
 import com.example.listifyjetapp.model.CheckedItem
 import com.example.listifyjetapp.model.ListItem
 import com.example.listifyjetapp.model.UpdateItemInfo
@@ -83,6 +84,21 @@ class ListItemViewModel @Inject constructor(
             is ListifyResult.Failure -> {
                 errorMessage = result.errorMessage
                 Log.d("Fail to update item description and units", result.toString())
+            }
+        }
+    }
+
+    fun deleteListItem(listId: Int, itemId: Int) = viewModelScope.launch{
+        val result = repository.deleteListItem(listId = listId, itemId = itemId)
+        when (result) {
+            is ListifyResult.Success -> {
+                listItems.clear()
+                listItems.addAll(result.data)
+            }
+
+            is ListifyResult.Failure -> {
+                errorMessage = result.errorMessage
+                Log.d("Fail to delete item.", result.toString())
             }
         }
     }

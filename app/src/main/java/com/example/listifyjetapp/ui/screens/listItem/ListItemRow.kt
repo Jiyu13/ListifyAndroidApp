@@ -54,9 +54,8 @@ fun ListItemRow (
     } else {
         item.description
     }
-    val haptics = LocalHapticFeedback.current
-    val isChecked by remember(item) { mutableStateOf(item.checked) }
 
+    val isChecked by remember(item) { mutableStateOf(item.checked) }
     var isEditFormShown  by remember { mutableStateOf(false) }
     val descriptionState = remember(item) { mutableStateOf(item.description) }
     val unitsState = remember(item) { mutableStateOf(item.units) }
@@ -81,6 +80,11 @@ fun ListItemRow (
             units = unitsState.value
         )
         viewModel.patchListItemInfo(itemId = item.id, listId = item.listId, updatedInfo = updatedInfo)
+        isEditFormShown = false
+    }
+
+    fun onDeleteItem() {
+        viewModel.deleteListItem(listId = item.listId, itemId = item.id)
         isEditFormShown = false
     }
 
@@ -142,7 +146,8 @@ fun ListItemRow (
             units = unitsState,
             onDescriptionChange = { descriptionState.value = it },
             onUnitsChange = { unitsState.value = it },
-            onEditFormSubmit = { onEditFormSubmit() }
+            onEditFormSubmit = { onEditFormSubmit() },
+            onDeleteItem = { onDeleteItem() }
         )
     }
 
