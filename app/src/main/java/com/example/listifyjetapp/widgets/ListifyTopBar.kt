@@ -68,7 +68,7 @@ fun ListifyTopBar(
                 Icon(
                     imageVector = goBackIcon,
                     contentDescription = "GO back icon",
-                    modifier = Modifier.size(24.dp).clickable { onGoBackButtonClicked.invoke() }
+                    modifier = Modifier.size(24.dp).clickable { onGoBackButtonClicked() }
                 )
             }
             if (leftText.toString().isNotEmpty() && leftText != null) {
@@ -76,7 +76,7 @@ fun ListifyTopBar(
                     text = leftText,
                     modifier = Modifier
                         .padding(horizontal = 16.dp)
-                        .clickable { onGoBackButtonClicked.invoke() },
+                        .clickable { onGoBackButtonClicked() },
                     fontSize = 20.sp,
                     color = ListifyColor.TextDark
                 )
