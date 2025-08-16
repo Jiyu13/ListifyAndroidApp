@@ -90,7 +90,7 @@ fun ListifyListItemScreen(
                         CircularProgressIndicator()
                     }
                 } else if (viewModel.listItems.isEmpty()) {
-                    Text(text = stringResource(R.string.no_lists))
+                    Text(text = stringResource(R.string.no_items))
                 } else {
                     LazyColumn(modifier = Modifier.padding(
                         vertical = 16.dp,
