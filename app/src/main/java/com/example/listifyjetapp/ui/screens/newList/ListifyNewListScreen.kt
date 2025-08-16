@@ -10,6 +10,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -28,6 +30,7 @@ fun ListifyNewListScreen(
 ) {
 
     val formTextState = remember { mutableStateOf("") }
+    val userId by viewModel.userId.collectAsState()
 
     LaunchedEffect(viewModel.navigateBack) {
         viewModel.navigateBack.collect { navigateBack ->
@@ -40,7 +43,7 @@ fun ListifyNewListScreen(
 
     fun onSaveClick() {
         val listName = ListName(name = formTextState.value)
-        viewModel.insertListByUser(4, listName)
+        viewModel.insertListByUser(userId, listName)
     }
 
     Scaffold(
@@ -52,10 +55,7 @@ fun ListifyNewListScreen(
             onGoBackButtonClicked = {navController.popBackStack()},
             leftText = "Cancel",
             rightText = "Save",
-            onRightButtonClick = {
-                // TODO: save new list
-                onSaveClick()
-            }
+            onRightButtonClick = { onSaveClick() }
         ) }
     ) { innerPadding ->
 
