@@ -14,8 +14,11 @@ import com.example.listifyjetapp.model.ListName
 import com.example.listifyjetapp.repository.ListsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,6 +33,14 @@ class ListsViewModel @Inject constructor(
 
     private val _navigateBack = MutableStateFlow(false)
     val navigateBack = _navigateBack.asStateFlow()
+
+    // Convert Flow<Int> to StateFlow<Int>
+    private val _userId = storageManager.userIdFlow.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000), // Keeps the flow alive while observed
+        initialValue = 0
+    )
+    val userId: StateFlow<Int> = _userId
 
     fun getUserLists() {
         viewModelScope.launch {
