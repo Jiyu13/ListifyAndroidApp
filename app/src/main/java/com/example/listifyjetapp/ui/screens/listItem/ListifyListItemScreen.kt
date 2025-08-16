@@ -26,7 +26,6 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.example.listifyjetapp.R
 import com.example.listifyjetapp.utils.filterListItems
 import com.example.listifyjetapp.widgets.ListifySearchBar
@@ -34,10 +33,10 @@ import com.example.listifyjetapp.widgets.ListifyTopBar
 
 @Composable
 fun ListifyListItemScreen(
-    navController: NavController,
     listId: Int,
     listName: String,
-    viewModel: ListItemViewModel = hiltViewModel()
+    viewModel: ListItemViewModel = hiltViewModel(),
+    onPopBackStack: () -> Unit,
 ) {
     LaunchedEffect(Unit) { viewModel.getAllItems(listId) }
 
@@ -47,7 +46,7 @@ fun ListifyListItemScreen(
             title = listName.replace("-", " "),
             isListsScreen = false,
             goBackIcon = Icons.AutoMirrored.Filled.ArrowBack,
-            onGoBackButtonClicked = {navController.popBackStack()},
+            onGoBackButtonClicked = { onPopBackStack() },
             rightIcon = Icons.Default.Add,
             onRightButtonClick = {
                 // TODO: add new item

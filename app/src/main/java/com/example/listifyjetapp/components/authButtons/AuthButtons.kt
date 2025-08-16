@@ -11,8 +11,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.MailOutline
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -23,13 +21,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import com.example.listifyjetapp.ui.navigation.ListifyScreens
 import com.example.listifyjetapp.ui.theme.ListifyColor
 import com.example.listifyjetapp.widgets.FilledButton
 
 @Composable
-fun AuthButtons(navController: NavController) {
+fun AuthButtons(onGoToLoginScreen: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -70,7 +66,7 @@ fun AuthButtons(navController: NavController) {
             text = "LOG IN",
             buttonIcon = Icons.AutoMirrored.Filled.ExitToApp,
             iconDescription = "Log In",
-            onClick = { navController.navigate(ListifyScreens.LoginScreen) }
+            onClick = { onGoToLoginScreen() }
         )
 //        Button(
 //            modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp),

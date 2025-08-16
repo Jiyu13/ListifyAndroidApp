@@ -35,14 +35,11 @@ import com.example.listifyjetapp.widgets.ListifyTopBar
 
 @Composable
 fun ListifyListsScreen(
-    navController: NavController,
     viewModel: ListsViewModel = hiltViewModel(),
+    onListRowClick: (listId: Int, listName: String) -> Unit,
+    onRightButtonClick: () -> Unit
 ) {
     LaunchedEffect(Unit) { viewModel.getUserLists() }
-
-    fun onListRowClick(listId: Int, listName: String) {
-        navController.navigate(ListifyScreens.ListItemScreen(listId, listName))
-    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -50,9 +47,7 @@ fun ListifyListsScreen(
             title = "Lists",
             isListsScreen = true,
             rightIcon = Icons.Default.Add,
-            onRightButtonClick = {
-                navController.navigate(ListifyScreens.NewListScreen)
-            }
+            onRightButtonClick = { onRightButtonClick() }
         ) }
     ) { innerPadding ->
 

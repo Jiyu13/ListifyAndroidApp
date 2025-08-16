@@ -19,18 +19,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import com.example.listifyjetapp.R
 import com.example.listifyjetapp.components.authButtons.AuthButtons
-import com.example.listifyjetapp.ui.navigation.ListifyScreens
 import com.example.listifyjetapp.ui.theme.ListifyColor
 import com.example.listifyjetapp.ui.theme.barriecitoFont
 import kotlinx.coroutines.delay
 
 @Composable
 fun ListifySplashScreen(
-    navController: NavHostController,
-    splashViewModel: SplashViewModel = hiltViewModel()
+    splashViewModel: SplashViewModel = hiltViewModel(),
+    onNavigateToListsScreen: (usrId: Int) -> Unit,
+    onGoToLoginScreen: () -> Unit
 ) {
     // TODO: Create an Animated object that holds a Float value starting at 0f
     val scale = remember { Animatable(initialValue = 0f) }
@@ -51,11 +50,8 @@ fun ListifySplashScreen(
         val isLoggedIn = splashViewModel.isLoggedIn()
         if (isLoggedIn && splashViewModel.checkAccessToken()) {
             // TODO: Navigate to MainScreen
-            navController.navigate(ListifyScreens.ListsScreen(splashViewModel.getUserId())) {
-                // Remove Splash from the back stack when go to Lists Screen
-                popUpTo(ListifyScreens.SplashScreen) { inclusive = true }
-                launchSingleTop = true
-            }
+            val userId = splashViewModel.getUserId()
+            onNavigateToListsScreen(userId)
         } else {
             // TODO: Show login + SignIn button at the bottom
             isShowButtons.value = true
@@ -85,7 +81,7 @@ fun ListifySplashScreen(
         }
 
         if (isShowButtons.value) {
-            AuthButtons(navController)
+            AuthButtons(onGoToLoginScreen = { onGoToLoginScreen() })
         }
     }
 }

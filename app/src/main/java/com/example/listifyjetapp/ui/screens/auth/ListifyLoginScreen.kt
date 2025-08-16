@@ -17,19 +17,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import com.example.listifyjetapp.components.inputFields.PasswordTextField
 import com.example.listifyjetapp.widgets.ListifyTopBar
 import com.example.listifyjetapp.components.inputFields.ValidatingInputTextField
 import com.example.listifyjetapp.data.LoginState
-import com.example.listifyjetapp.ui.navigation.ListifyScreens
 import com.example.listifyjetapp.ui.theme.ListifyColor
 import com.example.listifyjetapp.widgets.FilledButton
 
 @Composable
 fun ListifyLoginScreen(
-    navController: NavHostController,
-    loginViewModel: LoginViewModel = hiltViewModel()
+    loginViewModel: LoginViewModel = hiltViewModel(),
+    onPopBackStack: () -> Unit,
+    onNavigateToListsScreen: (userId: Int) -> Unit
 ) {
 
     val loginState = loginViewModel.loginState
@@ -45,7 +44,7 @@ fun ListifyLoginScreen(
         topBar = { ListifyTopBar(
             title = "LOG IN",
             isListsScreen = false,
-            onGoBackButtonClicked = {navController.popBackStack()},
+            onGoBackButtonClicked = {onPopBackStack()},
             leftText = "CANCEL",
         ) }
     ) { innerPadding ->
@@ -83,11 +82,7 @@ fun ListifyLoginScreen(
                 when (loginState) {
                     is LoginState.Loading -> { CircularProgressIndicator() }
                     is LoginState.Success -> {
-                        LaunchedEffect(Unit) {
-                            navController.navigate(
-                                ListifyScreens.ListsScreen(userId = loginState.data.user.id)
-                            )
-                        }
+                        LaunchedEffect(Unit) { onNavigateToListsScreen(loginState.data.user.id) }
                     }
                     is LoginState.Error -> {
                         Text(

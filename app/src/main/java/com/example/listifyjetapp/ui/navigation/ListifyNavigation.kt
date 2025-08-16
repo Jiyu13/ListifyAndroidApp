@@ -25,17 +25,32 @@ fun ListifyNavigation() {
 
         // TODO: Define a navigation route for SplashScreen
         composable<ListifyScreens.SplashScreen>() {
-            ListifySplashScreen(navController = navController)
+            ListifySplashScreen(
+                onNavigateToListsScreen = {userId ->
+                    navController.navigate(ListifyScreens.ListsScreen(userId)) {
+                        // Remove Splash from the back stack when go to Lists Screen
+                        popUpTo(ListifyScreens.SplashScreen) { inclusive = true }
+                        launchSingleTop = true
+                    }
+                },
+                onGoToLoginScreen = { navController.navigate(ListifyScreens.LoginScreen) }
+
+            )
         }
 
         // TODO: Define a navigation route for ListsScreen
         composable<ListifyScreens.ListsScreen>() {
-            ListifyListsScreen(navController = navController)
+            ListifyListsScreen(
+                onListRowClick = {listId, listName -> navController.navigate(ListifyScreens.ListItemScreen(listId, listName))},
+                onRightButtonClick = {navController.navigate(ListifyScreens.NewListScreen)}
+            )
         }
 
         // TODO: Define a navigation route for NewListScreen
         composable<ListifyScreens.NewListScreen>() {
-            ListifyNewListScreen(navController = navController)
+            ListifyNewListScreen(
+                onPopBackStack = { navController.popBackStack() },
+            )
         }
 
         // TODO: Define a navigation route for DetailScreen
@@ -44,9 +59,9 @@ fun ListifyNavigation() {
             val listId = args.listId
             val listName = args.listName
             ListifyListItemScreen(
-                navController = navController,
                 listId = listId,
-                listName = listName
+                listName = listName,
+                onPopBackStack = { navController.popBackStack() }
             )
         }
 
@@ -57,7 +72,10 @@ fun ListifyNavigation() {
 
         // TODO: Define a navigation route for LoginScreen
         composable<ListifyScreens.LoginScreen>() {
-            ListifyLoginScreen(navController = navController)
+            ListifyLoginScreen(
+                onPopBackStack = { navController.popBackStack() },
+                onNavigateToListsScreen = {userId -> navController.navigate(ListifyScreens.ListsScreen(userId))}
+            )
         }
 
         // TODO: Define a navigation route for SignupScreen

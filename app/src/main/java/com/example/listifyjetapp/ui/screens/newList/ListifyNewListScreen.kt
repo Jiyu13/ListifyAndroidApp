@@ -25,8 +25,8 @@ import com.example.listifyjetapp.widgets.ListifyTopBar
 
 @Composable
 fun ListifyNewListScreen(
-    navController: NavController,
-    viewModel: ListsViewModel = hiltViewModel()
+    viewModel: ListsViewModel = hiltViewModel(),
+    onPopBackStack: () -> Unit,
 ) {
 
     val formTextState = remember { mutableStateOf("") }
@@ -35,7 +35,7 @@ fun ListifyNewListScreen(
     LaunchedEffect(viewModel.navigateBack) {
         viewModel.navigateBack.collect { navigateBack ->
             if (navigateBack) {
-                navController.popBackStack()
+                onPopBackStack()
                 viewModel.navigationComplete()
             }
         }
@@ -52,7 +52,7 @@ fun ListifyNewListScreen(
             title = "New List",
             isListsScreen = false,
             //goBackIcon = Icons.AutoMirrored.Filled.ArrowBack,
-            onGoBackButtonClicked = {navController.popBackStack()},
+            onGoBackButtonClicked = { onPopBackStack() },
             leftText = "Cancel",
             rightText = "Save",
             onRightButtonClick = { onSaveClick() }
