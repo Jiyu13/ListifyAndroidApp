@@ -11,6 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -55,7 +56,7 @@ fun ListifySearchBar(
 
         value = searchTextValue.value,
         onValueChange = onValueChange,
-        placeholder = { Text(text="Search") },
+        placeholder = { Text(text="Search", style = MaterialTheme.typography.labelLarge) },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),  // Sets the keyboard to normal text input.
         keyboardActions = keyboardAction,
     )
