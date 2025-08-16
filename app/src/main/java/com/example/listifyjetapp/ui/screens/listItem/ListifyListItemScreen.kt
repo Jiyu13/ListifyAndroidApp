@@ -1,6 +1,5 @@
-package com.example.listifyjetapp.ui.screens.lists
+package com.example.listifyjetapp.ui.screens.listItem
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,6 +9,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -26,28 +26,31 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.example.listifyjetapp.R
-import com.example.listifyjetapp.ui.navigation.ListifyScreens
-import com.example.listifyjetapp.utils.filterLists
+import com.example.listifyjetapp.utils.filterListItems
 import com.example.listifyjetapp.widgets.ListifySearchBar
 import com.example.listifyjetapp.widgets.ListifyTopBar
 
 @Composable
-fun ListifyListsScreen(
-    viewModel: ListsViewModel = hiltViewModel(),
-    onListRowClick: (listId: Int, listName: String) -> Unit,
-    onRightButtonClick: () -> Unit
+fun ListifyListItemScreen(
+    listId: Int,
+    listName: String,
+    viewModel: ListItemViewModel = hiltViewModel(),
+    onPopBackStack: () -> Unit,
 ) {
-    LaunchedEffect(Unit) { viewModel.getUserLists() }
+    LaunchedEffect(Unit) { viewModel.getAllItems(listId) }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = { ListifyTopBar(
-            title = "Lists",
-            isListsScreen = true,
+            title = listName.replace("-", " "),
+            isListsScreen = false,
+            goBackIcon = Icons.AutoMirrored.Filled.ArrowBack,
+            onGoBackButtonClicked = { onPopBackStack() },
             rightIcon = Icons.Default.Add,
-            onRightButtonClick = { onRightButtonClick() }
+            onRightButtonClick = {
+                // TODO: add new item
+            }
         ) }
     ) { innerPadding ->
 
@@ -67,7 +70,6 @@ fun ListifyListsScreen(
                     searchTextValue = searchTextState,
                     onValueChange = {searchTextState.value = it},
                     keyboardAction = KeyboardActions{
-                        // Trigger search logic or hide keyboard
                         searchTextState.value.trim()            // perform the search
                         keyboardController?.hide()              // hide keyboard
                     }
@@ -87,26 +89,21 @@ fun ListifyListsScreen(
                     ) {
                         CircularProgressIndicator()
                     }
-                } else if (viewModel.lists.isEmpty()) {
-                    Text(text = stringResource(R.string.no_lists))
+                } else if (viewModel.listItems.isEmpty()) {
+                    Text(text = stringResource(R.string.no_items))
                 } else {
                     LazyColumn(modifier = Modifier.padding(
                         vertical = 16.dp,
-                        horizontal = 8.dp
+                        horizontal = 4.dp
                     )){
-                        // Filter lists by search input
-                        val results = filterLists(searchTextState.value, viewModel.lists)
-                        items(results) {list ->
-                            val listName = list.name.replace(" ", "-")
-                            ListRow(
-                                list = list,
-                                onListRowClick = { onListRowClick(list.id, listName) }
-                            )
+                        val results = filterListItems(searchTextState.value, viewModel.listItems)
+                        items(results) {item ->
+                            // TODO: ItemRow
+                            ListItemRow(item)
                         }
                     }
                 }
             }
-
         }
     }
 }
