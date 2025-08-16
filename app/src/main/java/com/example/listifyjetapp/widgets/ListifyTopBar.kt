@@ -3,17 +3,15 @@ package com.example.listifyjetapp.widgets
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,7 +37,10 @@ fun ListifyTopBar(
         //modifier = Modifier.shadow(elevation = 5.dp),
         colors = topAppBarColors(containerColor = ListifyColor.SplashYellow),
         title = {
-            Text(text = title, fontWeight = FontWeight.ExtraBold, fontSize = 24.sp)
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleLarge,
+            )
         },
 
         actions = {
@@ -57,7 +58,7 @@ fun ListifyTopBar(
                 Text(
                     text = rightText,
                     modifier = Modifier.padding(horizontal = 16.dp).clickable { onRightButtonClick() },
-                    fontSize = 20.sp,
+                    style = MaterialTheme.typography.titleMedium,
                     color = ListifyColor.TextDark
                 )
             }
@@ -77,7 +78,8 @@ fun ListifyTopBar(
                     modifier = Modifier
                         .padding(horizontal = 16.dp)
                         .clickable { onGoBackButtonClicked() },
-                    fontSize = 20.sp,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Normal,
                     color = ListifyColor.TextDark
                 )
             }
