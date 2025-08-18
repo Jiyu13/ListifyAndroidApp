@@ -1,4 +1,4 @@
-package com.example.listifyjetapp.components.buttomMenus
+package com.example.listifyjetapp.components.bottomMenus
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
