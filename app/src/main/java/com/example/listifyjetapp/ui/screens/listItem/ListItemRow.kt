@@ -17,6 +17,7 @@ import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalMinimumInteractiveComponentSize
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -116,17 +117,15 @@ fun ListItemRow (
                     Text(
                         text = description,
                         color = if (isChecked) { ListifyColor.TextGrey } else { ListifyColor.TextBlack },
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        style = TextStyle(
+                        style = MaterialTheme.typography.bodyMedium.copy(
                             textDecoration = if (isChecked) { TextDecoration.LineThrough } else { null },
-                        )
+                        ),
                     )
                     Text(
                         text = if (item.units.isNotEmpty()) { "QTY ${item.units}" } else { "QTY 1" },
                         textAlign = TextAlign.End,
                         color = ListifyColor.TextGrey,
-                        fontSize = 16.sp
+                        style = MaterialTheme.typography.bodySmall
                     )
                 }
             }

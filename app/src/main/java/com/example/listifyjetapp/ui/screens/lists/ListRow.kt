@@ -13,6 +13,7 @@ import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,7 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.listifyjetapp.model.ListModel
 import com.example.listifyjetapp.ui.theme.ListifyColor
 
@@ -49,8 +49,7 @@ fun ListRow(
                 Text(
                     text = list.name,
                     color = ListifyColor.TextBlack,
-                    fontSize = 20.sp,
-                    //fontWeight = FontWeight.SemiBold
+                    style = MaterialTheme.typography.bodyMedium,
                 )
 
                 if (list.share) {
@@ -68,7 +67,7 @@ fun ListRow(
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                             color = ListifyColor.TextGrey,
-                            fontSize = 16.sp
+                            style = MaterialTheme.typography.bodySmall
                         )
                     }
                 }
@@ -76,7 +75,7 @@ fun ListRow(
                 Text(
                     text = list.createdAt,
                     color = ListifyColor.TextGrey,
-                    fontSize = 16.sp
+                    style = MaterialTheme.typography.bodySmall
                 )
             }
             // List setting menu
@@ -85,7 +84,7 @@ fun ListRow(
                 Text(
                     text = list.itemCount.toString(),
                     color = ListifyColor.TextGrey,
-                    fontSize = 16.sp
+                    style = MaterialTheme.typography.bodySmall
                 )
 
                 Icon(
