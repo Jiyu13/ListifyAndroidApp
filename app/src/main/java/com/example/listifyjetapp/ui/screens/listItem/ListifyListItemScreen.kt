@@ -27,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.listifyjetapp.R
+import com.example.listifyjetapp.components.text.EmptyList
 import com.example.listifyjetapp.utils.filterListItems
 import com.example.listifyjetapp.widgets.ListifySearchBar
 import com.example.listifyjetapp.widgets.ListifyTopBar
@@ -90,7 +91,7 @@ fun ListifyListItemScreen(
                         CircularProgressIndicator()
                     }
                 } else if (viewModel.listItems.isEmpty()) {
-                    Text(text = stringResource(R.string.no_items))
+                    EmptyList(stringResource(R.string.no_items))
                 } else {
                     LazyColumn(modifier = Modifier.padding(
                         vertical = 16.dp,

@@ -1,6 +1,5 @@
 package com.example.listifyjetapp.ui.screens.lists
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,9 +25,8 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.example.listifyjetapp.R
-import com.example.listifyjetapp.ui.navigation.ListifyScreens
+import com.example.listifyjetapp.components.text.EmptyList
 import com.example.listifyjetapp.utils.filterLists
 import com.example.listifyjetapp.widgets.ListifySearchBar
 import com.example.listifyjetapp.widgets.ListifyTopBar
@@ -88,7 +86,7 @@ fun ListifyListsScreen(
                         CircularProgressIndicator()
                     }
                 } else if (viewModel.lists.isEmpty()) {
-                    Text(text = stringResource(R.string.no_lists))
+                    EmptyList(stringResource(R.string.no_lists))
                 } else {
                     LazyColumn(modifier = Modifier.padding(
                         vertical = 16.dp,
