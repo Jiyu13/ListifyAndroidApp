@@ -1,4 +1,4 @@
-package com.example.listifyjetapp.components.text
+package com.example.listifyjetapp.widgets.texts
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
