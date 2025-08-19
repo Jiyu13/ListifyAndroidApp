@@ -135,7 +135,7 @@ fun ListItemRow (
             }
             Icon(
                 imageVector = Icons.Default.KeyboardArrowDown,
-                contentDescription = "GO back icon",
+                contentDescription = "Arrow down icon",
                 modifier = Modifier
                     .size(24.dp)
                     .clickable { onEditFormDismiss() }
