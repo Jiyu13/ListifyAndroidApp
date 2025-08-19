@@ -19,6 +19,7 @@ import com.example.listifyjetapp.widgets.inputFields.FormInputField
 fun EditItemForm(
     description: String,
     units: String,
+    isError: Boolean,
     onDescriptionChange: (String) -> Unit,
     onUnitsChange: (String) -> Unit,
     onEditFormSubmit: () -> Unit,
@@ -31,6 +32,7 @@ fun EditItemForm(
         FormInputField(
             placerHolder = "e.g., grocery list",
             textState = description,
+            isError = isError,
             onValueChange = onDescriptionChange
         )
 

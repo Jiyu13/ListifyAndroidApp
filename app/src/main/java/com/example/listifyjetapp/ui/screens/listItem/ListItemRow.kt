@@ -60,6 +60,8 @@ fun ListItemRow (
     var isEditFormShown  by remember { mutableStateOf(false) }
     var descriptionState by remember(item) { mutableStateOf(item.description) }
     var unitsState by remember(item) { mutableStateOf(item.units) }
+    var isError by remember { mutableStateOf(false) }
+
 
     fun onCheckBoxClick() {
         viewModel.checkListItem(
@@ -76,12 +78,14 @@ fun ListItemRow (
     }
 
     fun onEditFormSubmit() {
-        val updatedInfo = BasicItemInfo(
-            description = descriptionState,
-            units = unitsState
-        )
-        viewModel.patchListItemInfo(itemId = item.id, listId = item.listId, updatedInfo = updatedInfo)
-        isEditFormShown = false
+        isError = false
+        if (descriptionState.isBlank()) {
+            isError = true
+        } else {
+            val updatedInfo = BasicItemInfo(description = descriptionState, units = unitsState)
+            viewModel.patchListItemInfo(itemId = item.id, listId = item.listId, updatedInfo = updatedInfo)
+            isEditFormShown = false
+        }
     }
 
     fun onDeleteItem() {
@@ -143,6 +147,7 @@ fun ListItemRow (
         EditItemForm(
             description = descriptionState,
             units = unitsState,
+            isError = isError,
             onDescriptionChange = { descriptionState = it },
             onUnitsChange = { unitsState = it },
             onEditFormSubmit = { onEditFormSubmit() },
