@@ -63,7 +63,17 @@ fun ListifyNavigation() {
                 listId = listId,
                 listName = listName,
                 onPopBackStack = { navController.popBackStack() },
-                onAddClick = { navController.navigate(ListifyScreens.AddNewItemScreen)}
+                onAddClick = { navController.navigate(ListifyScreens.AddNewItemScreen(listId))}
+            )
+        }
+
+        // TODO: Define a navigation route for NewItemScreen
+        composable<ListifyScreens.AddNewItemScreen> {backStackEntry ->
+            val args = backStackEntry.toRoute<ListifyScreens.AddNewItemScreen>()
+            val listId = args.listId
+            ListifyNewItemScreen(
+                listId = listId,
+                onPopBackStack = { navController.popBackStack() },
             )
         }
 
