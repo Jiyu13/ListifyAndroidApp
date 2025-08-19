@@ -7,6 +7,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.listifyjetapp.ui.screens.auth.ListifyLoginScreen
 import com.example.listifyjetapp.ui.screens.listItem.ListifyListItemScreen
+import com.example.listifyjetapp.ui.screens.listItem.ListifyNewItemScreen
 import com.example.listifyjetapp.ui.screens.lists.ListifyListsScreen
 import com.example.listifyjetapp.ui.screens.newList.ListifyNewListScreen
 import com.example.listifyjetapp.ui.screens.splash.ListifySplashScreen
@@ -61,7 +62,8 @@ fun ListifyNavigation() {
             ListifyListItemScreen(
                 listId = listId,
                 listName = listName,
-                onPopBackStack = { navController.popBackStack() }
+                onPopBackStack = { navController.popBackStack() },
+                onAddClick = { navController.navigate(ListifyScreens.AddNewItemScreen)}
             )
         }
 
