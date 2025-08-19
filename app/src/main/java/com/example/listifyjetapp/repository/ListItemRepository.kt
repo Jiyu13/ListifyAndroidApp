@@ -19,6 +19,18 @@ class ListItemRepository @Inject constructor(
         }
     }
 
+    suspend fun insertListItem(
+        listId: Int,
+        newItem: BasicItemInfo
+    ): ListifyResult<ListItem> {
+        try {
+            val response = api.createListItem(listId = listId, request = newItem)
+            return ListifyResult.Success(data = response)
+        } catch (e: Exception) {
+            return ListifyResult.Failure(e.message ?: "Error adding new item")
+        }
+    }
+
     suspend fun checkListItem(
         itemId: Int,
         listId: Int,
