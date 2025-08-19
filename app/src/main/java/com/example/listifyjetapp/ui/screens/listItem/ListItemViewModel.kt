@@ -50,6 +50,26 @@ class ListItemViewModel @Inject constructor(
         }
     }
 
+    fun insertListItem(
+        listId: Int,
+        newItem: BasicItemInfo
+    ) = viewModelScope.launch {
+        isLoading = true
+        val result = repository.insertListItem(listId = listId, newItem = newItem)
+        when (result) {
+            is ListifyResult.Success -> {
+                val item =  result.data
+                listItems.add(item)
+            }
+
+            is ListifyResult.Failure -> {
+                errorMessage = result.errorMessage
+                Log.d("Fail to add a new item to list $listId", result.toString())
+            }
+        }
+        isLoading = false
+    }
+
     fun checkListItem(
         itemId: Int,
         listId: Int,
