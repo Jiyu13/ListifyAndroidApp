@@ -6,7 +6,7 @@ import com.example.listifyjetapp.model.ListModel
 import com.example.listifyjetapp.model.ListName
 import com.example.listifyjetapp.model.LoginInfo
 import com.example.listifyjetapp.model.LoginSuccess
-import com.example.listifyjetapp.model.UpdateItemInfo
+import com.example.listifyjetapp.model.BasicItemInfo
 import com.example.listifyjetapp.model.User
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -88,7 +88,10 @@ interface ListifyAPI {
 
     // Post new item
     @POST("lists/{list_id}/add-item")
-    suspend fun createListItem(@Path("list_id") listId: Int) {}
+    suspend fun createListItem(
+        @Path("list_id") listId: Int,
+        @Body request: BasicItemInfo
+    ): ListItem
 
     // Patch list item
     @PATCH("lists/{list_id}/{item_id}")
@@ -102,7 +105,7 @@ interface ListifyAPI {
     suspend fun patchListItem(
         @Path("list_id") listId: Int,
         @Path("item_id") itemId: Int,
-        @Body request: UpdateItemInfo
+        @Body request: BasicItemInfo
     ):ListItem
 
     // Delete list item
