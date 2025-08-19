@@ -29,11 +29,13 @@ fun EditItemForm(
         modifier = Modifier.fillMaxWidth()
     ) {
         FormInputField(
+            placerHolder = "e.g., grocery list",
             textState = description,
             onValueChange = onDescriptionChange
         )
 
         FormInputField(
+            placerHolder = "e.g., 1 lbs",
             textState = units,
             onValueChange = onUnitsChange
         )

@@ -73,6 +73,7 @@ fun ListifyNewListScreen(
 
                 Column() {
                     FormInputField(
+                        placerHolder = "e.g., grocery list",
                         textState=formTextState,
                         onValueChange={ formTextState.value = it }
                     )
