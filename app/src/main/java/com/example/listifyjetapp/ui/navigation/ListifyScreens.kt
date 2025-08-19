@@ -9,6 +9,7 @@ object ListifyScreens {
     @Serializable data class ListItemScreen(
         val listId: Int, val listName: String
     )
+    @Serializable object AddNewItemScreen
     @Serializable object ProfileScreen
     @Serializable object LoginScreen
     @Serializable object SignupScreen
