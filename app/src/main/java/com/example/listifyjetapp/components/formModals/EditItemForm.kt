@@ -17,8 +17,8 @@ import com.example.listifyjetapp.widgets.inputFields.FormInputField
 
 @Composable
 fun EditItemForm(
-    description: MutableState<String>,
-    units: MutableState<String>,
+    description: String,
+    units: String,
     onDescriptionChange: (String) -> Unit,
     onUnitsChange: (String) -> Unit,
     onEditFormSubmit: () -> Unit,

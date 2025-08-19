@@ -14,6 +14,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -28,7 +29,7 @@ fun ListifyNewListScreen(
     onPopBackStack: () -> Unit,
 ) {
 
-    val formTextState = remember { mutableStateOf("") }
+    var formTextState by remember { mutableStateOf("") }
     val userId by viewModel.userId.collectAsState()
 
     LaunchedEffect(viewModel.navigateBack) {
@@ -41,7 +42,7 @@ fun ListifyNewListScreen(
     }
 
     fun onSaveClick() {
-        val listName = ListName(name = formTextState.value)
+        val listName = ListName(name = formTextState)
         viewModel.insertListByUser(userId, listName)
     }
 
@@ -75,7 +76,7 @@ fun ListifyNewListScreen(
                     FormInputField(
                         placerHolder = "e.g., grocery list",
                         textState=formTextState,
-                        onValueChange={ formTextState.value = it }
+                        onValueChange={ formTextState = it }
                     )
                 }
             }

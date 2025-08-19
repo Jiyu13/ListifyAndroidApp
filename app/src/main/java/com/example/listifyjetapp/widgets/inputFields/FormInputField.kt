@@ -18,7 +18,7 @@ import com.example.listifyjetapp.ui.theme.ListifyColor
 @Composable
 fun FormInputField(
     placerHolder: String,
-    textState: MutableState<String>,
+    textState: String,
     onValueChange: (String) -> Unit,
 ) {
 
@@ -39,7 +39,7 @@ fun FormInputField(
         singleLine = true,
         maxLines = 1,
 
-        value = textState.value,
+        value = textState,
         onValueChange = onValueChange,
         placeholder = { InputLabelText(text=placerHolder) },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),  // Sets the keyboard to normal text input.
