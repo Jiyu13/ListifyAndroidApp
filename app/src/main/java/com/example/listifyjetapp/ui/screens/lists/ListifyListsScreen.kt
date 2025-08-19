@@ -28,8 +28,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.listifyjetapp.R
 import com.example.listifyjetapp.widgets.texts.EmptyList
 import com.example.listifyjetapp.utils.filterLists
-import com.example.listifyjetapp.widgets.ListifySearchBar
-import com.example.listifyjetapp.widgets.ListifyTopBar
+import com.example.listifyjetapp.widgets.bars.ListifySearchBar
+import com.example.listifyjetapp.widgets.bars.ListifyTopBar
 
 @Composable
 fun ListifyListsScreen(

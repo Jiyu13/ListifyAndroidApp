@@ -11,9 +11,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.listifyjetapp.ui.theme.ListifyColor
-import com.example.listifyjetapp.widgets.CustomOutlinedButton
-import com.example.listifyjetapp.widgets.FilledButton
-import com.example.listifyjetapp.widgets.FormInputField
+import com.example.listifyjetapp.widgets.buttons.CustomOutlinedButton
+import com.example.listifyjetapp.widgets.buttons.FilledButton
+import com.example.listifyjetapp.widgets.inputFields.FormInputField
 
 @Composable
 fun EditItemForm(

@@ -22,7 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.listifyjetapp.ui.theme.ListifyColor
-import com.example.listifyjetapp.widgets.FilledButton
+import com.example.listifyjetapp.widgets.buttons.FilledButton
 
 @Composable
 fun AuthButtons(onGoToLoginScreen: () -> Unit) {

@@ -1,4 +1,4 @@
-package com.example.listifyjetapp.widgets
+package com.example.listifyjetapp.widgets.bars
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
@@ -16,7 +16,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.listifyjetapp.ui.theme.ListifyColor
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -1,10 +1,10 @@
-package com.example.listifyjetapp.widgets
+package com.example.listifyjetapp.widgets.buttons
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -16,38 +16,35 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun FilledButton(
+fun CustomOutlinedButton(
     modifier: Modifier,
     shape: Shape,
-    containerColor: Color,
-    contentColor: Color,
+    border: BorderStroke,
     text: String,
+    textColor: Color,
     buttonIcon: ImageVector? = null,
-    iconDescription: String?,
+    iconDescription: String? = null,
     onClick: () -> Unit,
 ) {
-    Button(
+    OutlinedButton(
         modifier = modifier,
         shape = shape,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = containerColor,
-            contentColor = contentColor
-        ),
+        border = border,
         onClick = { onClick() }
     ) {
         if (buttonIcon != null) {
             Icon(
                 imageVector = buttonIcon,
                 modifier = Modifier.size(20.dp),
-                contentDescription = iconDescription
+                contentDescription = iconDescription,
             )
         }
-
         Text(
             text = text,
-            fontWeight = FontWeight.ExtraBold,
+            color = textColor,
+            modifier = Modifier.padding(8.dp),
+            fontWeight = FontWeight.Bold,
             fontSize = 18.sp,
-            modifier = Modifier.padding(8.dp)
         )
     }
 }

@@ -1,4 +1,4 @@
-package com.example.listifyjetapp.widgets
+package com.example.listifyjetapp.widgets.inputFields
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape

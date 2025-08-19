@@ -18,11 +18,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.listifyjetapp.components.inputFields.PasswordTextField
-import com.example.listifyjetapp.widgets.ListifyTopBar
+import com.example.listifyjetapp.widgets.bars.ListifyTopBar
 import com.example.listifyjetapp.components.inputFields.ValidatingInputTextField
 import com.example.listifyjetapp.data.LoginState
 import com.example.listifyjetapp.ui.theme.ListifyColor
-import com.example.listifyjetapp.widgets.FilledButton
+import com.example.listifyjetapp.widgets.buttons.FilledButton
 
 @Composable
 fun ListifyLoginScreen(
