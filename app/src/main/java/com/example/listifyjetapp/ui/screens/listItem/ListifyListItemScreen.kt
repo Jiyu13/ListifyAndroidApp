@@ -38,6 +38,7 @@ fun ListifyListItemScreen(
     listName: String,
     viewModel: ListItemViewModel = hiltViewModel(),
     onPopBackStack: () -> Unit,
+    onAddClick: () -> Unit
 ) {
     LaunchedEffect(Unit) { viewModel.getAllItems(listId) }
 
@@ -49,9 +50,7 @@ fun ListifyListItemScreen(
             goBackIcon = Icons.AutoMirrored.Filled.ArrowBack,
             onGoBackButtonClicked = { onPopBackStack() },
             rightIcon = Icons.Default.Add,
-            onRightButtonClick = {
-                // TODO: add new item
-            }
+            onRightButtonClick = { onAddClick() }
         ) }
     ) { innerPadding ->
 
