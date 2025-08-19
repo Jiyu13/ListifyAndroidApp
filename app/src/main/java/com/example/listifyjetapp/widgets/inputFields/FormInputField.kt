@@ -1,6 +1,7 @@
 package com.example.listifyjetapp.widgets.inputFields
 
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
@@ -14,11 +15,13 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.listifyjetapp.widgets.texts.InputLabelText
 import com.example.listifyjetapp.ui.theme.ListifyColor
+import java.lang.Error
 
 @Composable
 fun FormInputField(
     placerHolder: String,
     textState: String,
+    isError: Boolean = false,
     onValueChange: (String) -> Unit,
 ) {
 
@@ -43,5 +46,11 @@ fun FormInputField(
         onValueChange = onValueChange,
         placeholder = { InputLabelText(text=placerHolder) },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),  // Sets the keyboard to normal text input.
+        isError = isError,
+        supportingText = {
+            if (isError) {
+                InputLabelText("Cannot be empty.")
+            }
+        }
     )
 }
