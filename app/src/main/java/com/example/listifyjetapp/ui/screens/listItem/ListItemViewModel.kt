@@ -11,7 +11,7 @@ import com.example.listifyjetapp.data.ListifyResult
 import com.example.listifyjetapp.data.ListifyStorageManager
 import com.example.listifyjetapp.model.CheckedItem
 import com.example.listifyjetapp.model.ListItem
-import com.example.listifyjetapp.model.UpdateItemInfo
+import com.example.listifyjetapp.model.BasicItemInfo
 import com.example.listifyjetapp.repository.ListItemRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -72,7 +72,7 @@ class ListItemViewModel @Inject constructor(
     fun patchListItemInfo(
         itemId: Int,
         listId: Int,
-        updatedInfo: UpdateItemInfo
+        updatedInfo: BasicItemInfo
     ) = viewModelScope.launch {
         val result = repository.patchListItem(listId = listId, itemId = itemId, updatedInfo = updatedInfo)
         when (result) {

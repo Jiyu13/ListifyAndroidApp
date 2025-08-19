@@ -38,7 +38,7 @@ data class CheckedItem(
     val checked: Boolean
 )
 
-data class UpdateItemInfo(
+data class BasicItemInfo(
     val description: String,
     val units: String
 )

@@ -41,7 +41,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.listifyjetapp.components.formModals.EditItemForm
 import com.example.listifyjetapp.model.CheckedItem
 import com.example.listifyjetapp.model.ListItem
-import com.example.listifyjetapp.model.UpdateItemInfo
+import com.example.listifyjetapp.model.BasicItemInfo
 import com.example.listifyjetapp.ui.theme.ListifyColor
 
 
@@ -76,7 +76,7 @@ fun ListItemRow (
     }
 
     fun onEditFormSubmit() {
-        val updatedInfo = UpdateItemInfo(
+        val updatedInfo = BasicItemInfo(
             description = descriptionState.value,
             units = unitsState.value
         )

@@ -3,7 +3,7 @@ package com.example.listifyjetapp.repository
 import com.example.listifyjetapp.data.ListifyResult
 import com.example.listifyjetapp.model.CheckedItem
 import com.example.listifyjetapp.model.ListItem
-import com.example.listifyjetapp.model.UpdateItemInfo
+import com.example.listifyjetapp.model.BasicItemInfo
 import com.example.listifyjetapp.network.ListifyAPI
 import javax.inject.Inject
 
@@ -35,7 +35,7 @@ class ListItemRepository @Inject constructor(
     suspend fun patchListItem(
         itemId: Int,
         listId: Int,
-        updatedInfo: UpdateItemInfo
+        updatedInfo: BasicItemInfo
     ): ListifyResult<ListItem> {
         try {
             val response = api.patchListItem(listId = listId, itemId = itemId, request = updatedInfo)
