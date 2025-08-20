@@ -1,5 +1,6 @@
 package com.example.listifyjetapp.widgets.inputFields
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.example.listifyjetapp.ui.theme.ButtonShape
 import com.example.listifyjetapp.widgets.texts.InputLabelText
 import com.example.listifyjetapp.ui.theme.ListifyColor
 import java.lang.Error
@@ -28,7 +30,7 @@ fun FormInputField(
     TextField(
         modifier = Modifier.fillMaxWidth(),
         textStyle = MaterialTheme.typography.bodyMedium,
-        shape = RoundedCornerShape(12.dp),
+        shape = ButtonShape,
         colors = TextFieldDefaults.colors(
             unfocusedIndicatorColor = Color.White,
             focusedIndicatorColor = Color.White,
