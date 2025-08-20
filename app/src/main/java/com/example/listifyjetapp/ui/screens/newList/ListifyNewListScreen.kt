@@ -18,6 +18,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.listifyjetapp.model.BasicItemInfo
 import com.example.listifyjetapp.model.ListName
 import com.example.listifyjetapp.ui.screens.lists.ListsViewModel
 import com.example.listifyjetapp.widgets.inputFields.FormInputField
@@ -31,6 +32,8 @@ fun ListifyNewListScreen(
 
     var formTextState by remember { mutableStateOf("") }
     val userId by viewModel.userId.collectAsState()
+    var isError by remember { mutableStateOf(false) }
+
 
     LaunchedEffect(viewModel.navigateBack) {
         viewModel.navigateBack.collect { navigateBack ->
@@ -42,8 +45,13 @@ fun ListifyNewListScreen(
     }
 
     fun onSaveClick() {
-        val listName = ListName(name = formTextState)
-        viewModel.insertListByUser(userId, listName)
+        isError = false
+        if (formTextState.isBlank()) {
+            isError = true
+        } else {
+            val listName = ListName(name = formTextState)
+            viewModel.insertListByUser(userId, listName)
+        }
     }
 
     Scaffold(
@@ -75,6 +83,7 @@ fun ListifyNewListScreen(
                 Column() {
                     FormInputField(
                         placerHolder = "e.g., grocery list",
+                        isError = isError,
                         textState=formTextState,
                         onValueChange={ formTextState = it }
                     )
