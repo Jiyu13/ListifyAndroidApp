@@ -6,6 +6,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -76,7 +77,8 @@ fun ListifySplashScreen(
             )
             Text(
                 text = stringResource(R.string.app_tagline),
-                color = ListifyColor.TextGrey
+                color = ListifyColor.TextGrey,
+                style = MaterialTheme.typography.titleMedium
             )
         }
 
