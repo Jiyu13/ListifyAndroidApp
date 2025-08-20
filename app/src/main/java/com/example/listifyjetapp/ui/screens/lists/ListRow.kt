@@ -45,6 +45,7 @@ fun ListRow(
     fun onEditFormDismiss() {
         isEditFormShown = !isEditFormShown
         listNameState = listName
+        isError = false
     }
 
     fun onEditFormSubmit() {

@@ -75,6 +75,7 @@ fun ListItemRow (
         isEditFormShown = !isEditFormShown
         descriptionState = item.description
         unitsState = item.units
+        isError = false
     }
 
     fun onEditFormSubmit() {
