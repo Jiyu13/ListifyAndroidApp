@@ -12,6 +12,7 @@ import com.example.listifyjetapp.data.ListifyStorageManager
 import com.example.listifyjetapp.model.ListModel
 import com.example.listifyjetapp.model.ListName
 import com.example.listifyjetapp.repository.ListsRepository
+import com.example.listifyjetapp.utils.filterLists
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -74,6 +75,35 @@ class ListsViewModel @Inject constructor(
         when (result) {
             is ListifyResult.Success -> {
                 _navigateBack.value = true
+            }
+            is ListifyResult.Failure -> Unit
+        }
+        isLoading = false
+    }
+
+    fun updateListName(listId: Int, newListName: ListName)
+    = viewModelScope.launch {
+        isLoading = true
+        val result = repository.updateListName(listId, newListName)
+        when (result) {
+            is ListifyResult.Success -> {
+                val updated = result.data
+                lists.replaceAll { if(it.id == updated.id) updated else it}
+                //_navigateBack.value = true
+            }
+            is ListifyResult.Failure -> Unit
+        }
+        isLoading = false
+    }
+
+    fun deleteListById(listId: Int)
+    = viewModelScope.launch {
+        isLoading = true
+        val userId = storageManager.getUser().first().userId
+        val result = repository.deleteListById(userId, listId)
+        when (result) {
+            is ListifyResult.Success -> {
+                lists.removeAll { it.id == listId }
             }
             is ListifyResult.Failure -> Unit
         }

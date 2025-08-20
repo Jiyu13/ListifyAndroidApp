@@ -57,7 +57,7 @@ interface ListifyAPI {
     suspend fun deleteListByUserId(
         @Path("user_id") userId: Int,
         @Path("list_id") listId: Int
-    ) {}
+    )
 
     @POST("ul/{list_id}/{share_with_id}")
     suspend fun shareAList(
@@ -83,8 +83,11 @@ interface ListifyAPI {
     suspend fun getListItems(@Path("list_id") listId: Int): List<ListItem>
 
     // update a list
-    @POST("lists/{list_id}")
-    suspend fun updateList(@Path("list_id") listId: Int) {}
+    @PATCH("lists/{list_id}")
+    suspend fun updateListName(
+        @Path("list_id") listId: Int,
+        @Body request: ListName
+    ): ListModel
 
     // Post new item
     @POST("lists/{list_id}/add-item")
