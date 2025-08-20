@@ -9,6 +9,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.listifyjetapp.ui.theme.ButtonBorderStroke
+import com.example.listifyjetapp.ui.theme.ButtonPaddings
+import com.example.listifyjetapp.ui.theme.ButtonShape
 import com.example.listifyjetapp.ui.theme.ListifyColor
 import com.example.listifyjetapp.widgets.buttons.CustomOutlinedButton
 import com.example.listifyjetapp.widgets.buttons.FilledButton
@@ -34,8 +37,8 @@ fun EditListForm(
         )
 
         FilledButton(
-            modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp),
-            shape = RoundedCornerShape(10.dp),
+            modifier = ButtonPaddings.fillMaxWidth(),
+            shape = ButtonShape,
             containerColor = ListifyColor.SplashYellow,
             contentColor = Color.White,
             text = "Update",
@@ -44,9 +47,9 @@ fun EditListForm(
             onClick = { onEditFormSubmit() }
         )
         CustomOutlinedButton(
-            modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp),
-            shape = RoundedCornerShape(10.dp),
-            border = BorderStroke(2.dp, color = Color.Red),
+            modifier = ButtonPaddings.fillMaxWidth(),
+            shape = ButtonShape,
+            border = BorderStroke(ButtonBorderStroke, color = Color.Red),
             text = "Delete",
             textColor = Color.Red,
             onClick = { onDeleteItem() }

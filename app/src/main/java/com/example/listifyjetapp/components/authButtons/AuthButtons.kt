@@ -15,6 +15,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.listifyjetapp.ui.theme.ButtonPaddings
+import com.example.listifyjetapp.ui.theme.ButtonShape
 import com.example.listifyjetapp.ui.theme.ListifyColor
 import com.example.listifyjetapp.widgets.buttons.CustomOutlinedButton
 import com.example.listifyjetapp.widgets.buttons.FilledButton
@@ -29,8 +31,8 @@ fun AuthButtons(onGoToLoginScreen: () -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         CustomOutlinedButton(
-            modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp),
-            shape = RoundedCornerShape(10.dp),
+            modifier = ButtonPaddings.fillMaxWidth(),
+            shape = ButtonShape,
             border = BorderStroke(2.dp, color = Color.White),
             text = "SIGN UP WITH EMAIL",
             textColor = ListifyColor.TextDark,
@@ -40,10 +42,8 @@ fun AuthButtons(onGoToLoginScreen: () -> Unit) {
         )
 
         FilledButton(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 6.dp),
-            shape = RoundedCornerShape(10.dp),
+            modifier = ButtonPaddings.fillMaxWidth(),
+            shape = ButtonShape,
             containerColor = Color.White,
             contentColor = ListifyColor.TextDark,
             text = "LOG IN",

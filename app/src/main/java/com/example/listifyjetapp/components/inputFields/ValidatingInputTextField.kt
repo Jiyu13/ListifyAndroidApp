@@ -19,8 +19,7 @@ fun ValidatingInputTextField(
     validatorHasError: Boolean
 ) {
     OutlinedTextField(
-        modifier = Modifier.fillMaxWidth()
-            .padding(start = 16.dp, end=16.dp, top = 16.dp),
+        modifier = Modifier.fillMaxWidth(),
         value = email,
         onValueChange = onValueChange,
         textStyle = MaterialTheme.typography.bodyMedium,

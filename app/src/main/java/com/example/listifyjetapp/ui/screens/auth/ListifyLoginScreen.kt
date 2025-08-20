@@ -21,6 +21,8 @@ import com.example.listifyjetapp.components.inputFields.PasswordTextField
 import com.example.listifyjetapp.widgets.bars.ListifyTopBar
 import com.example.listifyjetapp.components.inputFields.ValidatingInputTextField
 import com.example.listifyjetapp.data.LoginState
+import com.example.listifyjetapp.ui.theme.ButtonPaddings
+import com.example.listifyjetapp.ui.theme.ButtonShape
 import com.example.listifyjetapp.ui.theme.ListifyColor
 import com.example.listifyjetapp.widgets.buttons.FilledButton
 
@@ -55,7 +57,7 @@ fun ListifyLoginScreen(
         ) {
 
             Column(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth().padding(16.dp)
             ) {
                 ValidatingInputTextField(
                     email = loginViewModel.email,
@@ -68,8 +70,8 @@ fun ListifyLoginScreen(
                     onPasswordChange = loginViewModel::updatePassword
                 )
                 FilledButton(
-                    modifier=Modifier.fillMaxWidth().padding(16.dp),
-                    shape=RoundedCornerShape(3.dp),
+                    modifier = ButtonPaddings.fillMaxWidth(),
+                    shape = RoundedCornerShape(3.dp),
                     containerColor=ListifyColor.SplashYellow,
                     contentColor = ListifyColor.TextDark,
                     text="LOG IN ",

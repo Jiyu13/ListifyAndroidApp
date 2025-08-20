@@ -32,9 +32,7 @@ fun PasswordTextField(
     var isShowPassword by remember { mutableStateOf(false) }
 
     OutlinedTextField(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
+        modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
         value = password,
         onValueChange = onPasswordChange,
         textStyle = MaterialTheme.typography.bodyMedium,
