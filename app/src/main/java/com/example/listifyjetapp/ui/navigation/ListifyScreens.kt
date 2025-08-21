@@ -8,7 +8,7 @@ object ListifyScreens {
     @Serializable object SplashScreen
     @Serializable data class ListsScreen(val userId: Int)
     @Serializable object NewListScreen
-    @Serializable data class ListItemScreen(val listId: Int, val listName: String)
+    @Serializable data class ListItemScreen(val listId: Int, val listName: String, val sharedCode: String)
     @Serializable data class AddNewItemScreen(val listId: Int)
     @Serializable object ProfileScreen
     @Serializable object LoginScreen

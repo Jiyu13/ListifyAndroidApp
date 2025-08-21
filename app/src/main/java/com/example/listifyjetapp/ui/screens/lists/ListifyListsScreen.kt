@@ -34,7 +34,7 @@ import com.example.listifyjetapp.widgets.bars.ListifyTopBar
 @Composable
 fun ListifyListsScreen(
     viewModel: ListsViewModel = hiltViewModel(),
-    onListRowClick: (listId: Int, listName: String) -> Unit,
+    onListRowClick: (listId: Int, listName: String, sharedCode: String) -> Unit,
     onRightButtonClick: () -> Unit
 ) {
     LaunchedEffect(Unit) { viewModel.getUserLists() }
@@ -98,7 +98,7 @@ fun ListifyListsScreen(
                             val listName = list.name.replace(" ", "-")
                             ListRow(
                                 list = list,
-                                onListRowClick = { onListRowClick(list.id, listName) }
+                                onListRowClick = { onListRowClick(list.id, listName, list.sharedCode) }
                             )
                         }
                     }
