@@ -49,7 +49,7 @@ fun ListItemActionSheet(
                 text = "Shared to",
                 style = MaterialTheme.typography.bodyMedium
             )
-            HorizontalDivider()
+            HorizontalDivider(color = Color.LightGray)
 
             Row(
                 modifier = Modifier.fillMaxWidth().padding(36.dp),
