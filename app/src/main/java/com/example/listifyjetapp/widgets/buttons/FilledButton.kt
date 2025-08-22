@@ -23,7 +23,7 @@ fun FilledButton(
     contentColor: Color,
     text: String,
     buttonIcon: ImageVector? = null,
-    iconDescription: String?,
+    iconDescription: String? = "",
     onClick: () -> Unit,
 ) {
     Button(
