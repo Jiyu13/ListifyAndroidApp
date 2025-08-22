@@ -54,7 +54,7 @@ val Typography = Typography(
     ),
 
     labelLarge = TextStyle(
-        // searchBar text,
+        // searchBar text, divider w/ text
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
         fontSize = 18.sp,
