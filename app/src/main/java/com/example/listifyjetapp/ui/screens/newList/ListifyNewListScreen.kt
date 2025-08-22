@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -18,7 +17,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.listifyjetapp.model.BasicItemInfo
 import com.example.listifyjetapp.model.ListName
 import com.example.listifyjetapp.ui.screens.lists.ListsViewModel
 import com.example.listifyjetapp.widgets.inputFields.FormInputField
@@ -80,14 +78,12 @@ fun ListifyNewListScreen(
                 verticalArrangement = Arrangement.spacedBy(25.dp)
             ) {
 
-                Column() {
-                    FormInputField(
-                        placerHolder = "e.g., grocery list",
-                        isError = isError,
-                        textState=formTextState,
-                        onValueChange={ formTextState = it }
-                    )
-                }
+                FormInputField(
+                    placerHolder = "e.g., grocery list",
+                    isError = isError,
+                    textState=formTextState,
+                    onValueChange={ formTextState = it }
+                )
             }
         }
     }
