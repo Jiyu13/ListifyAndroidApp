@@ -17,8 +17,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -35,17 +37,22 @@ import com.example.listifyjetapp.widgets.bars.ListifyTopBar
 fun ListifyListsScreen(
     viewModel: ListsViewModel = hiltViewModel(),
     onListRowClick: (listId: Int, listName: String, sharedCode: String) -> Unit,
-    onRightButtonClick: () -> Unit
+    onAddNewListClick: () -> Unit
 ) {
     LaunchedEffect(Unit) { viewModel.getUserLists() }
+
+    var expanded by remember { mutableStateOf(false) }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = { ListifyTopBar(
             title = "Lists",
             isListsScreen = true,
+            isDropdownExpanded = expanded,
+            onDropdownDismiss = { expanded = false },
             rightIcon = Icons.Default.Add,
-            onRightButtonClick = { onRightButtonClick() }
+            onRightButtonClick = { expanded = !expanded },
+            onAddNewListClick = { onAddNewListClick() }
         ) }
     ) { innerPadding ->
 

@@ -45,7 +45,7 @@ fun ListifyNavigation() {
                 onListRowClick = {listId, listName, sharedCode ->
                     navController.navigate(ListifyScreens.ListItemScreen(listId, listName, sharedCode))
                 },
-                onRightButtonClick = {navController.navigate(ListifyScreens.NewListScreen)}
+                onAddNewListClick = {navController.navigate(ListifyScreens.NewListScreen)}
             )
         }
 
