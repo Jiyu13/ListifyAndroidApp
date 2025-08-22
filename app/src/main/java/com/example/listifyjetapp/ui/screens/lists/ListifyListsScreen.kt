@@ -48,11 +48,12 @@ fun ListifyListsScreen(
         topBar = { ListifyTopBar(
             title = "Lists",
             isListsScreen = true,
-            isDropdownExpanded = expanded,
-            onDropdownDismiss = { expanded = false },
             rightIcon = Icons.Default.Add,
-            onRightButtonClick = { expanded = !expanded },
-            onAddNewListClick = { onAddNewListClick() }
+            onRightButtonClick = { onAddNewListClick() }
+            //isDropdownExpanded = expanded,
+            //onDropdownDismiss = { expanded = false },
+            //onRightButtonClick = { expanded = !expanded },
+            //onAddNewListClick = { onAddNewListClick() }
         ) }
     ) { innerPadding ->
 
