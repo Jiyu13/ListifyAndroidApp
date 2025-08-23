@@ -7,6 +7,7 @@ import com.example.listifyjetapp.model.ListName
 import com.example.listifyjetapp.model.LoginInfo
 import com.example.listifyjetapp.model.LoginSuccess
 import com.example.listifyjetapp.model.BasicItemInfo
+import com.example.listifyjetapp.model.ShareWithEmail
 import com.example.listifyjetapp.model.User
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -59,12 +60,11 @@ interface ListifyAPI {
         @Path("list_id") listId: Int
     )
 
-    @POST("ul/{list_id}/{share_with_id}")
+    @POST("ul/{list_id}")
     suspend fun shareAList(
-        @Path("list_ud") listId: Int,
-        @Path("share_with_id") shareWithId: Int ){
-
-    }
+        @Path("list_id") listId: Int,
+        @Body request: ShareWithEmail
+    ) : ListModel
 
     // =============================================== Lists =======================================
     // get all lists

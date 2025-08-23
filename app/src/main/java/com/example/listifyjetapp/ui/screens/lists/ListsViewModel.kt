@@ -1,9 +1,12 @@
 package com.example.listifyjetapp.ui.screens.lists
 
 import android.util.Log
+import android.util.Patterns
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,6 +14,7 @@ import com.example.listifyjetapp.data.ListifyResult
 import com.example.listifyjetapp.data.ListifyStorageManager
 import com.example.listifyjetapp.model.ListModel
 import com.example.listifyjetapp.model.ListName
+import com.example.listifyjetapp.model.ShareWithEmail
 import com.example.listifyjetapp.repository.ListsRepository
 import com.example.listifyjetapp.utils.filterLists
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -31,6 +35,18 @@ class ListsViewModel @Inject constructor(
     val lists = mutableStateListOf<ListModel>()
     var isLoading by mutableStateOf(false)
     var errorMessage by mutableStateOf<String?>(null)
+
+//    var email by mutableStateOf("12345@gmail.com")
+//    var isEmailBlank by mutableStateOf(false)
+//    val emailHasError by derivedStateOf {
+//        if (email.isNotEmpty()) {
+//            // Email is considered erroneous until it completely matches EMAIL_ADDRESS.
+//            !Patterns.EMAIL_ADDRESS.matcher(email).matches()
+//        } else {
+//            false
+//        }
+//    }
+
 
     private val _navigateBack = MutableStateFlow(false)
     val navigateBack = _navigateBack.asStateFlow()
@@ -106,6 +122,24 @@ class ListsViewModel @Inject constructor(
                 lists.removeAll { it.id == listId }
             }
             is ListifyResult.Failure -> Unit
+        }
+        isLoading = false
+    }
+
+    fun shareListById(listId: Int, emailData: ShareWithEmail) = viewModelScope.launch {
+        isLoading = true
+        errorMessage = null
+        val result = repository.shareListById(listId, emailData)
+        when (result) {
+            is ListifyResult.Success -> {
+                // update list.share to be true, return updated list
+                val updated = result.data
+                lists.replaceAll { if(it.id == updated.id) updated else it}
+            }
+            is ListifyResult.Failure -> {
+                errorMessage = result.errorMessage
+                Log.d("result fails", result.errorMessage.toString())
+            }
         }
         isLoading = false
     }
