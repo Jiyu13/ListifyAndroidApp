@@ -10,12 +10,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,39 +24,28 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.listifyjetapp.R
-import com.example.listifyjetapp.components.copyToClip.copyToClipboard
 import com.example.listifyjetapp.widgets.texts.EmptyList
 import com.example.listifyjetapp.utils.filterListItems
 import com.example.listifyjetapp.widgets.bars.ListifySearchBar
 import com.example.listifyjetapp.widgets.bars.ListifyTopBar
-import com.example.listifyjetapp.widgets.bottomMenus.ListItemActionSheet
+import com.example.listifyjetapp.widgets.bottomMenus.ShareToForm
 import com.example.listifyjetapp.widgets.buttons.FloatingButton
 
 @Composable
 fun ListifyListItemScreen(
     listId: Int,
-    sharedCode: String,
     listName: String,
     viewModel: ListItemViewModel = hiltViewModel(),
     onPopBackStack: () -> Unit,
     onAddClick: () -> Unit
 ) {
     LaunchedEffect(Unit) { viewModel.getAllItems(listId) }
-
-    val context = LocalContext.current
     var isOpenShare by remember { mutableStateOf(false) }
-    var isCopied by remember { mutableStateOf(false) }
-
-    fun onShareIconClick() {
-        isOpenShare = true
-    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -68,7 +55,7 @@ fun ListifyListItemScreen(
             goBackIcon = Icons.AutoMirrored.Filled.ArrowBack,
             onGoBackButtonClicked = { onPopBackStack() },
             shareIcon =  Icons.Default.Share,
-            onShareIconClick = { onShareIconClick() }
+            onShareIconClick = { isOpenShare = true }
         ) },
         floatingActionButton = {FloatingButton(onClick = {onAddClick()})}
     ) { innerPadding ->
@@ -124,18 +111,9 @@ fun ListifyListItemScreen(
             }
 
             if (isOpenShare) {
-                ListItemActionSheet(
-                    sharedCode=sharedCode,
-                    isCopied = isCopied,
-                    onCopyButtonClick = {
-                        isCopied = true
-                        copyToClipboard(context, sharedCode)
-                    },
-                    onDismissSheet = {
-                        isOpenShare = false
-                        isCopied = false
-                    }
-
+                ShareToForm(
+                    listId = listId,
+                    closeShareForm = { isOpenShare = false },
                 )
             }
         }
