@@ -1,4 +1,4 @@
-package com.example.listifyjetapp.ui.screens.lists
+package com.example.listifyjetapp.ui.screens.listItem
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -9,7 +9,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -29,34 +30,35 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.listifyjetapp.R
 import com.example.listifyjetapp.widgets.texts.EmptyList
-import com.example.listifyjetapp.utils.filterLists
+import com.example.listifyjetapp.utils.filterListItems
 import com.example.listifyjetapp.widgets.bars.ListifySearchBar
 import com.example.listifyjetapp.widgets.bars.ListifyTopBar
+import com.example.listifyjetapp.widgets.bottomMenus.ShareToForm
+import com.example.listifyjetapp.widgets.buttons.FloatingButton
 
 @Composable
-fun ListifyListsScreen(
-    viewModel: ListsViewModel = hiltViewModel(),
-    onListRowClick: (listId: Int, listName: String) -> Unit,
-    onAddNewListClick: () -> Unit
+fun ListifyListItemScreen(
+    listId: Int,
+    listName: String,
+    viewModel: ListItemViewModel = hiltViewModel(),
+    onPopBackStack: () -> Unit,
+    onAddClick: () -> Unit
 ) {
-    LaunchedEffect(Unit) { viewModel.getUserLists() }
-
-    var expanded by remember { mutableStateOf(false) }
+    LaunchedEffect(Unit) { viewModel.getAllItems(listId) }
+    var isOpenShare by remember { mutableStateOf(false) }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = { ListifyTopBar(
-            title = "Lists",
-            isListsScreen = true,
-            rightIcon = Icons.Default.Add,
-            onRightButtonClick = { onAddNewListClick() }
-            //isDropdownExpanded = expanded,
-            //onDropdownDismiss = { expanded = false },
-            //onRightButtonClick = { expanded = !expanded },
-            //onAddNewListClick = { onAddNewListClick() }
-        ) }
+            title = listName.replace("-", " "),
+            isListsScreen = false,
+            goBackIcon = Icons.AutoMirrored.Filled.ArrowBack,
+            onGoBackButtonClicked = { onPopBackStack() },
+            shareIcon =  Icons.Default.Share,
+            onShareIconClick = { isOpenShare = true }
+        ) },
+        floatingActionButton = {FloatingButton(onClick = {onAddClick()})}
     ) { innerPadding ->
-
         Surface(
             modifier = Modifier.fillMaxSize().padding(innerPadding)
         ) {
@@ -73,7 +75,6 @@ fun ListifyListsScreen(
                     searchTextValue = searchTextState,
                     onValueChange = {searchTextState.value = it},
                     keyboardAction = KeyboardActions{
-                        // Trigger search logic or hide keyboard
                         searchTextState.value.trim()            // perform the search
                         keyboardController?.hide()              // hide keyboard
                     }
@@ -93,26 +94,28 @@ fun ListifyListsScreen(
                     ) {
                         CircularProgressIndicator()
                     }
-                } else if (viewModel.lists.isEmpty()) {
-                    EmptyList(stringResource(R.string.no_lists))
+                } else if (viewModel.listItems.isEmpty()) {
+                    EmptyList(stringResource(R.string.no_items))
                 } else {
                     LazyColumn(modifier = Modifier.padding(
                         vertical = 16.dp,
-                        horizontal = 8.dp
+                        horizontal = 4.dp
                     )){
-                        // Filter lists by search input
-                        val results = filterLists(searchTextState.value, viewModel.lists)
-                        items(results) {list ->
-                            val listName = list.name.replace(" ", "-")
-                            ListRow(
-                                list = list,
-                                onListRowClick = { onListRowClick(list.id, listName) }
-                            )
+                        val results = filterListItems(searchTextState.value, viewModel.listItems)
+                        items(results) {item ->
+                            // TODO: ItemRow
+                            ListItemRow(item)
                         }
                     }
                 }
             }
 
+            if (isOpenShare) {
+                ShareToForm(
+                    listId = listId,
+                    closeShareForm = { isOpenShare = false },
+                )
+            }
         }
     }
 }

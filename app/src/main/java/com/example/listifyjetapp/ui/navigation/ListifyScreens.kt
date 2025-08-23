@@ -1,12 +1,16 @@
 package com.example.listifyjetapp.ui.navigation
 
-enum class ListifyScreens(val route: String) {
-    SplashScreen("splash"),
-    ListsScreen("lists"),
-    DetailScreen("detail"),
-    ProfileScreen("profile"),
-    LoginScreen("login"),
-    SignupScreen("signup")
-}
+import com.example.listifyjetapp.model.BasicItemInfo
+import kotlinx.serialization.Serializable
 
-// navController.navigate(ListifyScreens.LoginScreen.route)
+
+object ListifyScreens {
+    @Serializable object SplashScreen
+    @Serializable data class ListsScreen(val userId: Int)
+    @Serializable object NewListScreen
+    @Serializable data class ListItemScreen(val listId: Int, val listName: String)
+    @Serializable data class AddNewItemScreen(val listId: Int)
+    @Serializable object ProfileScreen
+    @Serializable object LoginScreen
+    @Serializable object SignupScreen
+}
