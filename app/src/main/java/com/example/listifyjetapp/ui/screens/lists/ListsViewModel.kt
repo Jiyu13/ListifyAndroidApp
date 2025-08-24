@@ -35,18 +35,7 @@ class ListsViewModel @Inject constructor(
     val lists = mutableStateListOf<ListModel>()
     var isLoading by mutableStateOf(false)
     var errorMessage by mutableStateOf<String?>(null)
-
-//    var email by mutableStateOf("12345@gmail.com")
-//    var isEmailBlank by mutableStateOf(false)
-//    val emailHasError by derivedStateOf {
-//        if (email.isNotEmpty()) {
-//            // Email is considered erroneous until it completely matches EMAIL_ADDRESS.
-//            !Patterns.EMAIL_ADDRESS.matcher(email).matches()
-//        } else {
-//            false
-//        }
-//    }
-
+    var isShareSucceed by mutableStateOf(false)
 
     private val _navigateBack = MutableStateFlow(false)
     val navigateBack = _navigateBack.asStateFlow()
@@ -135,10 +124,10 @@ class ListsViewModel @Inject constructor(
                 // update list.share to be true, return updated list
                 val updated = result.data
                 lists.replaceAll { if(it.id == updated.id) updated else it}
+                isShareSucceed = true
             }
             is ListifyResult.Failure -> {
                 errorMessage = result.errorMessage
-                Log.d("result fails", result.errorMessage.toString())
             }
         }
         isLoading = false

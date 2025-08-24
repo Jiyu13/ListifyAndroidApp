@@ -1,6 +1,8 @@
 package com.example.listifyjetapp.widgets.bottomMenus
 
 import android.util.Patterns
+import android.view.Gravity
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,6 +15,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -21,6 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -41,8 +45,18 @@ fun ShareToForm(
     listId: Int,
     closeShareForm: () -> Unit,
 ) {
+    val content = LocalContext.current
+    LaunchedEffect(viewModel.isShareSucceed) {
+        if (viewModel.isShareSucceed) {
+            Toast.makeText(content, "Share successfully", Toast.LENGTH_SHORT)
+                .apply { setGravity(Gravity.CENTER, 0, 0)}
+                .show()
+            closeShareForm()
+            viewModel.isShareSucceed = false // Reset
+        }
+    }
 
-    var email by remember { mutableStateOf("12345@gmail.com") }
+    var email by remember { mutableStateOf("pokemaster103@gmail.com") }
     var isEmailBlank by remember { mutableStateOf(false) }
     val emailHasError by remember { derivedStateOf{
         if (email.isNotEmpty()) {
@@ -60,6 +74,7 @@ fun ShareToForm(
             viewModel.shareListById(listId, ShareWithEmail(email))
         }
     }
+
 
     ModalBottomSheet(
         modifier = Modifier.fillMaxWidth(),
