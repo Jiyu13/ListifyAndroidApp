@@ -21,6 +21,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,6 +36,8 @@ import com.example.listifyjetapp.widgets.bars.ListifySearchBar
 import com.example.listifyjetapp.widgets.bars.ListifyTopBar
 import com.example.listifyjetapp.widgets.bottomMenus.ShareToForm
 import com.example.listifyjetapp.widgets.buttons.FloatingButton
+import com.example.listifyjetapp.widgets.refresh.PullToRefresh
+import kotlinx.coroutines.launch
 
 @Composable
 fun ListifyListItemScreen(
@@ -46,6 +49,16 @@ fun ListifyListItemScreen(
 ) {
     LaunchedEffect(Unit) { viewModel.getAllItems(listId) }
     var isOpenShare by remember { mutableStateOf(false) }
+
+    var isRefreshing by remember { mutableStateOf(false) }
+    val coroutineScope = rememberCoroutineScope()
+    fun onRefresh() {
+        isRefreshing = true
+        coroutineScope.launch {
+            viewModel.getAllItems(listId)
+            isRefreshing = false
+        }
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -97,16 +110,20 @@ fun ListifyListItemScreen(
                 } else if (viewModel.listItems.isEmpty()) {
                     EmptyList(stringResource(R.string.no_items))
                 } else {
-                    LazyColumn(modifier = Modifier.padding(
-                        vertical = 16.dp,
-                        horizontal = 4.dp
-                    )){
-                        val results = filterListItems(searchTextState.value, viewModel.listItems)
-                        items(results) {item ->
-                            // TODO: ItemRow
-                            ListItemRow(item)
+                    val results =  filterListItems(searchTextState.value, viewModel.listItems)
+                    PullToRefresh(
+                        items = results,
+                        isRefreshing = isRefreshing,
+                        onRefresh = { onRefresh() },
+                        itemContent = {
+                            LazyColumn(modifier = Modifier.padding(vertical = 16.dp, horizontal = 8.dp)) {
+                                items(results) {item ->
+                                    // TODO: ItemRow
+                                    ListItemRow(item)
+                                }
+                            }
                         }
-                    }
+                    )
                 }
             }
 

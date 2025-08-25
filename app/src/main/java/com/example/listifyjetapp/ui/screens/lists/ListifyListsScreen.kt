@@ -20,6 +20,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,6 +33,9 @@ import com.example.listifyjetapp.widgets.texts.EmptyList
 import com.example.listifyjetapp.utils.filterLists
 import com.example.listifyjetapp.widgets.bars.ListifySearchBar
 import com.example.listifyjetapp.widgets.bars.ListifyTopBar
+import com.example.listifyjetapp.widgets.refresh.PullToRefresh
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun ListifyListsScreen(
@@ -41,7 +45,17 @@ fun ListifyListsScreen(
 ) {
     LaunchedEffect(Unit) { viewModel.getUserLists() }
 
-    var expanded by remember { mutableStateOf(false) }
+    //var expanded by remember { mutableStateOf(false) }
+    var isRefreshing by remember { mutableStateOf(false) }
+    val coroutineScope = rememberCoroutineScope()
+    fun onRefresh() {
+        isRefreshing = true
+        coroutineScope.launch {
+            delay(1000)
+            viewModel.getUserLists()
+            isRefreshing = false
+        }
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -96,20 +110,24 @@ fun ListifyListsScreen(
                 } else if (viewModel.lists.isEmpty()) {
                     EmptyList(stringResource(R.string.no_lists))
                 } else {
-                    LazyColumn(modifier = Modifier.padding(
-                        vertical = 16.dp,
-                        horizontal = 8.dp
-                    )){
-                        // Filter lists by search input
-                        val results = filterLists(searchTextState.value, viewModel.lists)
-                        items(results) {list ->
-                            val listName = list.name.replace(" ", "-")
-                            ListRow(
-                                list = list,
-                                onListRowClick = { onListRowClick(list.id, listName) }
-                            )
+                    // Filter lists by search input
+                    val results = filterLists(searchTextState.value, viewModel.lists)
+                    PullToRefresh(
+                        items = results,
+                        isRefreshing = isRefreshing,
+                        onRefresh = { onRefresh() },
+                        itemContent = {
+                            LazyColumn(modifier = Modifier.padding(vertical = 16.dp, horizontal = 8.dp)) {
+                                items(results) { list ->
+                                    val listName = list.name.replace(" ", "-")
+                                    ListRow(
+                                        list = list,
+                                        onListRowClick = { onListRowClick(list.id, listName) }
+                                    )
+                                }
+                            }
                         }
-                    }
+                    )
                 }
             }
 
