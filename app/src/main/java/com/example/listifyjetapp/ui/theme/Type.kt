@@ -18,7 +18,7 @@ val Typography = Typography(
     ),
 
     bodyMedium = TextStyle(
-        //
+        // input fields
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
         fontSize = 20.sp,
@@ -27,7 +27,7 @@ val Typography = Typography(
     ),
 
     bodySmall= TextStyle(
-        //
+        // login error
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp,
