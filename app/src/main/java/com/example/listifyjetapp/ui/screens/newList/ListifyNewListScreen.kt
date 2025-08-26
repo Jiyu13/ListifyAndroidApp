@@ -75,7 +75,6 @@ fun ListifyNewListScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(25.dp)
             ) {
 
                 FormInputField(
