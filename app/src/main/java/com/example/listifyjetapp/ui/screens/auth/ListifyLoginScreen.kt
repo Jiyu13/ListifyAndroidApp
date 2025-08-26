@@ -1,5 +1,7 @@
 package com.example.listifyjetapp.ui.screens.auth
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -7,12 +9,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -22,7 +25,6 @@ import com.example.listifyjetapp.widgets.bars.ListifyTopBar
 import com.example.listifyjetapp.components.inputFields.ValidatingInputTextField
 import com.example.listifyjetapp.data.LoginState
 import com.example.listifyjetapp.ui.theme.ButtonPaddings
-import com.example.listifyjetapp.ui.theme.ButtonShape
 import com.example.listifyjetapp.ui.theme.ListifyColor
 import com.example.listifyjetapp.widgets.buttons.FilledButton
 
@@ -55,46 +57,53 @@ fun ListifyLoginScreen(
                 .fillMaxSize()
                 .padding(innerPadding),
         ) {
+            Column(modifier = Modifier.fillMaxWidth()) {
+                Column(
+                    modifier = Modifier.fillMaxWidth().padding(top = 16.dp, end = 16.dp, bottom = 0.dp, start = 16.dp)
+                ) {
+                    ValidatingInputTextField(
+                        email = loginViewModel.email,
+                        onValueChange = { input -> loginViewModel.updateEmail(input) },
+                        validatorHasError = loginViewModel.emailHasErrors
+                    )
 
-            Column(
-                modifier = Modifier.fillMaxWidth().padding(16.dp)
-            ) {
-                ValidatingInputTextField(
-                    email = loginViewModel.email,
-                    onValueChange = { input -> loginViewModel.updateEmail(input) },
-                    validatorHasError = loginViewModel.emailHasErrors
-                )
-
-                PasswordTextField(
-                    password = loginViewModel.password,
-                    onPasswordChange = loginViewModel::updatePassword
-                )
-                FilledButton(
-                    modifier = ButtonPaddings.fillMaxWidth(),
-                    shape = RoundedCornerShape(3.dp),
-                    containerColor=ListifyColor.SplashYellow,
-                    contentColor = ListifyColor.TextDark,
-                    text="LOG IN ",
-                    buttonIcon=Icons.AutoMirrored.Filled.ExitToApp,
-                    iconDescription="Log In",
-                    onClick={ onLoginClick() }
-                )
+                    PasswordTextField(
+                        password = loginViewModel.password,
+                        onPasswordChange = loginViewModel::updatePassword,
+                        loginState = loginState
+                    )
+                }
 
                 // handle login state
-                when (loginState) {
-                    is LoginState.Loading -> { CircularProgressIndicator() }
-                    is LoginState.Success -> {
-                        LaunchedEffect(Unit) { onNavigateToListsScreen(loginState.data.user.id) }
-                    }
-                    is LoginState.Error -> {
+                if (loginState is LoginState.Success){
+                    LaunchedEffect(Unit) { onNavigateToListsScreen(loginState.data.user.id) }
+                }
+                if (loginState is LoginState.Error) {
+                    Box(
+                        modifier = Modifier.fillMaxWidth().background(ListifyColor.errorRed),
+                        contentAlignment = Alignment.Center
+                    ) {
                         Text(
                             text = loginState.message,
-                            color = Color.Red,
-                            modifier = Modifier.padding(16.dp)
+                            style = MaterialTheme.typography.bodySmall,
+                            color = Color.White,
                         )
                     }
-                    LoginState.Idle -> {} // Explicit idle state
                 }
+
+                Column(modifier = Modifier.fillMaxWidth().padding(vertical = 0.dp, horizontal = 16.dp)) {
+                    FilledButton(
+                        modifier = ButtonPaddings.fillMaxWidth(),
+                        shape = RoundedCornerShape(3.dp),
+                        containerColor=ListifyColor.SplashYellow,
+                        contentColor = ListifyColor.TextDark,
+                        text="LOG IN ",
+                        buttonIcon=Icons.AutoMirrored.Filled.ExitToApp,
+                        iconDescription="Log In",
+                        onClick={ onLoginClick() }
+                    )
+                }
+
             }
         }
 
