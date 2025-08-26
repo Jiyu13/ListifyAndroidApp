@@ -13,6 +13,7 @@ import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Headers
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -25,6 +26,7 @@ interface ListifyAPI {
     suspend fun login(@Body request: LoginInfo): LoginSuccess
 
     @POST("refresh")
+    @Headers("Content-Type: application/json")
     suspend fun refresh(@Header("x-refresh-token") refreshToken: String): LoginSuccess
 
     // =============================================== Users =======================================

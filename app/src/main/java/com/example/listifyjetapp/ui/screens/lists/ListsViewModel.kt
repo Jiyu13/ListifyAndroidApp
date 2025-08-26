@@ -1,12 +1,9 @@
 package com.example.listifyjetapp.ui.screens.lists
 
 import android.util.Log
-import android.util.Patterns
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,7 +13,6 @@ import com.example.listifyjetapp.model.ListModel
 import com.example.listifyjetapp.model.ListName
 import com.example.listifyjetapp.model.ShareWithEmail
 import com.example.listifyjetapp.repository.ListsRepository
-import com.example.listifyjetapp.utils.filterLists
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -32,6 +28,10 @@ class ListsViewModel @Inject constructor(
     private val repository: ListsRepository,
     private val storageManager: ListifyStorageManager
 ): ViewModel() {
+    // handle auth errors
+    private val _authError = MutableStateFlow(false)
+    val authError = _authError.asStateFlow()
+
     val lists = mutableStateListOf<ListModel>()
     var isLoading by mutableStateOf(false)
     var errorMessage by mutableStateOf<String?>(null)
@@ -60,10 +60,15 @@ class ListsViewModel @Inject constructor(
                     is ListifyResult.Success -> {
                         lists.clear()
                         lists.addAll(result.data)
+                        _authError.value = false
                     }
 
                     is ListifyResult.Failure -> {
                         errorMessage = result.errorMessage
+                        if (result.errorMessage.contains("401") ||
+                            result.errorMessage.contains("token", ignoreCase = true)) {
+                            _authError.value = true
+                        }
                         Log.d("Fail to fetch lists by user id", result.toString())
                     }
                 }

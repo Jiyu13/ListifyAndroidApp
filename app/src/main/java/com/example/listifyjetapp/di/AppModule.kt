@@ -44,8 +44,19 @@ class AppModule {
         }
 
         val authenticator = Authenticator { route, response ->
-            // prevent infinite loops
-            if (response.request.header("Authenticator") == null) return@Authenticator null
+            // Prevent infinite loops by checking prior responses
+            var prior = response.priorResponse
+            var attemptCount = 0
+            while (prior != null) {
+                if (prior.code == 401) {
+                    attemptCount++
+                }
+                prior = prior.priorResponse
+            }
+
+            if (attemptCount >= 1) {
+                return@Authenticator null // Already tried once
+            }
             // Do not try to refresh while calling refresh
             if (response.request.url.encodedPath.endsWith("/refresh")) return@Authenticator null
 
@@ -54,19 +65,22 @@ class AppModule {
                 if (refreshToken.isBlank()) return@Authenticator null
 
                 //call refresh synchronously
-                val login = runBlocking {  apiLazy.get().refresh(refreshToken) }
+                val refreshResponse = runBlocking { apiLazy.get().refresh(refreshToken) }
 
                 // save new token
-                runBlocking { storageManager.updateTokens(login.accessToken, login.refreshToken) }
+                runBlocking {
+                    storageManager.updateTokens(refreshResponse.accessToken, refreshResponse.refreshToken)
+                }
 
                 // rebuild the original request with new access token
-                val newAccessToken = login.accessToken
+                val newAccessToken = refreshResponse.accessToken
                 return@Authenticator response.request.newBuilder()
                     .header("Authorization", "Bearer $newAccessToken")
                     .build()
 
             } catch (_: Exception) {
                 // refresh failed -> no retry
+                runBlocking { storageManager.clearDataStore() }
                 null
             }
         }
