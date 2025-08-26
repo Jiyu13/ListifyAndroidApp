@@ -2,11 +2,13 @@ package com.example.listifyjetapp.components.inputFields
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -22,11 +24,13 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import com.example.listifyjetapp.data.LoginState
 import com.example.listifyjetapp.widgets.texts.InputLabelText
 
 @Composable
 fun PasswordTextField(
     password: String,
+    loginState: LoginState,
     onPasswordChange: (String) -> Unit
 ) {
     var isShowPassword by remember { mutableStateOf(false) }
@@ -50,7 +54,13 @@ fun PasswordTextField(
             //TODO: Login request - submit login form
         }),
         trailingIcon = {
-            if (isShowPassword) {
+            if (loginState is LoginState.Loading) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(20.dp),
+                    strokeWidth = 2.dp,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            } else if (isShowPassword) {
                 IconButton(onClick = { isShowPassword = false }) {
                     Icon(
                         imageVector = Icons.Filled.Visibility,
