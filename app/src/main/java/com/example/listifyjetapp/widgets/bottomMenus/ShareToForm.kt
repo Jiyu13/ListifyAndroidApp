@@ -56,7 +56,7 @@ fun ShareToForm(
         }
     }
 
-    var email by remember { mutableStateOf("pokemaster103@gmail.com") }
+    var email by remember { mutableStateOf("") }
     var isEmailBlank by remember { mutableStateOf(false) }
     val emailHasError by remember { derivedStateOf{
         if (email.isNotEmpty()) {
@@ -115,9 +115,9 @@ fun ShareToForm(
                     isError = isEmailBlank || emailHasError || viewModel.errorMessage != null ,
                     supportingText = {
                         when {
-                            emailHasError -> InputLabelText(text = "Incorrect email format.")
-                            isEmailBlank -> InputLabelText(text = "Email cannot be empty.",)
-                            viewModel.errorMessage != null -> InputLabelText(text = viewModel.errorMessage!!,)
+                            emailHasError -> InputLabelText(text = "Incorrect email format.", isError = emailHasError)
+                            isEmailBlank -> InputLabelText(text = "Email cannot be empty.", isError = isEmailBlank)
+                            viewModel.errorMessage != null -> InputLabelText(text = viewModel.errorMessage!!, isError = viewModel.errorMessage != null)
                             else -> null
                         }
                     },
