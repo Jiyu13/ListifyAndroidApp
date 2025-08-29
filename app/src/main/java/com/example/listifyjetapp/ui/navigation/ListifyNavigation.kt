@@ -1,7 +1,23 @@
 package com.example.listifyjetapp.ui.navigation
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.NavigationBarItem
@@ -10,7 +26,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -24,6 +47,7 @@ import com.example.listifyjetapp.ui.screens.listItem.ListifyNewItemScreen
 import com.example.listifyjetapp.ui.screens.lists.ListifyListsScreen
 import com.example.listifyjetapp.ui.screens.newList.ListifyNewListScreen
 import com.example.listifyjetapp.ui.screens.splash.ListifySplashScreen
+import com.example.listifyjetapp.ui.theme.ListifyColor
 
 
 @Composable
@@ -51,7 +75,10 @@ fun ListifyNavigation() {
     Scaffold(
         bottomBar = {
             if (!hideBottomBar) {
-                NavigationBar(windowInsets = NavigationBarDefaults.windowInsets) {
+                NavigationBar(
+                    modifier = Modifier.height(72.dp),
+                    windowInsets = NavigationBarDefaults.windowInsets
+                ) {
                     NavBarItems.entries.forEach { barItem ->
                         // Selected if we are on the tab's string route or its typed screen
                         val selected = currentDestination?.hierarchy?.any { dest ->
@@ -65,17 +92,35 @@ fun ListifyNavigation() {
 
                         NavigationBarItem(
                             selected = selected,
+                            icon = {
+                                Column(horizontalAlignment = Alignment.CenterHorizontally,) {
+                                    Box {
+                                        Icon(
+                                            imageVector = if (selected) barItem.selectedIcon else barItem.icon,
+                                            contentDescription = barItem.title,
+                                            modifier = Modifier.size(28.dp),
+                                            tint = if (selected) ListifyColor.TextDark else ListifyColor.TextDark.copy(.5f)
+                                        )
+                                    }
+                                    Spacer(Modifier.height(0.dp))
+                                    Text(
+                                        text = barItem.title,
+                                        style = MaterialTheme.typography.labelMedium,
+                                        color = if (selected) ListifyColor.TextDark else ListifyColor.TextDark.copy(.5f),
+                                        modifier = Modifier.offset(y = (-3).dp),
+                                        maxLines = 1
+                                    )
+                                }
+                            },
+                            colors = androidx.compose.material3.NavigationBarItemDefaults.colors(
+                                indicatorColor = Color.Transparent // <-- no pill
+                            ),
                             onClick = {
-                                // Navigate to the tab's string route (no findStartDestination / no args)
                                 navController.navigate(barItem.route) {
                                     launchSingleTop = true
                                     restoreState = true
-                                    // optional: keep a single instance of each tab
-                                    // popUpTo(barItem.route) { saveState = true }
                                 }
                             },
-                            icon = { Icon(barItem.icon, contentDescription = barItem.title) },
-                            label = { Text(barItem.title) }
                         )
                     }
                 }
