@@ -37,15 +37,15 @@ fun ListifySplashScreen(
     val isShowButtons = remember { mutableStateOf(false) }
 
     LaunchedEffect(key1 = true, block = { // key1 = true ensure it runs once only
-        scale.animateTo(
-            targetValue = 0.8f,           // scale from 0f to 0.9f
-            animationSpec = tween(         // animation timing,
-                durationMillis = 800,      // time based interpolation of 800ms
-                easing = { OvershootInterpolator(8f).getInterpolation(it) }  // a "bounce" effect
-            )
-        )
-
-        // when the animation is over, delay 2s before going to next screen
+//        scale.animateTo(
+//            targetValue = 0.8f,           // scale from 0f to 0.9f
+//            animationSpec = tween(         // animation timing,
+//                durationMillis = 800,      // time based interpolation of 800ms
+//                easing = { OvershootInterpolator(8f).getInterpolation(it) }  // a "bounce" effect
+//            )
+//        )
+//
+//        // when the animation is over, delay 2s before going to next screen
         delay(2000L)
 
         val isLoggedIn = splashViewModel.isLoggedIn()
@@ -73,12 +73,12 @@ fun ListifySplashScreen(
                 fontFamily = barriecitoFont,
                 fontWeight = FontWeight.ExtraBold,
                 fontSize = 96.sp,
-                modifier = Modifier.scale(scale.value)
+                //modifier = Modifier.scale(scale.value)
             )
             Text(
                 text = stringResource(R.string.app_tagline),
                 color = ListifyColor.TextGrey,
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.bodyMedium
             )
         }
 
