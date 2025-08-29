@@ -3,4 +3,5 @@
 	<string name="app_title">Listify</string>
 	<string name="app_tagline">From To-Dos to Ta-Das!</string>
 	<string name="no_lists">You don\'t have any lists yet.</string>
+	<string name="no_items">This list is empty.</string>
 </resources>
