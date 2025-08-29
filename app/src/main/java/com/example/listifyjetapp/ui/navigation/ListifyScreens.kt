@@ -13,4 +13,8 @@ object ListifyScreens {
     @Serializable object ProfileScreen
     @Serializable object LoginScreen
     @Serializable object SignupScreen
+
+    // Bottom-bar tabs (roots, no args)
+    @Serializable object ListsTab
+    @Serializable object ProfileTab
 }

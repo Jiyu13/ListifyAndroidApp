@@ -59,18 +59,12 @@ fun ListifyNavigation() {
     val currentDestination = backStackEntry?.destination
 
     // Hide bottom bar on Splash/Login/Signup (typed routes = qualified class names)
-    val hideOnRoutes = remember {
-        setOf(
-            ListifyScreens.SplashScreen::class.qualifiedName!!,
-            ListifyScreens.LoginScreen::class.qualifiedName!!,
-            ListifyScreens.SignupScreen::class.qualifiedName!!,
-            ListifyScreens.NewListScreen::class.qualifiedName!!,
-            ListifyScreens.ListItemScreen::class.qualifiedName!!,
-            ListifyScreens.AddNewItemScreen::class.qualifiedName!!
-        )
-    }
-    val hideBottomBar =
-        currentDestination?.hierarchy?.any { dest -> dest.route in hideOnRoutes } == true
+    val hideBottomBar = currentDestination?.route in setOf(
+        ListifyScreens.SplashScreen::class.qualifiedName,
+        ListifyScreens.LoginScreen::class.qualifiedName,
+        ListifyScreens.SignupScreen::class.qualifiedName
+    )
+
 
     Scaffold(
         bottomBar = {
@@ -79,16 +73,10 @@ fun ListifyNavigation() {
                     modifier = Modifier.height(72.dp),
                     windowInsets = NavigationBarDefaults.windowInsets
                 ) {
-                    NavBarItems.entries.forEach { barItem ->
+                    NavBarItems.entries.forEach { tab ->
+                        val tabRoute = tab.screen::class.qualifiedName
                         // Selected if we are on the tab's string route or its typed screen
-                        val selected = currentDestination?.hierarchy?.any { dest ->
-                            when (barItem) {
-                                NavBarItems.Lists -> dest.route == barItem.route ||
-                                        dest.route == ListifyScreens.ListsScreen::class.qualifiedName!!
-                                NavBarItems.Profile -> dest.route == barItem.route ||
-                                        dest.route == ListifyScreens.ProfileScreen::class.qualifiedName!!
-                            }
-                        } == true
+                        val selected = currentDestination?.hierarchy?.any { dest -> dest.route == tabRoute } == true
 
                         NavigationBarItem(
                             selected = selected,
@@ -96,15 +84,15 @@ fun ListifyNavigation() {
                                 Column(horizontalAlignment = Alignment.CenterHorizontally,) {
                                     Box {
                                         Icon(
-                                            imageVector = if (selected) barItem.selectedIcon else barItem.icon,
-                                            contentDescription = barItem.title,
+                                            imageVector = if (selected) tab.selectedIcon else tab.icon,
+                                            contentDescription = tab.title,
                                             modifier = Modifier.size(28.dp),
                                             tint = if (selected) ListifyColor.TextDark else ListifyColor.TextDark.copy(.5f)
                                         )
                                     }
                                     Spacer(Modifier.height(0.dp))
                                     Text(
-                                        text = barItem.title,
+                                        text = tab.title,
                                         style = MaterialTheme.typography.labelMedium,
                                         color = if (selected) ListifyColor.TextDark else ListifyColor.TextDark.copy(.5f),
                                         modifier = Modifier.offset(y = (-3).dp),
@@ -116,7 +104,7 @@ fun ListifyNavigation() {
                                 indicatorColor = Color.Transparent // <-- no pill
                             ),
                             onClick = {
-                                navController.navigate(barItem.route) {
+                                navController.navigate(tab.screen) {
                                     launchSingleTop = true
                                     restoreState = true
                                 }
@@ -137,7 +125,7 @@ fun ListifyNavigation() {
             composable<ListifyScreens.SplashScreen>() {
                 ListifySplashScreen(
                     onNavigateToListsScreen = { userId ->
-                        navController.navigate(ListifyScreens.ListsScreen(userId)) {   // Use typed ListsScreen when coming from Splash (has userId)
+                        navController.navigate(ListifyScreens.ListsTab) {   // Use typed ListsScreen when coming from Splash (has userId)
                             popUpTo(ListifyScreens.SplashScreen) { inclusive = true }  // Remove Splash from the back stack when go to Lists Screen
                             launchSingleTop = true
                         }
@@ -189,7 +177,7 @@ fun ListifyNavigation() {
             composable<ListifyScreens.LoginScreen>() {
                 ListifyLoginScreen(
                     onPopBackStack = { navController.popBackStack() },
-                    onNavigateToListsScreen = { userId -> navController.navigate(ListifyScreens.ListsScreen(userId)) }
+                    onNavigateToListsScreen = { userId -> navController.navigate(ListifyScreens.ListsTab) }
                 )
             }
 
@@ -206,8 +194,8 @@ fun ListifyNavigation() {
             }
             // -------------------------------------------------------------------------------------
 
-            // ------------------------- String routes for bottom-bar tabs -------------------------
-            composable(NavBarItems.Lists.route) {
+            // ---------------------------------- Bottom-bar tabs ----------------------------------
+            composable<ListifyScreens.ListsTab> {
                 // Same UI as ListsScreen; ViewModel can read userId from DataStore if needed
                 ListifyListsScreen(
                     onListRowClick = { listId, listName ->
@@ -218,7 +206,7 @@ fun ListifyNavigation() {
                 )
             }
 
-            composable(NavBarItems.Profile.route) {
+            composable<ListifyScreens.ProfileTab> {
                 Text("Profile")
             }
         }
