@@ -12,6 +12,7 @@ data class UserToken(
 
 data class UserDataStore(
     val userId: Int,
+    val username: String,
     val email: String,
     val accessToken: String,
     val refreshToken: String,

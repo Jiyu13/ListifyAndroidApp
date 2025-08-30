@@ -20,6 +20,7 @@ class ListifyStorageManager(val context: Context) {
 
      private companion object {
         val USER_ID = intPreferencesKey("userId")
+        val USERNAME = stringPreferencesKey("username")
         val EMAIL = stringPreferencesKey("email")
         val ACCESS_TOKEN = stringPreferencesKey("accessToken")
         val REFRESH_TOKEN = stringPreferencesKey("refreshToken")
@@ -30,6 +31,7 @@ class ListifyStorageManager(val context: Context) {
     suspend fun saveToDataStore(userDataStore: UserDataStore) {
         context.dataStore.edit {
             it[USER_ID] = userDataStore.userId
+            it[USERNAME] = userDataStore.username
             it[EMAIL] = userDataStore.email
             it[ACCESS_TOKEN] = userDataStore.accessToken
             it[REFRESH_TOKEN] = userDataStore.refreshToken
@@ -41,6 +43,7 @@ class ListifyStorageManager(val context: Context) {
     fun getUser(): Flow<UserDataStore> = context.dataStore.data.map {
         UserDataStore(
             userId= it[USER_ID] ?: 0,
+            username = it[USERNAME] ?: "",
             email = it[EMAIL] ?: "",
             accessToken =it[ACCESS_TOKEN] ?: "",
             refreshToken =it[REFRESH_TOKEN] ?: "",
@@ -49,6 +52,7 @@ class ListifyStorageManager(val context: Context) {
     }
 
     val userIdFlow: Flow<Int> = context.dataStore.data.map { it[USER_ID] ?: 0 }
+    val usernameFlow: Flow<String> = context.dataStore.data.map { it[USERNAME] ?: "" }
     val emailFlow: Flow<String> = context.dataStore.data.map { it[EMAIL] ?: "" }
     val isLoggedInFlow: Flow<Boolean> = context.dataStore.data.map { it[IS_LOGIN] ?: false }
 

@@ -47,12 +47,12 @@ class LoginViewModel @Inject constructor(
     = viewModelScope.launch {
         loginState = LoginState.Loading
         val result = repository.login( LoginInfo(email = email.trim(), password = password) )
-
         loginState = when (result) {
             is ListifyResult.Success -> {
                 storageManager.saveToDataStore(
                     UserDataStore(
                         userId = result.data.user.id,
+                        username = result.data.user.username,
                         email = result.data.user.email,
                         accessToken = result.data.accessToken,
                         refreshToken = result.data.refreshToken,
