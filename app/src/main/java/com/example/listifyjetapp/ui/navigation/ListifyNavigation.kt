@@ -37,6 +37,8 @@ import com.example.listifyjetapp.ui.screens.newList.ListifyNewListScreen
 import com.example.listifyjetapp.ui.screens.splash.ListifySplashScreen
 import com.example.listifyjetapp.ui.theme.ListifyColor
 import androidx.compose.foundation.layout.WindowInsets
+import com.example.listifyjetapp.ui.screens.profile.ListifyProfileScreen
+import com.example.listifyjetapp.ui.screens.profile.ListifyResetPasswordScreen
 
 @Composable
 fun ListifyNavigation() {
@@ -162,10 +164,17 @@ private fun MainScaffold() {
             }
 
             composable<ListifyScreens.ProfileTab> {
-                // TODO: replace with your real Profile UI.
-                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text("Profile")
-                }
+                // TODO: Define route for ProfileScreen.
+                ListifyProfileScreen(
+                    goToReSetPW = { navController.navigate(ListifyScreens.ResetPasswordScreen) }
+                )
+            }
+
+            composable<ListifyScreens.ResetPasswordScreen> {
+                // TODO: Define route for ProfileScreen.
+                ListifyResetPasswordScreen(
+                    onGoBackButtonClicked = { navController.navigate(ListifyScreens.ProfileTab) }
+                )
             }
 
             // --------------- Detail screens (bottom bar hidden while here) -----------------------
