@@ -18,17 +18,15 @@ class ProfileViewModel @Inject constructor(
 
 ): ViewModel() {
 
-    val username: StateFlow<String> =
-        storageManager.usernameFlow.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = ""
-        )
+    val username: StateFlow<String> = storageManager.usernameFlow.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = ""
+    )
 
-    val email: StateFlow<String> =
-        storageManager.emailFlow.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = ""
-        )
+    val email: StateFlow<String> = storageManager.emailFlow.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = ""
+    )
 }
