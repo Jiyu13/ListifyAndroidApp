@@ -3,12 +3,16 @@ package com.example.listifyjetapp.ui.screens.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.listifyjetapp.data.ListifyResult
 import com.example.listifyjetapp.data.ListifyStorageManager
+import com.example.listifyjetapp.model.Username
 import com.example.listifyjetapp.repository.ProfileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,4 +33,20 @@ class ProfileViewModel @Inject constructor(
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = ""
     )
+
+    fun updateUsername(newUsername:String) = viewModelScope.launch {
+        val result = repository.updateUsername(
+            userId = storageManager.userIdFlow.first(),
+            Username(username = newUsername)
+        )
+        when (result) {
+            is ListifyResult.Success -> {
+                val updated = result.data
+                storageManager.updateUsername(updated.username)
+
+            }
+            is ListifyResult.Failure -> result.errorMessage
+        }
+
+    }
 }

@@ -67,6 +67,10 @@ class ListifyStorageManager(val context: Context) {
         context.dataStore.edit { it[EMAIL] = email }
     }
 
+    suspend fun updateUsername(username: String) {
+        context.dataStore.edit { it[USERNAME] = username }
+    }
+
     suspend fun updateTokens(accessToken: String, refreshToken: String) {
         context.dataStore.edit {
             it[ACCESS_TOKEN] = accessToken

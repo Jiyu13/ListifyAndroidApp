@@ -9,6 +9,8 @@ import com.example.listifyjetapp.model.LoginSuccess
 import com.example.listifyjetapp.model.BasicItemInfo
 import com.example.listifyjetapp.model.ShareWithEmail
 import com.example.listifyjetapp.model.User
+import com.example.listifyjetapp.model.UserWithoutPassword
+import com.example.listifyjetapp.model.Username
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -31,7 +33,10 @@ interface ListifyAPI {
 
     // =============================================== Users =======================================
     @PATCH("users/{user_id}")
-    suspend fun patchUserById(@Path("user_id") userId: Int): User
+    suspend fun patchUserById(
+        @Path("user_id") userId: Int,
+        @Body request: Username
+    ): UserWithoutPassword
 
     @POST("users")
     suspend fun createUser(): User
