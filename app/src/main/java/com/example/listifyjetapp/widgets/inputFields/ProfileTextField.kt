@@ -32,8 +32,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import com.example.listifyjetapp.data.LoginState
-import com.example.listifyjetapp.ui.theme.ListifyColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -41,7 +39,7 @@ fun ProfileTextField(
     textState: String,
     placeholder: String = "",
     label: String,
-    isResetPasswordScreen: Boolean = false,
+    isPassword: Boolean = false,
     onValueChange: (String) -> Unit
 ) {
     var isShowPassword by remember { mutableStateOf(false) }
@@ -63,31 +61,21 @@ fun ProfileTextField(
                 disabledIndicatorColor = Color.Transparent,
                 errorIndicatorColor = Color.Transparent,
             ),
-            visualTransformation = if (isShowPassword) {
-                VisualTransformation.None
-            } else {
-                PasswordVisualTransformation()
+            visualTransformation = when {
+                !isPassword -> VisualTransformation.None
+                isShowPassword -> VisualTransformation.None
+                else -> PasswordVisualTransformation()
             },
             trailingIcon = {
-                if  (isResetPasswordScreen) {
-                    if (isShowPassword) {
-                        IconButton(onClick = { isShowPassword = false }) {
-                            Icon(
-                                imageVector = Icons.Filled.Visibility,
-                                contentDescription = "show password"
-                            )
-                        }
-                    } else {
-                        IconButton(onClick = { isShowPassword = true }) {
-                            Icon(
-                                imageVector = Icons.Filled.VisibilityOff,
-                                contentDescription = "hide password"
-                            )
-                        }
+                if (isPassword) {
+                    IconButton(onClick = { isShowPassword = !isShowPassword }) {
+                        Icon(
+                            imageVector = if (isShowPassword) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                            contentDescription = if (isShowPassword) "Hide password" else "Show password"
+                        )
                     }
-                }
-            },
-
+                } else null
+           },
             singleLine = true, // Replaces lineLimits = 1
             maxLines = 1,
             //placeholder = {
