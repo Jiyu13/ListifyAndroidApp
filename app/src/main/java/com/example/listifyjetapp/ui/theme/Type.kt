@@ -54,7 +54,7 @@ val Typography = Typography(
     ),
 
     labelLarge = TextStyle(
-        // searchBar text, divider w/ text
+        // searchBar text, divider w/ text, profile email
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
         fontSize = 18.sp,
