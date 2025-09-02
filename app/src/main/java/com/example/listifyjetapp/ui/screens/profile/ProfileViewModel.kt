@@ -1,6 +1,8 @@
 package com.example.listifyjetapp.ui.screens.profile
 
-
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.listifyjetapp.data.ListifyResult
@@ -34,6 +36,10 @@ class ProfileViewModel @Inject constructor(
         initialValue = ""
     )
 
+    var isUpdateFail by mutableStateOf(false)
+    var isUpdateSuccess by mutableStateOf(false)
+    var errorMessage by mutableStateOf("")
+
     fun updateUsername(newUsername:String) = viewModelScope.launch {
         val result = repository.updateUsername(
             userId = storageManager.userIdFlow.first(),
@@ -43,10 +49,12 @@ class ProfileViewModel @Inject constructor(
             is ListifyResult.Success -> {
                 val updated = result.data
                 storageManager.updateUsername(updated.username)
-
+                isUpdateSuccess = true
             }
-            is ListifyResult.Failure -> result.errorMessage
+            is ListifyResult.Failure -> {
+                isUpdateFail = true
+                errorMessage = result.errorMessage
+            }
         }
-
     }
 }

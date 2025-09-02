@@ -18,7 +18,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -42,26 +41,24 @@ fun ListifyProfileScreen(
     val email by viewModel.email.collectAsStateWithLifecycle()
 
     var usernameInput by rememberSaveable(username) { mutableStateOf(username) }
-    var isUsernameEmpty by remember { mutableStateOf(false) }
-    var isUpdateSuccess by remember { mutableStateOf(false) }
     //var emailInput by rememberSaveable(email) { mutableStateOf(email) }
 
     val content = LocalContext.current
-    LaunchedEffect(isUpdateSuccess) {
-        if (isUpdateSuccess) {
+    LaunchedEffect(viewModel.isUpdateSuccess) {
+        if (viewModel.isUpdateSuccess) {
             Toast.makeText(content, "Username updated.", Toast.LENGTH_SHORT)
                 .apply { setGravity(Gravity.CENTER, 0, 0)}
                 .show()
-            isUpdateSuccess = false // Reset
+            viewModel.isUpdateSuccess = false // Reset
         }
     }
 
     fun onSaveUsername() {
         if (usernameInput.isEmpty()) {
-            isUsernameEmpty = true
+            viewModel.isUpdateFail = true
+            viewModel.errorMessage = "Cannot be empty."
         } else {
             viewModel.updateUsername(usernameInput)
-            isUpdateSuccess = true
         }
     }
 
@@ -100,15 +97,18 @@ fun ListifyProfileScreen(
                         label = "Username",
                         onValueChange = {
                             usernameInput = it
-                            isUsernameEmpty = false
+                            viewModel.isUpdateFail = false
                         }
                     )
 
-                    HorizontalDivider(thickness = 1.dp, color = if (isUsernameEmpty) ListifyColor.errorRed else DividerDefaults.color)
-                    if (isUsernameEmpty) {
+                    HorizontalDivider(
+                        thickness = 1.dp,
+                        color = if (viewModel.isUpdateFail) ListifyColor.errorRed else DividerDefaults.color
+                    )
+                    if (viewModel.isUpdateFail) {
                         InputLabelText(
-                            "Cannot be empty.",
-                            isError = isUsernameEmpty,
+                            viewModel.errorMessage,
+                            isError = viewModel.isUpdateFail,
                         )
                     }
 
