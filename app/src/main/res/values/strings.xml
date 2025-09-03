@@ -4,4 +4,9 @@
 	<string name="app_tagline">From To-Dos to Ta-Das!</string>
 	<string name="no_lists">You don\'t have any lists yet.</string>
 	<string name="no_items">This list is empty.</string>
+	<string name="log_out">Are you sure you want to log out?</string>
+	<string name="delete_account">
+		This will delete all personal identifiable information linked with this account.
+		It\'s an irreversible action that cannot be undone.
+	</string>
 </resources>
