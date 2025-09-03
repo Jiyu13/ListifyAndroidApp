@@ -28,6 +28,7 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun ListifySplashScreen(
+    fromLogout: Boolean,
     splashViewModel: SplashViewModel = hiltViewModel(),
     onNavigateToListsScreen: (usrId: Int) -> Unit,
     onGoToLoginScreen: () -> Unit
@@ -37,6 +38,12 @@ fun ListifySplashScreen(
     val isShowButtons = remember { mutableStateOf(false) }
 
     LaunchedEffect(key1 = true, block = { // key1 = true ensure it runs once only
+        if (fromLogout) {
+            // Coming from logout: no animation, no delay — show buttons immediately
+            isShowButtons.value = true
+            return@LaunchedEffect
+        }
+
 //        scale.animateTo(
 //            targetValue = 0.8f,           // scale from 0f to 0.9f
 //            animationSpec = tween(         // animation timing,

@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 
 object ListifyScreens {
-    @Serializable object SplashScreen
+    @Serializable data class SplashScreen(val fromLogout: Boolean = false)  // accept a flag "fromlogout"
     @Serializable object LoginScreen
     @Serializable object SignupScreen
 

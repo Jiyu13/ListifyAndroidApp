@@ -3,7 +3,6 @@ package com.example.listifyjetapp.ui.navigation
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -48,15 +47,17 @@ fun ListifyNavigation() {
     NavHost(
         modifier = Modifier.padding(),
         navController = navController,
-        startDestination = ListifyScreens.SplashScreen
+        startDestination = ListifyScreens.SplashScreen()
     ) {
         // ------------------------------Typed routes (kotlinx.serialization) ------------------
         // TODO: Define a navigation route for SplashScreen
-        composable<ListifyScreens.SplashScreen>() {
+        composable<ListifyScreens.SplashScreen>() { backStackEntry ->
+            val args = backStackEntry.toRoute<ListifyScreens.SplashScreen>()
             ListifySplashScreen(
+                fromLogout = args.fromLogout,
                 onNavigateToListsScreen = { userId ->
                     navController.navigate(ListifyScreens.Main) {   // Use typed ListsScreen when coming from Splash (has userId)
-                        popUpTo(ListifyScreens.SplashScreen) { inclusive = true }  // Remove Splash from the back stack when go to Lists Screen
+                        popUpTo(ListifyScreens.SplashScreen()) { inclusive = true }  // Remove Splash from the back stack when go to Lists Screen
                         launchSingleTop = true
                     }
                 },
@@ -80,9 +81,9 @@ fun ListifyNavigation() {
 
         // --- Main container (has its own Scaffold + inner NavHost) ---
         composable<ListifyScreens.Main> {
-            MainScaffold(
+            MainNav(
                 onLogout = {
-                    navController.navigate(ListifyScreens.SplashScreen) {
+                    navController.navigate(ListifyScreens.SplashScreen(fromLogout = true)) {
                         popUpTo(0)
                         launchSingleTop = true
                     }
@@ -94,7 +95,7 @@ fun ListifyNavigation() {
 }
 
 @Composable
-private fun MainScaffold(
+private fun MainNav(
     onLogout: () -> Unit
 ) {
     val navController = rememberNavController()
@@ -168,7 +169,7 @@ private fun MainScaffold(
                         navController.navigate(ListifyScreens.ListItemScreen(listId, listName))
                     },
                     onAddNewListClick = {navController.navigate(ListifyScreens.NewListScreen)},
-                    onNavigateToSplash = {navController.navigate(ListifyScreens.SplashScreen)},
+                    onNavigateToSplash = onLogout,
                 )
             }
 
