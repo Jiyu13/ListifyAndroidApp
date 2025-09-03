@@ -7,6 +7,7 @@ import com.example.listifyjetapp.model.ListName
 import com.example.listifyjetapp.model.LoginInfo
 import com.example.listifyjetapp.model.LoginSuccess
 import com.example.listifyjetapp.model.BasicItemInfo
+import com.example.listifyjetapp.model.Passwords
 import com.example.listifyjetapp.model.ShareWithEmail
 import com.example.listifyjetapp.model.User
 import com.example.listifyjetapp.model.UserWithoutPassword
@@ -32,6 +33,12 @@ interface ListifyAPI {
     suspend fun refresh(@Header("x-refresh-token") refreshToken: String): LoginSuccess
 
     // =============================================== Users =======================================
+    @PATCH("users/pw/{user_id}")
+    suspend fun patchPassword(
+        @Path("user_id") userId: Int,
+        @Body request: Passwords
+    ): UserWithoutPassword
+
     @PATCH("users/{user_id}")
     suspend fun patchUserById(
         @Path("user_id") userId: Int,

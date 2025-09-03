@@ -27,3 +27,8 @@ data class ShareWithEmail(val email: String)
 data class Username(
     val username: String,
 )
+
+data class Passwords (
+    val current: String,
+    val new: String,
+)

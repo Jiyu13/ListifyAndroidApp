@@ -1,5 +1,6 @@
 package com.example.listifyjetapp.ui.screens.profile
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -7,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.listifyjetapp.data.ListifyResult
 import com.example.listifyjetapp.data.ListifyStorageManager
+import com.example.listifyjetapp.model.Passwords
 import com.example.listifyjetapp.model.Username
 import com.example.listifyjetapp.repository.ProfileRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -36,6 +38,13 @@ class ProfileViewModel @Inject constructor(
         initialValue = ""
     )
 
+    var currentPw by mutableStateOf("")
+    var newPw by mutableStateOf("")
+    var confirmPw by mutableStateOf("")
+    var isCurrentError by mutableStateOf(false)
+    var isNewError by mutableStateOf(false)
+    var isConfirmError by mutableStateOf(false)
+
     var isUpdateFail by mutableStateOf(false)
     var isUpdateSuccess by mutableStateOf(false)
     var errorMessage by mutableStateOf("")
@@ -54,6 +63,40 @@ class ProfileViewModel @Inject constructor(
             is ListifyResult.Failure -> {
                 isUpdateFail = true
                 errorMessage = result.errorMessage
+            }
+        }
+    }
+
+    fun resetPassword() = viewModelScope.launch {
+        val result = repository.resetPassword(
+            userId = storageManager.userIdFlow.first(),
+            Passwords(
+                current = currentPw,
+                new = newPw
+            )
+        )
+
+        when (result) {
+            is ListifyResult.Success -> {
+                val updated = result.data
+                isUpdateSuccess = true
+                currentPw = ""
+                newPw = ""
+                confirmPw = ""
+            }
+            is ListifyResult.Failure -> {
+                val err = result.errorMessage
+                if (err.contains("Wrong password")) {
+                    isCurrentError = true
+                    errorMessage = err
+                } else if (err.contains("New password must be different.")) {
+                    isCurrentError = true
+                    isNewError = true
+                    errorMessage = err
+                } else {
+                    isUpdateFail = true
+                    errorMessage = err
+                }
             }
         }
     }
