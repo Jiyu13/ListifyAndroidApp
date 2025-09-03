@@ -87,7 +87,7 @@ fun ListifyResetPasswordScreen(
                         viewModel.currentPw = it
                         viewModel.isCurrentError = false
                         viewModel.isNewError = false
-                        viewModel.isCurrentError = false
+                        viewModel.isConfirmError = false
                     }
                 )
 
@@ -107,7 +107,7 @@ fun ListifyResetPasswordScreen(
                         viewModel.newPw = it
                         viewModel.isCurrentError = false
                         viewModel.isNewError = false
-                        viewModel.isCurrentError = false
+                        viewModel.isConfirmError = false
                     }
                 )
 
@@ -125,9 +125,8 @@ fun ListifyResetPasswordScreen(
                     isPassword = true,
                     onValueChange = {
                         viewModel.confirmPw = it
-                        viewModel.isCurrentError = false
                         viewModel.isNewError = false
-                        viewModel.isCurrentError = false
+                        viewModel.isConfirmError = false
                     }
                 )
 
