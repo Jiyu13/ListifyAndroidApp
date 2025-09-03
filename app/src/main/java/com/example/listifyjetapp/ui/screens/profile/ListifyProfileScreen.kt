@@ -28,6 +28,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.listifyjetapp.ui.theme.ListifyColor
 import com.example.listifyjetapp.widgets.bars.ListifyTopBar
+import com.example.listifyjetapp.widgets.dividers.InputDivider
 import com.example.listifyjetapp.widgets.inputFields.ProfileTextField
 import com.example.listifyjetapp.widgets.texts.InputLabelText
 
@@ -101,10 +102,8 @@ fun ListifyProfileScreen(
                         }
                     )
 
-                    HorizontalDivider(
-                        thickness = 1.dp,
-                        color = if (viewModel.isUpdateFail) ListifyColor.errorRed else DividerDefaults.color
-                    )
+                    InputDivider(viewModel.isUpdateFail)
+
                     if (viewModel.isUpdateFail) {
                         InputLabelText(
                             viewModel.errorMessage,
