@@ -80,14 +80,23 @@ fun ListifyNavigation() {
 
         // --- Main container (has its own Scaffold + inner NavHost) ---
         composable<ListifyScreens.Main> {
-            MainScaffold()
+            MainScaffold(
+                onLogout = {
+                    navController.navigate(ListifyScreens.SplashScreen) {
+                        popUpTo(0)
+                        launchSingleTop = true
+                    }
+                },
+            )
         }
 
     }
 }
 
 @Composable
-private fun MainScaffold() {
+private fun MainScaffold(
+    onLogout: () -> Unit
+) {
     val navController = rememberNavController()
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentDest = backStackEntry?.destination
@@ -166,7 +175,8 @@ private fun MainScaffold() {
             composable<ListifyScreens.ProfileTab> {
                 // TODO: Define route for ProfileScreen.
                 ListifyProfileScreen(
-                    goToReSetPW = { navController.navigate(ListifyScreens.ResetPasswordScreen) }
+                    goToReSetPW = { navController.navigate(ListifyScreens.ResetPasswordScreen) },
+                    goToSplash = onLogout
                 )
             }
 

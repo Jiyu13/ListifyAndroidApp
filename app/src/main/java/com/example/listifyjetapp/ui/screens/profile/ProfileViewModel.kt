@@ -100,4 +100,8 @@ class ProfileViewModel @Inject constructor(
             }
         }
     }
+
+    fun logout() = viewModelScope.launch {
+        storageManager.clearDataStore()
+    }
 }
