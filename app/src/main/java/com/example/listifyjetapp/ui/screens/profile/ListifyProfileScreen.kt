@@ -77,6 +77,7 @@ fun ListifyProfileScreen(
     }
 
     fun confirmLogout() {
+        isLogoutClicked = false
         viewModel.logout()
         goToSplash()
     }
