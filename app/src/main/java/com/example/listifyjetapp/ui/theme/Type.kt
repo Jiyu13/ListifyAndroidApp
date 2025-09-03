@@ -18,7 +18,7 @@ val Typography = Typography(
     ),
 
     bodyMedium = TextStyle(
-        // input fields
+        // input fields, topBar text buttons
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
         fontSize = 20.sp,
@@ -45,7 +45,6 @@ val Typography = Typography(
     ),
 
     titleMedium= TextStyle(
-        // topBar text buttons
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Bold,
         fontSize = 20.sp,

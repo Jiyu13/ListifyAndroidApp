@@ -94,7 +94,7 @@ fun ListifyTopBar(
                     Text(
                         text = rightText,
                         modifier = Modifier.padding(horizontal = 16.dp).clickable { onRightButtonClick() },
-                        style = MaterialTheme.typography.titleMedium,
+                        style = MaterialTheme.typography.bodyMedium,
                         color = ListifyColor.TextDark
                     )
                 }
@@ -114,7 +114,7 @@ fun ListifyTopBar(
                         modifier = Modifier
                             .padding(horizontal = 16.dp)
                             .clickable { onGoBackButtonClicked() },
-                        style = MaterialTheme.typography.titleMedium,
+                        style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Normal,
                         color = ListifyColor.TextDark
                     )
