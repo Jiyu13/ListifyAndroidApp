@@ -49,6 +49,8 @@ class ProfileViewModel @Inject constructor(
     var isUpdateSuccess by mutableStateOf(false)
     var errorMessage by mutableStateOf("")
 
+    var isLoading by mutableStateOf(false)
+
     fun updateUsername(newUsername:String) = viewModelScope.launch {
         val result = repository.updateUsername(
             userId = storageManager.userIdFlow.first(),
@@ -101,7 +103,15 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    fun logout() = viewModelScope.launch {
-        storageManager.clearDataStore()
+    fun logout() = viewModelScope.launch { storageManager.clearDataStore() }
+
+    fun deleteUser() = viewModelScope.launch {
+        isLoading = true
+        val result = repository.deleteUser(storageManager.userIdFlow.first())
+        when (result) {
+            is ListifyResult.Success -> { logout() }
+            is ListifyResult.Failure -> { errorMessage = result.errorMessage }
+        }
+        isLoading = false
     }
 }

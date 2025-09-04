@@ -1,5 +1,6 @@
 package com.example.listifyjetapp.ui.screens.profile
 
+import android.util.Log
 import android.view.Gravity
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
@@ -79,6 +80,12 @@ fun ListifyProfileScreen(
     fun confirmLogout() {
         isLogoutClicked = false
         viewModel.logout()
+        goToSplash()
+    }
+
+    fun confirmDelete() {
+        isDeleteClicked = false
+        val result = viewModel.deleteUser()
         goToSplash()
     }
 
@@ -190,7 +197,7 @@ fun ListifyProfileScreen(
                     dismissButtonText = "Cancel",
                     confirmButtonText = "OK",
                     onDismissRequest = {  isDeleteClicked = false },
-                    onConfirmation = {  }
+                    onConfirmation = { confirmDelete() }
                 )
             }
         }

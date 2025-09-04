@@ -7,6 +7,7 @@ import com.example.listifyjetapp.model.UserWithoutPassword
 import com.example.listifyjetapp.model.Username
 import com.example.listifyjetapp.network.ListifyAPI
 import com.example.listifyjetapp.utils.safeApiCall
+import com.google.android.gms.tasks.Tasks.call
 import javax.inject.Inject
 
 
@@ -30,6 +31,13 @@ class ProfileRepository @Inject constructor(
         return api.safeApiCall(
             call = { patchPassword(userId = userId, passwords) },
             defaultErrorMessage = "Error resetting password"
+        )
+    }
+
+    suspend fun deleteUser(userId: Int): ListifyResult<Unit> {
+        return api.safeApiCall(
+            call = { deleteUserById(userId) },
+            defaultErrorMessage = "Error deleting user."
         )
     }
 }

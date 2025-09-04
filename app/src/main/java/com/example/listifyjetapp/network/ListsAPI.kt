@@ -34,6 +34,9 @@ interface ListifyAPI {
     suspend fun refresh(@Header("x-refresh-token") refreshToken: String): LoginSuccess
 
     // =============================================== Users =======================================
+    @DELETE("users/{user_id}")
+    suspend fun deleteUserById(@Path("user_id") userId: Int)
+
     @PATCH("users/pw/{user_id}")
     suspend fun patchPassword(
         @Path("user_id") userId: Int,
