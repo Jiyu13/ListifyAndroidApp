@@ -9,6 +9,7 @@ import com.example.listifyjetapp.model.LoginSuccess
 import com.example.listifyjetapp.model.BasicItemInfo
 import com.example.listifyjetapp.model.Passwords
 import com.example.listifyjetapp.model.ShareWithEmail
+import com.example.listifyjetapp.model.SignupInfo
 import com.example.listifyjetapp.model.User
 import com.example.listifyjetapp.model.UserWithoutPassword
 import com.example.listifyjetapp.model.Username
@@ -46,7 +47,7 @@ interface ListifyAPI {
     ): UserWithoutPassword
 
     @POST("users")
-    suspend fun createUser(): User
+    suspend fun createUser(@Body request: SignupInfo): LoginSuccess
 
     @GET("users/check_username/{username}")
     suspend fun getUserByUsername(@Path("/username") username: String ): User

@@ -30,3 +30,9 @@ data class LoginSuccess(
     val refreshToken: String,
     val user:  UserWithoutPassword
 )
+
+data class SignupInfo(
+    val email: String,
+    val username: String,
+    val password: String,
+)

@@ -11,6 +11,7 @@ import com.example.listifyjetapp.data.ListifyResult
 import com.example.listifyjetapp.data.ListifyStorageManager
 import com.example.listifyjetapp.data.LoginState
 import com.example.listifyjetapp.model.LoginInfo
+import com.example.listifyjetapp.model.SignupInfo
 import com.example.listifyjetapp.model.UserDataStore
 import com.example.listifyjetapp.repository.AuthUserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,6 +29,9 @@ class LoginViewModel @Inject constructor(
     var password by mutableStateOf("")
         private set
 
+    var username by mutableStateOf("")
+        private set
+
     var loginState by mutableStateOf<LoginState>(LoginState.Idle)
 
 
@@ -41,12 +45,38 @@ class LoginViewModel @Inject constructor(
     }
 
     fun updateEmail(newEmail:String) { email = newEmail }
+    fun updateUsername(name:String) { username = name }
     fun updatePassword(newPassword: String) { password = newPassword }
 
     fun login()
     = viewModelScope.launch {
         loginState = LoginState.Loading
         val result = repository.login( LoginInfo(email = email.trim(), password = password) )
+        loginState = when (result) {
+            is ListifyResult.Success -> {
+                storageManager.saveToDataStore(
+                    UserDataStore(
+                        userId = result.data.user.id,
+                        username = result.data.user.username,
+                        email = result.data.user.email,
+                        accessToken = result.data.accessToken,
+                        refreshToken = result.data.refreshToken,
+                        isLogin = true,
+                    )
+                )
+                // Save token securely
+                LoginState.Success(result.data)
+            }
+
+            is ListifyResult.Failure -> {
+                LoginState.Error(result.errorMessage)
+            }
+        }
+    }
+
+    fun signup() = viewModelScope.launch {
+        loginState = LoginState.Loading
+        val result = repository.signup(SignupInfo(email = email.trim(), username = username.trim(), password = password))
         loginState = when (result) {
             is ListifyResult.Success -> {
                 storageManager.saveToDataStore(

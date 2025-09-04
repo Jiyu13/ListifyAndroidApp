@@ -22,7 +22,10 @@ import com.example.listifyjetapp.widgets.buttons.CustomOutlinedButton
 import com.example.listifyjetapp.widgets.buttons.FilledButton
 
 @Composable
-fun AuthButtons(onGoToLoginScreen: () -> Unit) {
+fun AuthButtons(
+    onSignupClick: () -> Unit,
+    onGoToLoginScreen: () -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -38,7 +41,7 @@ fun AuthButtons(onGoToLoginScreen: () -> Unit) {
             textColor = ListifyColor.TextDark,
             buttonIcon = Icons.Default.MailOutline,
             iconDescription = "Sign In Email",
-            onClick = {}
+            onClick = { onSignupClick() }
         )
 
         FilledButton(

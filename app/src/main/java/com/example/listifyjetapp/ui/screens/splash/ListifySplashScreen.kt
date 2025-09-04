@@ -31,7 +31,8 @@ fun ListifySplashScreen(
     fromLogout: Boolean,
     splashViewModel: SplashViewModel = hiltViewModel(),
     onNavigateToListsScreen: (usrId: Int) -> Unit,
-    onGoToLoginScreen: () -> Unit
+    onGoToLoginScreen: () -> Unit,
+    onSignupClick: () -> Unit
 ) {
     // TODO: Create an Animated object that holds a Float value starting at 0f
     val scale = remember { Animatable(initialValue = 0f) }
@@ -90,7 +91,10 @@ fun ListifySplashScreen(
         }
 
         if (isShowButtons.value) {
-            AuthButtons(onGoToLoginScreen = { onGoToLoginScreen() })
+            AuthButtons(
+                onSignupClick = { onSignupClick() },
+                onGoToLoginScreen = { onGoToLoginScreen() }
+            )
         }
     }
 }

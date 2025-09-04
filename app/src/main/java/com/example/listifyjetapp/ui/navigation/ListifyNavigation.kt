@@ -38,6 +38,7 @@ import com.example.listifyjetapp.ui.theme.ListifyColor
 import androidx.compose.foundation.layout.WindowInsets
 import com.example.listifyjetapp.ui.screens.profile.ListifyProfileScreen
 import com.example.listifyjetapp.ui.screens.profile.ListifyResetPasswordScreen
+import com.example.listifyjetapp.ui.screens.signup.ListifySignupScreen
 
 @Composable
 fun ListifyNavigation() {
@@ -61,7 +62,8 @@ fun ListifyNavigation() {
                         launchSingleTop = true
                     }
                 },
-                onGoToLoginScreen = { navController.navigate(ListifyScreens.LoginScreen) }
+                onGoToLoginScreen = { navController.navigate(ListifyScreens.LoginScreen) },
+                onSignupClick = { navController.navigate(ListifyScreens.SignupScreen) }
             )
         }
 
@@ -75,8 +77,10 @@ fun ListifyNavigation() {
 
         // TODO: Define a navigation route for SignupScreen
         composable<ListifyScreens.SignupScreen>() {
-            //ListifySignupScreen(navController = navController)
-            Text("Signup")
+            ListifySignupScreen(
+                onNavigateToListsScreen = { userId -> navController.navigate(ListifyScreens.Main) },
+                onPopBackStack = { navController.popBackStack() }
+            )
         }
 
         // --- Main container (has its own Scaffold + inner NavHost) ---
