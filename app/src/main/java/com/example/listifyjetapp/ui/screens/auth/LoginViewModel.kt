@@ -48,6 +48,12 @@ class LoginViewModel @Inject constructor(
     fun updateUsername(name:String) { username = name }
     fun updatePassword(newPassword: String) { password = newPassword }
 
+    private fun resetForm() {
+        email = ""
+        password = ""
+        username = ""
+    }
+
     fun login()
     = viewModelScope.launch {
         loginState = LoginState.Loading
@@ -64,6 +70,7 @@ class LoginViewModel @Inject constructor(
                         isLogin = true,
                     )
                 )
+                resetForm()
                 // Save token securely
                 LoginState.Success(result.data)
             }
@@ -89,6 +96,7 @@ class LoginViewModel @Inject constructor(
                         isLogin = true,
                     )
                 )
+                resetForm()
                 // Save token securely
                 LoginState.Success(result.data)
             }
