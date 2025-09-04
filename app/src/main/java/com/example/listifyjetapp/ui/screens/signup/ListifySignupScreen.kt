@@ -44,15 +44,13 @@ fun ListifySignupScreen(
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = { ListifyTopBar(
-            title = "",
+            title = "Create Account",
             isListsScreen = false,
             onGoBackButtonClicked = {onPopBackStack()},
             goBackIcon = Icons.AutoMirrored.Filled.ArrowBack,
         ) }
     ) { innerPadding ->
-        Surface(modifier = Modifier
-            .fillMaxSize()
-            .padding(innerPadding),) {
+        Surface(modifier = Modifier.fillMaxSize().padding(innerPadding),) {
             Column(modifier = Modifier.fillMaxWidth()) {
                 Column(
                     modifier = Modifier
@@ -97,9 +95,7 @@ fun ListifySignupScreen(
                     }
                 }
 
-                Column(modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 0.dp, horizontal = 16.dp)) {
+                Column(modifier = Modifier.fillMaxWidth().padding(vertical = 0.dp, horizontal = 16.dp)) {
                     FilledButton(
                         modifier = ButtonPaddings.fillMaxWidth(),
                         shape = RoundedCornerShape(3.dp),
