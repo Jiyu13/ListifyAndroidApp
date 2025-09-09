@@ -70,7 +70,7 @@ fun ListifyNavigation() {
         // TODO: Define a navigation route for LoginScreen
         composable<ListifyScreens.LoginScreen>() {
             ListifyLoginScreen(
-                onPopBackStack = { navController.popBackStack() },
+                onPopBackStack = { navController.navigate(ListifyScreens.SplashScreen(fromLogout = true)) },
                 onNavigateToListsScreen = { userId -> navController.navigate(ListifyScreens.Main) }
             )
         }
@@ -79,7 +79,7 @@ fun ListifyNavigation() {
         composable<ListifyScreens.SignupScreen>() {
             ListifySignupScreen(
                 onNavigateToListsScreen = { userId -> navController.navigate(ListifyScreens.Main) },
-                onPopBackStack = { navController.popBackStack() }
+                onPopBackStack = { navController.navigate(ListifyScreens.SplashScreen(fromLogout = true)) }
             )
         }
 
