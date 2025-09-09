@@ -1,8 +1,8 @@
 package com.example.listifyjetapp.ui.screens.profile
 
-import android.util.Log
 import android.view.Gravity
 import android.widget.Toast
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,7 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material3.DividerDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -33,6 +33,7 @@ import com.example.listifyjetapp.R
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.listifyjetapp.data.LoginState
 import com.example.listifyjetapp.ui.theme.ListifyColor
 import com.example.listifyjetapp.widgets.bars.ListifyTopBar
 import com.example.listifyjetapp.widgets.buttons.TextButton
@@ -56,6 +57,7 @@ fun ListifyProfileScreen(
 
     var isLogoutClicked by remember { mutableStateOf(false) }
     var isDeleteClicked by remember { mutableStateOf(false) }
+    val deleteAccountState = viewModel.loginState
 
 
     val content = LocalContext.current
@@ -85,10 +87,14 @@ fun ListifyProfileScreen(
 
     fun confirmDelete() {
         isDeleteClicked = false
-        val result = viewModel.deleteUser()
-        goToSplash()
+        viewModel.deleteUser()
     }
 
+    fun onCloseDialog() {
+        viewModel.loginState = LoginState.Idle
+        viewModel.logout()
+        goToSplash()
+    }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -199,6 +205,39 @@ fun ListifyProfileScreen(
                     onDismissRequest = {  isDeleteClicked = false },
                     onConfirmation = { confirmDelete() }
                 )
+            }
+
+            if (deleteAccountState is LoginState.Loading) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
+
+            when (deleteAccountState) {
+                is LoginState.Success -> {
+                    AlertDialogPopup(
+                        title = "",
+                        text = "Account deleted.",
+                        dismissButtonText = "",
+                        confirmButtonText = "OK",
+                        onDismissRequest = { },
+                        onConfirmation = { onCloseDialog() }
+                    )
+                }
+                is LoginState.Error -> {
+                    AlertDialogPopup(
+                        title = "",
+                        text = deleteAccountState.message,
+                        dismissButtonText = "",
+                        confirmButtonText = "OK",
+                        onDismissRequest = { isDeleteClicked },
+                        onConfirmation = { isDeleteClicked = false }
+                    )
+                }
+                LoginState.Loading, LoginState.Idle -> { /* no dialog */ }
             }
         }
     }

@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.listifyjetapp.data.ListifyResult
 import com.example.listifyjetapp.data.ListifyStorageManager
+import com.example.listifyjetapp.data.LoginState
 import com.example.listifyjetapp.model.Passwords
 import com.example.listifyjetapp.model.Username
 import com.example.listifyjetapp.repository.ProfileRepository
@@ -49,7 +50,7 @@ class ProfileViewModel @Inject constructor(
     var isUpdateSuccess by mutableStateOf(false)
     var errorMessage by mutableStateOf("")
 
-    var isLoading by mutableStateOf(false)
+    var loginState by mutableStateOf<LoginState>(LoginState.Idle)
 
     fun updateUsername(newUsername:String) = viewModelScope.launch {
         val result = repository.updateUsername(
@@ -106,12 +107,16 @@ class ProfileViewModel @Inject constructor(
     fun logout() = viewModelScope.launch { storageManager.clearDataStore() }
 
     fun deleteUser() = viewModelScope.launch {
-        isLoading = true
+        loginState = LoginState.Loading
         val result = repository.deleteUser(storageManager.userIdFlow.first())
-        when (result) {
-            is ListifyResult.Success -> { logout() }
-            is ListifyResult.Failure -> { errorMessage = result.errorMessage }
+        loginState = when (result) {
+            is ListifyResult.Success -> {
+                LoginState.Success(result.data)
+            }
+
+            is ListifyResult.Failure -> {
+                LoginState.Error( result.errorMessage )
+            }
         }
-        isLoading = false
     }
 }

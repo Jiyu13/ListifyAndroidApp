@@ -35,7 +35,7 @@ interface ListifyAPI {
 
     // =============================================== Users =======================================
     @DELETE("users/{user_id}")
-    suspend fun deleteUserById(@Path("user_id") userId: Int)
+    suspend fun deleteUserById(@Path("user_id") userId: Int): LoginSuccess
 
     @PATCH("users/pw/{user_id}")
     suspend fun patchPassword(

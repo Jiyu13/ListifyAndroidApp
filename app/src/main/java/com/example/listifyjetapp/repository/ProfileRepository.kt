@@ -2,6 +2,7 @@ package com.example.listifyjetapp.repository
 
 import com.example.listifyjetapp.data.ListifyResult
 import com.example.listifyjetapp.data.ListifyStorageManager
+import com.example.listifyjetapp.model.LoginSuccess
 import com.example.listifyjetapp.model.Passwords
 import com.example.listifyjetapp.model.UserWithoutPassword
 import com.example.listifyjetapp.model.Username
@@ -34,7 +35,7 @@ class ProfileRepository @Inject constructor(
         )
     }
 
-    suspend fun deleteUser(userId: Int): ListifyResult<Unit> {
+    suspend fun deleteUser(userId: Int): ListifyResult<LoginSuccess> {
         return api.safeApiCall(
             call = { deleteUserById(userId) },
             defaultErrorMessage = "Error deleting user."
