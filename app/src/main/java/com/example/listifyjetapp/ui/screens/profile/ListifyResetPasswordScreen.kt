@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Scaffold
@@ -16,7 +17,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.listifyjetapp.ui.theme.ButtonPaddings
+import com.example.listifyjetapp.ui.theme.ListifyColor
 import com.example.listifyjetapp.widgets.bars.ListifyTopBar
+import com.example.listifyjetapp.widgets.buttons.FilledButton
 import com.example.listifyjetapp.widgets.dividers.InputDivider
 import com.example.listifyjetapp.widgets.inputFields.ProfileTextField
 import com.example.listifyjetapp.widgets.texts.InputLabelText
@@ -71,8 +75,8 @@ fun ListifyResetPasswordScreen(
             isListsScreen = false,
             goBackIcon = Icons.AutoMirrored.Filled.ArrowBack,
             onGoBackButtonClicked = {onGoBackButtonClicked()},
-            rightText = "Save",
-            onRightButtonClick = { onSaveClick() }
+            //rightText = "Save",
+            //onRightButtonClick = { onSaveClick() }
         ) }
     ) { innerPadding ->
 
@@ -135,6 +139,17 @@ fun ListifyResetPasswordScreen(
                     InputLabelText(
                         viewModel.errorMessage,
                         isError = viewModel.isConfirmError,
+                    )
+                }
+
+                Column(modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp)) {
+                    FilledButton(
+                        modifier = ButtonPaddings.fillMaxWidth(),
+                        shape = RoundedCornerShape(3.dp),
+                        containerColor=ListifyColor.SplashYellow,
+                        contentColor = ListifyColor.TextDark,
+                        text="Save",
+                        onClick={ onSaveClick() }
                     )
                 }
             }
