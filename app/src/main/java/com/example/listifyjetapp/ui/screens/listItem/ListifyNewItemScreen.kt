@@ -1,11 +1,12 @@
 package com.example.listifyjetapp.ui.screens.listItem
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -17,7 +18,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.listifyjetapp.model.BasicItemInfo
+import com.example.listifyjetapp.ui.theme.ButtonPaddings
+import com.example.listifyjetapp.ui.theme.ButtonShape
+import com.example.listifyjetapp.ui.theme.ListifyColor
 import com.example.listifyjetapp.widgets.bars.ListifyTopBar
+import com.example.listifyjetapp.widgets.buttons.FilledButton
 import com.example.listifyjetapp.widgets.inputFields.FormInputField
 
 @Composable
@@ -46,11 +51,8 @@ fun ListifyNewItemScreen(
         topBar = { ListifyTopBar(
             title = "New List Item",
             isListsScreen = false,
-            //goBackIcon = Icons.AutoMirrored.Filled.ArrowBack,
+            goBackIcon = Icons.AutoMirrored.Filled.ArrowBack,
             onGoBackButtonClicked = { onPopBackStack() },
-            leftText = "Cancel",
-            rightText = "Save",
-            onRightButtonClick = { onSaveClick() }
         ) }
     ) { innerPadding ->
         Surface(
@@ -60,10 +62,9 @@ fun ListifyNewItemScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(25.dp)
             ) {
 
-                Column() {
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     FormInputField(
                         placerHolder = "name your new item here",
                         isError = isError,
@@ -74,6 +75,16 @@ fun ListifyNewItemScreen(
                         placerHolder = "e.g. QTY",
                         textState = units,
                         onValueChange={ units = it }
+                    )
+                }
+                Column(modifier = Modifier.fillMaxWidth().padding(top = 16.dp)) {
+                    FilledButton(
+                        modifier = ButtonPaddings.fillMaxWidth(),
+                        shape = ButtonShape,
+                        containerColor=ListifyColor.SplashYellow,
+                        contentColor = ListifyColor.TextDark,
+                        text="Save",
+                        onClick={ onSaveClick() }
                     )
                 }
             }

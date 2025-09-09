@@ -5,6 +5,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -19,8 +22,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.listifyjetapp.model.ListName
 import com.example.listifyjetapp.ui.screens.lists.ListsViewModel
+import com.example.listifyjetapp.ui.theme.ButtonPaddings
+import com.example.listifyjetapp.ui.theme.ButtonShape
+import com.example.listifyjetapp.ui.theme.ListifyColor
 import com.example.listifyjetapp.widgets.inputFields.FormInputField
 import com.example.listifyjetapp.widgets.bars.ListifyTopBar
+import com.example.listifyjetapp.widgets.buttons.FilledButton
 
 @Composable
 fun ListifyNewListScreen(
@@ -57,11 +64,8 @@ fun ListifyNewListScreen(
         topBar = { ListifyTopBar(
             title = "New List",
             isListsScreen = false,
-            //goBackIcon = Icons.AutoMirrored.Filled.ArrowBack,
+            goBackIcon = Icons.AutoMirrored.Filled.ArrowBack,
             onGoBackButtonClicked = { onPopBackStack() },
-            leftText = "Cancel",
-            rightText = "Save",
-            onRightButtonClick = { onSaveClick() }
         ) }
     ) { innerPadding ->
 
@@ -83,6 +87,17 @@ fun ListifyNewListScreen(
                     textState=formTextState,
                     onValueChange={ formTextState = it }
                 )
+
+                Column(modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp)) {
+                    FilledButton(
+                        modifier = ButtonPaddings.fillMaxWidth(),
+                        shape = ButtonShape,
+                        containerColor=ListifyColor.SplashYellow,
+                        contentColor = ListifyColor.TextDark,
+                        text="Save",
+                        onClick={ onSaveClick() }
+                    )
+                }
             }
         }
     }
