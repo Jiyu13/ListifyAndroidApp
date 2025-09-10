@@ -134,7 +134,7 @@ fun ShareToForm(
                     modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
                     shape = ButtonShape,
                     containerColor = ListifyColor.SplashYellow,
-                    contentColor = Color.White,
+                    contentColor = ListifyColor.TextDark,
                     text = "Add user",
                     onClick = { onAddUserClick() },
                 )
