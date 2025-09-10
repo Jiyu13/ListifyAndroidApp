@@ -27,7 +27,7 @@ fun EditListForm(
 ) {
 
     Column(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp)
     ) {
         FormInputField(
             placerHolder = "e.g., grocery list",
@@ -40,7 +40,7 @@ fun EditListForm(
             modifier = ButtonPaddings.fillMaxWidth(),
             shape = ButtonShape,
             containerColor = ListifyColor.SplashYellow,
-            contentColor = Color.White,
+            contentColor = ListifyColor.TextDark,
             text = "Update",
             buttonIcon = null,
             iconDescription = null,
