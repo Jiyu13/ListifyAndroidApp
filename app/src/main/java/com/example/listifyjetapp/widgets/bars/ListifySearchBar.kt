@@ -39,6 +39,7 @@ fun ListifySearchBar(
             disabledIndicatorColor = Color.Transparent,
 
             unfocusedLabelColor = ListifyColor.TextDark.copy(0.1f),
+            unfocusedContainerColor = ListifyColor.TextDark.copy(0.1f),
             focusedContainerColor = ListifyColor.TextDark.copy(0.1f),
             cursorColor = ListifyColor.TextDark,
         ),
