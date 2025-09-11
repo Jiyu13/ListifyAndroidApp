@@ -1,0 +1,104 @@
+package com.example.listifyjetapp.ui.screens.newList
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.listifyjetapp.model.ListName
+import com.example.listifyjetapp.ui.screens.lists.ListsViewModel
+import com.example.listifyjetapp.ui.theme.ButtonPaddings
+import com.example.listifyjetapp.ui.theme.ButtonShape
+import com.example.listifyjetapp.ui.theme.ListifyColor
+import com.example.listifyjetapp.widgets.inputFields.FormInputField
+import com.example.listifyjetapp.widgets.bars.ListifyTopBar
+import com.example.listifyjetapp.widgets.buttons.FilledButton
+
+@Composable
+fun ListifyNewListScreen(
+    viewModel: ListsViewModel = hiltViewModel(),
+    onPopBackStack: () -> Unit,
+) {
+
+    var formTextState by remember { mutableStateOf("") }
+    val userId by viewModel.userId.collectAsState()
+    var isError by remember { mutableStateOf(false) }
+
+
+    LaunchedEffect(viewModel.navigateBack) {
+        viewModel.navigateBack.collect { navigateBack ->
+            if (navigateBack) {
+                onPopBackStack()
+                viewModel.navigationComplete()
+            }
+        }
+    }
+
+    fun onSaveClick() {
+        isError = false
+        if (formTextState.isBlank()) {
+            isError = true
+        } else {
+            val listName = ListName(name = formTextState)
+            viewModel.insertListByUser(userId, listName)
+        }
+    }
+
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        topBar = { ListifyTopBar(
+            title = "New List",
+            isListsScreen = false,
+            goBackIcon = Icons.AutoMirrored.Filled.ArrowBack,
+            onGoBackButtonClicked = { onPopBackStack() },
+        ) }
+    ) { innerPadding ->
+
+        Surface(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+        ) {
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+            ) {
+
+                FormInputField(
+                    placerHolder = "e.g., grocery list",
+                    isError = isError,
+                    textState=formTextState,
+                    onValueChange={ formTextState = it }
+                )
+
+                Column(modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp)) {
+                    FilledButton(
+                        modifier = ButtonPaddings.fillMaxWidth(),
+                        shape = ButtonShape,
+                        containerColor=ListifyColor.SplashYellow,
+                        contentColor = ListifyColor.TextDark,
+                        text="Save",
+                        onClick={ onSaveClick() }
+                    )
+                }
+            }
+        }
+    }
+}
