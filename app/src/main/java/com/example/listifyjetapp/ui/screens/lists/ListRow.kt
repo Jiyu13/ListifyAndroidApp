@@ -145,5 +145,5 @@ fun ListRow(
             }
         )
     }
-    HorizontalDivider()
+//    HorizontalDivider()
 }
