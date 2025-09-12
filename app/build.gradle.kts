@@ -131,4 +131,7 @@ dependencies {
 
     // Typed DataStore (Typed API surface, such as Proto)
     implementation(libs.androidx.datastore.preferences)
+
+    implementation(libs.androidx.foundation)   // androidx.compose.foundation:foundation
+
 }
