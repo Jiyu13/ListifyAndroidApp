@@ -27,6 +27,7 @@ kotlinxCoroutinesPlayServices = "1.10.1"
 lifecycleRuntimeKtxVersion = "2.9.1"
 okhttp = "5.0.0-alpha.2"
 kotlinxSerializationJson = "1.7.3"
+composeMaterial = "1.5.1"
 
 
 [libraries]
@@ -73,7 +74,8 @@ androidx-navigation-testing = { module = "androidx.navigation:navigation-testing
 androidx-navigation-ui = { module = "androidx.navigation:navigation-ui", version.ref = "navigationCompose" }
 
 #font
-androidx-ui-text-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts", version = "1.8.3" } # or match your Compose BOM
+androidx-ui-text-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts", version = "1.8.3" }
+androidx-compose-material = { group = "androidx.wear.compose", name = "compose-material", version.ref = "composeMaterial" } # or match your Compose BOM
 
 
 [plugins]
