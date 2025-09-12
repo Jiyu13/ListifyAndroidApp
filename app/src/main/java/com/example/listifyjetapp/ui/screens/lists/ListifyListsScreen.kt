@@ -11,6 +11,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -35,6 +36,7 @@ import com.example.listifyjetapp.utils.filterLists
 import com.example.listifyjetapp.widgets.bars.ListifySearchBar
 import com.example.listifyjetapp.widgets.bars.ListifyTopBar
 import com.example.listifyjetapp.widgets.refresh.PullToRefresh
+import com.example.listifyjetapp.widgets.swipTo.SwipeToReveal
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -64,6 +66,8 @@ fun ListifyListsScreen(
         }
     }
 
+    val (openRowId, setOpenRowId) = remember { mutableStateOf<Any?>(null) }
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = { ListifyTopBar(
@@ -71,10 +75,6 @@ fun ListifyListsScreen(
             isListsScreen = true,
             rightIcon = Icons.Default.Add,
             onRightButtonClick = { onAddNewListClick() }
-            //isDropdownExpanded = expanded,
-            //onDropdownDismiss = { expanded = false },
-            //onRightButtonClick = { expanded = !expanded },
-            //onAddNewListClick = { onAddNewListClick() }
         ) }
     ) { innerPadding ->
 
@@ -127,10 +127,20 @@ fun ListifyListsScreen(
                             LazyColumn(modifier = Modifier.padding(vertical = 16.dp, horizontal = 8.dp)) {
                                 items(results) { list ->
                                     val listName = list.name.replace(" ", "-")
-                                    ListRow(
-                                        list = list,
-                                        onListRowClick = { onListRowClick(list.id, listName) }
+                                    SwipeToReveal(
+                                        rowId = list.id,                    // <-- unique id
+                                        openRowId = openRowId,
+                                        onOpen = { setOpenRowId(list.id) }, // <-- tell parent this row opened
+                                        onClosed = {if (openRowId == list.id) setOpenRowId(null) },
+                                        onClickDelete = { /* TODO: delete item list.id */ },
+                                        mainContent = {
+                                            ListRow(
+                                                list = list,
+                                                onListRowClick = { onListRowClick(list.id, listName) }
+                                            )
+                                        }
                                     )
+                                    HorizontalDivider()
                                 }
                             }
                         }
