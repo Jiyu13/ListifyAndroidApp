@@ -1,5 +1,7 @@
 package com.example.listifyjetapp.ui.screens.lists
 
+import androidx.compose.foundation.gestures.AnchoredDraggableState
+import androidx.compose.foundation.gestures.snapTo
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -36,6 +38,7 @@ import com.example.listifyjetapp.utils.filterLists
 import com.example.listifyjetapp.widgets.bars.ListifySearchBar
 import com.example.listifyjetapp.widgets.bars.ListifyTopBar
 import com.example.listifyjetapp.widgets.refresh.PullToRefresh
+import com.example.listifyjetapp.widgets.swipTo.RowAnchor
 import com.example.listifyjetapp.widgets.swipTo.SwipeToReveal
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -54,7 +57,6 @@ fun ListifyListsScreen(
 
     LaunchedEffect(Unit) { viewModel.getUserLists() }
 
-    //var expanded by remember { mutableStateOf(false) }
     var isRefreshing by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
     fun onRefresh() {
@@ -66,7 +68,8 @@ fun ListifyListsScreen(
         }
     }
 
-    val (openRowId, setOpenRowId) = remember { mutableStateOf<Any?>(null) }
+    val scope = rememberCoroutineScope()
+    var openState by remember { mutableStateOf<AnchoredDraggableState<RowAnchor>?>(null) }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -128,10 +131,12 @@ fun ListifyListsScreen(
                                 items(results) { list ->
                                     val listName = list.name.replace(" ", "-")
                                     SwipeToReveal(
-                                        rowId = list.id,                    // <-- unique id
-                                        openRowId = openRowId,
-                                        onOpen = { setOpenRowId(list.id) }, // <-- tell parent this row opened
-                                        onClosed = {if (openRowId == list.id) setOpenRowId(null) },
+                                        onOpened = { newState ->
+                                            // close previously open row immediately
+                                            openState?.let { prev -> if (prev != newState) scope.launch { prev.snapTo(RowAnchor.Closed) } }
+                                            openState = newState
+                                        },
+                                        onClosed = { state -> if (openState == state) openState = null },
                                         onClickDelete = { /* TODO: delete item list.id */ },
                                         mainContent = {
                                             ListRow(
