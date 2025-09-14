@@ -31,56 +31,84 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.ExperimentalWearMaterialApi
-import androidx.compose.foundation.gestures.anchoredDraggable
 import androidx.compose.foundation.gestures.AnchoredDraggableState
 import androidx.compose.foundation.gestures.DraggableAnchors
-import androidx.wear.compose.material.FractionalThreshold
-import androidx.wear.compose.material.rememberSwipeableState
-import androidx.wear.compose.material.swipeable
+import androidx.compose.runtime.getValue
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
+
+// animation imports
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.rememberSplineBasedDecay
+import androidx.compose.foundation.gestures.anchoredDraggable
+import androidx.compose.foundation.gestures.snapTo
+
+enum class RowAnchor { Closed, Open }
 
 
 @OptIn(ExperimentalWearMaterialApi::class)
 @Composable
 fun SwipeToReveal(
     modifier: Modifier = Modifier,
-    rowId: Any,
-    openRowId: Any?,
-    onOpen: () -> Unit,
-    onClosed: () -> Unit = {},
     actionWidth: Dp = 80.dp,
+    onOpened: (AnchoredDraggableState<RowAnchor>) -> Unit,
+    onClosed: (AnchoredDraggableState<RowAnchor>) -> Unit = {},
     onClickDelete: () -> Unit,
     mainContent: @Composable () -> Unit,
 
 ) {
-    val actionWidthPx = with(LocalDensity.current) { actionWidth.toPx() }
-    val anchors = mapOf(0f to 0, -actionWidthPx to 1)      // 0 - closed , 1 open (revealed to the left)
-    val swipeState  = rememberSwipeableState(initialValue = 0)
-
-    // When another row becomes active, close this one if open.
-    LaunchedEffect(openRowId) {
-        if (openRowId != rowId && swipeState.currentValue == 1) {
-            swipeState.animateTo(0)
-            onClosed()
-        }
-    }
-
-    // Detect when THIS row becomes opened/closed by the user.
-    LaunchedEffect(swipeState) {
-        snapshotFlow { swipeState.currentValue }.collect { value ->
-            if (value == 1) onOpen()
-            if (value == 0 && openRowId == rowId) onClosed()
-        }
-    }
-
-
     val scope = rememberCoroutineScope()
+    val actionWidthPx = with(LocalDensity.current) { actionWidth.toPx() }
 
-    // Reveal progress for optional fade-in
-    val progress = remember { derivedStateOf {
-        (-swipeState.offset.value / actionWidthPx).coerceIn(0f, 1f)
-    }}
+    // Define anchors whenever width changes
+    // Anchored draggable state (Closed -> Open at -actionWidthPx)
+    val anchors = remember(actionWidthPx) {
+        DraggableAnchors {
+            RowAnchor.Closed at 0f
+            RowAnchor.Open  at -actionWidthPx
+        }
+    }
+
+    // Create state with anchors + specs (no updateAnchors() needed)
+    val snapSpec = remember { spring<Float>() }
+    val decaySpec = rememberSplineBasedDecay<Float>()
+    // Create state once; update anchors when width or layout direction changes
+    val dragState = remember(anchors) {
+        AnchoredDraggableState(
+            initialValue = RowAnchor.Closed,
+            anchors = anchors,
+            positionalThreshold = { distance -> distance * 0.5f },
+            velocityThreshold   = { 1000f },
+            snapAnimationSpec   = snapSpec,
+            decayAnimationSpec  = decaySpec
+        )
+    }
+
+
+    // (Re)define anchors whenever width changes
+    LaunchedEffect(actionWidthPx) {
+        dragState.updateAnchors(
+            DraggableAnchors {
+                RowAnchor.Closed at 0f
+                RowAnchor.Open at -actionWidthPx
+            }
+        )
+    }
+
+    // Notify parent when row settles opened/closed
+    LaunchedEffect(dragState) {
+        snapshotFlow { dragState.currentValue }.collect { v ->
+            if (v == RowAnchor.Open) onOpened(dragState) else onClosed(dragState)
+        }
+    }
+
+    // Progress for fading the delete button (0 → 1)
+    val progress by remember {
+        derivedStateOf {
+            val off = dragState.requireOffset() // negative when opening
+            (-off / actionWidthPx).coerceIn(0f, 1f)
+        }
+    }
 
     Box(modifier = modifier.fillMaxWidth())// let content define height
      {
@@ -91,32 +119,27 @@ fun SwipeToReveal(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Box(
-                modifier = Modifier.width(actionWidth).fillMaxHeight().background(Color(0xFFE43636)).alpha(progress.value),
+                modifier = Modifier.width(actionWidth).fillMaxHeight().background(Color(0xFFE43636)).alpha(progress),
                 contentAlignment = Alignment.Center
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.clip(RoundedCornerShape(8.dp))
-                        .clickable {
-                            onClickDelete()
-                            // snap closed after action
-                            scope.launch { swipeState.animateTo(0) }
-                        }
-
-                ) {
-                    Icon(imageVector = Icons.Default.Delete, contentDescription = "Delete", tint = Color.White)
-                }
+                Icon(
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = "Delete",
+                    tint = Color.White,
+                    modifier = Modifier.clip(RoundedCornerShape(8.dp)).clickable {
+                        onClickDelete()
+                        scope.launch { dragState.snapTo(RowAnchor.Closed) } // instant close
+                    }
+                )
             }
         }
 
         // Foreground layer: the swipable content
         Box(
             modifier = Modifier
-                .offset { IntOffset(swipeState.offset.value.roundToInt(), 0) }
-                .swipeable(
-                    state = swipeState,
-                    anchors = anchors,
-                    thresholds = { _, _ -> FractionalThreshold(0.5f) },
+                .offset { IntOffset(dragState.requireOffset().roundToInt(), 0) }
+                .anchoredDraggable(
+                    state = dragState,
                     orientation = Orientation.Horizontal
                 )
                 .fillMaxWidth()
