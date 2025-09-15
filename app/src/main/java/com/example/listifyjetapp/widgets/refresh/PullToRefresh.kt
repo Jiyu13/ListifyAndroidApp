@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 fun <T> PullToRefresh(
    // modifier: Modifier,
     items: List<T>,
-    itemContent: @Composable (List<T>) -> Unit,
+    itemContent: @Composable () -> Unit,
     isRefreshing: Boolean,
     onRefresh: () -> Unit,
 ) {
@@ -18,6 +18,6 @@ fun <T> PullToRefresh(
         onRefresh = onRefresh,
         //modifier = modifier
     ) {
-        itemContent(items)
+        itemContent()
     }
 }
