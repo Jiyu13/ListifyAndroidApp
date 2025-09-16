@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -34,6 +35,17 @@ class ListsViewModel @Inject constructor(
 
     val lists = mutableStateListOf<ListModel>()
     var isLoading by mutableStateOf(false)
+
+    // null = closed; otherwise the list.id currently being edited/shared
+    var editingListId = MutableStateFlow<Int?>(null)
+        private set
+    var sharingListId = MutableStateFlow<Int?>(null)
+        private set
+    fun openEdit(listId: Int) { editingListId.value = listId }
+    fun closeEdit() { editingListId.value = null }
+    fun openShare(listId: Int) { sharingListId.value = listId }
+    fun closeShare() { sharingListId.value = null }
+
     var errorMessage by mutableStateOf<String?>(null)
     var isShareSucceed by mutableStateOf(false)
 
@@ -120,10 +132,10 @@ class ListsViewModel @Inject constructor(
         isLoading = false
     }
 
-    fun shareListById(listId: Int, emailData: ShareWithEmail) = viewModelScope.launch {
-        isLoading = true
+    fun shareListById(listId: Int, email: String) = viewModelScope.launch {
         errorMessage = null
-        val result = repository.shareListById(listId, emailData)
+        val userId = storageManager.getUser().first().userId
+        val result = repository.shareListById(listId, email, userId)
         when (result) {
             is ListifyResult.Success -> {
                 // update list.share to be true, return updated list
@@ -135,7 +147,6 @@ class ListsViewModel @Inject constructor(
                 errorMessage = result.errorMessage
             }
         }
-        isLoading = false
     }
 
     fun navigationComplete() {
