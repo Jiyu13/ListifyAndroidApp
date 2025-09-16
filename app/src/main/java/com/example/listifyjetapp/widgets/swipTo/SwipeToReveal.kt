@@ -42,6 +42,9 @@ import androidx.compose.animation.core.spring
 import androidx.compose.animation.rememberSplineBasedDecay
 import androidx.compose.foundation.gestures.anchoredDraggable
 import androidx.compose.foundation.gestures.snapTo
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Share
+import com.example.listifyjetapp.ui.theme.ListifyColor
 
 enum class RowAnchor { Closed, Open }
 
@@ -53,19 +56,27 @@ fun SwipeToReveal(
     actionWidth: Dp = 80.dp,
     onOpened: (AnchoredDraggableState<RowAnchor>) -> Unit,
     onClosed: (AnchoredDraggableState<RowAnchor>) -> Unit = {},
-    onClickDelete: () -> Unit,
+    onClickEdit: () -> Unit = {},
+    onClickShare: () -> Unit = {},
+    onClickDelete: () -> Unit = {},
     mainContent: @Composable () -> Unit,
 
 ) {
     val scope = rememberCoroutineScope()
     val actionWidthPx = with(LocalDensity.current) { actionWidth.toPx() }
 
+    // ========================= add more options ==================================================
+    val actionCount = 3 // Edit, Share, Delete
+    val totalActionWidthPx = actionWidthPx * actionCount
+    val totalActionWidth = actionWidth * actionCount
+
+
     // Define anchors whenever width changes
     // Anchored draggable state (Closed -> Open at -actionWidthPx)
-    val anchors = remember(actionWidthPx) {
+    val anchors = remember(totalActionWidthPx) {
         DraggableAnchors {
             RowAnchor.Closed at 0f
-            RowAnchor.Open  at -actionWidthPx
+            RowAnchor.Open  at -totalActionWidthPx
         }
     }
 
@@ -86,11 +97,11 @@ fun SwipeToReveal(
 
 
     // (Re)define anchors whenever width changes
-    LaunchedEffect(actionWidthPx) {
+    LaunchedEffect(totalActionWidthPx) {
         dragState.updateAnchors(
             DraggableAnchors {
                 RowAnchor.Closed at 0f
-                RowAnchor.Open at -actionWidthPx
+                RowAnchor.Open at -totalActionWidthPx
             }
         )
     }
@@ -106,7 +117,7 @@ fun SwipeToReveal(
     val progress by remember {
         derivedStateOf {
             val off = dragState.requireOffset() // negative when opening
-            (-off / actionWidthPx).coerceIn(0f, 1f)
+            (-off / totalActionWidthPx).coerceIn(0f, 1f)
         }
     }
 
@@ -114,12 +125,50 @@ fun SwipeToReveal(
      {
         // Behind layer: the red delete area
         Row(
-            modifier = Modifier.matchParentSize().background(Color.Transparent),
+            modifier = Modifier
+                .matchParentSize()
+                .background(Color.Transparent)
+                .width(totalActionWidth), // <- important: total width,
             horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.CenterVertically
         ) {
+
+            // Optional: stagger alphas per action (reveal from right to left)
+            val editAlpha   = (progress - 0f).coerceIn(0f, 1f)        // first to show
+            val shareAlpha  = (progress - 1f / 3f).coerceIn(0f, 1f)   // then share
+            val deleteAlpha = (progress - 2f / 3f).coerceIn(0f, 1f)   // then delete
+
             Box(
-                modifier = Modifier.width(actionWidth).fillMaxHeight().background(Color(0xFFE43636)).alpha(progress),
+                modifier = Modifier.width(actionWidth).fillMaxHeight().background(ListifyColor.blue).alpha(editAlpha),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Edit,
+                    contentDescription = "Edit",
+                    tint = Color.White,
+                    modifier = Modifier.clip(RoundedCornerShape(8.dp)).clickable {
+                         onClickEdit()
+                        scope.launch { dragState.snapTo(RowAnchor.Closed) } // instant close
+                    }
+                )
+            }
+            Box(
+                modifier = Modifier.width(actionWidth).fillMaxHeight().background(ListifyColor.orange).alpha(shareAlpha),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Share,
+                    contentDescription = "Share",
+                    tint = Color.White,
+                    modifier = Modifier.clip(RoundedCornerShape(8.dp)).clickable {
+                        onClickShare()
+                        scope.launch { dragState.snapTo(RowAnchor.Closed) } // instant close
+                    }
+                )
+            }
+
+            Box(
+                modifier = Modifier.width(actionWidth).fillMaxHeight().background(ListifyColor.errorRed).alpha(deleteAlpha),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
@@ -127,8 +176,8 @@ fun SwipeToReveal(
                     contentDescription = "Delete",
                     tint = Color.White,
                     modifier = Modifier.clip(RoundedCornerShape(8.dp)).clickable {
-                        onClickDelete()
                         scope.launch { dragState.snapTo(RowAnchor.Closed) } // instant close
+                        onClickDelete()
                     }
                 )
             }
