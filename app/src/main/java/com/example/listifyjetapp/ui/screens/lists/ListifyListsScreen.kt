@@ -14,10 +14,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -103,12 +101,12 @@ fun ListifyListsScreen(
                     }
                 )
 
-                viewModel.errorMessage?.let { msg ->
-                    Text(msg,
-                        Modifier.padding(16.dp),
-                        color = MaterialTheme.colorScheme.error
-                    )
-                }
+                //viewModel.errorMessage?.let { msg ->
+                //    Text(msg,
+                //        Modifier.padding(16.dp),
+                //        color = MaterialTheme.colorScheme.error
+                //    )
+                //}
 
                 if (viewModel.isLoading) {
                     Box(
@@ -137,11 +135,13 @@ fun ListifyListsScreen(
                                             openState = newState
                                         },
                                         onClosed = { state -> if (openState == state) openState = null },
-                                        onClickDelete = { /* TODO: delete item list.id */ },
+                                        onClickEdit = { viewModel.openEdit(list.id) },
+                                        onClickShare = { viewModel.openShare(list.id) },
+                                        onClickDelete = { viewModel.deleteListById(listId = list.id) },
                                         mainContent = {
                                             ListRow(
                                                 list = list,
-                                                onListRowClick = { onListRowClick(list.id, listName) }
+                                                onListRowClick = { onListRowClick(list.id, list.name) }
                                             )
                                         }
                                     )
