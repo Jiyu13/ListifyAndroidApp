@@ -22,7 +22,7 @@ data class SharedUsers(
     val username: String,
 )
 
-data class ShareWithEmail(val email: String)
+data class ShareWithEmail(val email: String, val userId: Int)
 
 data class Username(
     val username: String,
