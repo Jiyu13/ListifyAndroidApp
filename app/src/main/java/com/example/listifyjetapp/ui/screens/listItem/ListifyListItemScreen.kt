@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -47,8 +48,6 @@ fun ListifyListItemScreen(
     onAddClick: () -> Unit
 ) {
     LaunchedEffect(Unit) { viewModel.getAllItems(listId) }
-    var isOpenShare by remember { mutableStateOf(false) }
-
     var isRefreshing by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
     fun onRefresh() {
@@ -66,10 +65,10 @@ fun ListifyListItemScreen(
             isListsScreen = false,
             goBackIcon = Icons.AutoMirrored.Filled.ArrowBack,
             onGoBackButtonClicked = { onPopBackStack() },
-            shareIcon =  Icons.Default.Share,
-            onShareIconClick = { isOpenShare = true }
+            rightIcon = Icons.Default.Add,
+            onRightButtonClick = { onAddClick() }
         ) },
-        floatingActionButton = {FloatingButton(onClick = {onAddClick()})}
+        //floatingActionButton = {FloatingButton(onClick = {onAddClick()})}
     ) { innerPadding ->
         Surface(
             modifier = Modifier.fillMaxSize().padding(innerPadding)
@@ -92,12 +91,12 @@ fun ListifyListItemScreen(
                     }
                 )
 
-                viewModel.errorMessage?.let { msg ->
-                    Text(msg,
-                        Modifier.padding(16.dp),
-                        color = MaterialTheme.colorScheme.error
-                    )
-                }
+                //viewModel.errorMessage?.let { msg ->
+                //    Text(msg,
+                //        Modifier.padding(16.dp),
+                //        color = MaterialTheme.colorScheme.error
+                //    )
+                //}
 
                 if (viewModel.isLoading) {
                     Box(
