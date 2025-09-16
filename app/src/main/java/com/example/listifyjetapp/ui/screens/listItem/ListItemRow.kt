@@ -1,26 +1,19 @@
 package com.example.listifyjetapp.ui.screens.listItem
 
-import android.util.Log
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,15 +21,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalHapticFeedback
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.listifyjetapp.components.formModals.EditItemForm
 import com.example.listifyjetapp.model.CheckedItem
@@ -57,7 +45,6 @@ fun ListItemRow (
     }
 
     val isChecked by remember(item) { mutableStateOf(item.checked) }
-    var isEditFormShown  by remember { mutableStateOf(false) }
     var descriptionState by remember(item) { mutableStateOf(item.description) }
     var unitsState by remember(item) { mutableStateOf(item.units) }
     var isError by remember { mutableStateOf(false) }
@@ -71,8 +58,10 @@ fun ListItemRow (
         )
     }
 
+    // =========================== Edit form =======================================================
+    val editingId by viewModel.editingItemId.collectAsState()
     fun onEditFormDismiss() {
-        isEditFormShown = !isEditFormShown
+        viewModel.closeItemEdit()
         descriptionState = item.description
         unitsState = item.units
         isError = false
@@ -85,14 +74,10 @@ fun ListItemRow (
         } else {
             val updatedInfo = BasicItemInfo(description = descriptionState, units = unitsState)
             viewModel.patchListItemInfo(itemId = item.id, listId = item.listId, updatedInfo = updatedInfo)
-            isEditFormShown = false
+            viewModel.closeItemEdit()
         }
     }
-
-    fun onDeleteItem() {
-        viewModel.deleteListItem(listId = item.listId, itemId = item.id)
-        isEditFormShown = false
-    }
+    // ====================================================================================
 
     Row(modifier = Modifier
         .padding(vertical = 16.dp)
@@ -100,11 +85,7 @@ fun ListItemRow (
         .background(Color.Transparent),
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth().combinedClickable(
-                    onClick = { isEditFormShown = !isEditFormShown },
-                    onLongClick = { viewModel.activeItemDescription = item.description },
-                    onLongClickLabel = item.description
-                ),
+            modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -134,17 +115,17 @@ fun ListItemRow (
                     )
                 }
             }
-            Icon(
-                imageVector = Icons.Default.KeyboardArrowDown,
-                contentDescription = "Arrow down icon",
-                modifier = Modifier
-                    .size(24.dp)
-                    .clickable { onEditFormDismiss() }
-            )
+            //Icon(
+            //    imageVector = Icons.Default.KeyboardArrowDown,
+            //    contentDescription = "Arrow down icon",
+            //     modifier = Modifier
+            //        .size(24.dp)
+            //        .clickable { onEditFormDismiss() }
+            //)
         }
     }
     
-    if (isEditFormShown) {
+    if (editingId == item.id) {
         EditItemForm(
             description = descriptionState,
             units = unitsState,
@@ -152,9 +133,7 @@ fun ListItemRow (
             onDescriptionChange = { descriptionState = it },
             onUnitsChange = { unitsState = it },
             onEditFormSubmit = { onEditFormSubmit() },
-            onDeleteItem = { onDeleteItem() }
+            onDismissRequest = { onEditFormDismiss() }
         )
     }
-
-    HorizontalDivider()
 }
