@@ -1,5 +1,7 @@
 package com.example.listifyjetapp.ui.screens.listItem
 
+import androidx.compose.foundation.gestures.AnchoredDraggableState
+import androidx.compose.foundation.gestures.snapTo
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,12 +13,10 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -35,8 +35,9 @@ import com.example.listifyjetapp.widgets.texts.EmptyList
 import com.example.listifyjetapp.utils.filterListItems
 import com.example.listifyjetapp.widgets.bars.ListifySearchBar
 import com.example.listifyjetapp.widgets.bars.ListifyTopBar
-import com.example.listifyjetapp.widgets.buttons.FloatingButton
 import com.example.listifyjetapp.widgets.refresh.PullToRefresh
+import com.example.listifyjetapp.widgets.swipTo.RowAnchor
+import com.example.listifyjetapp.widgets.swipTo.SwipeToReveal
 import kotlinx.coroutines.launch
 
 @Composable
@@ -57,6 +58,9 @@ fun ListifyListItemScreen(
             isRefreshing = false
         }
     }
+
+    val scope = rememberCoroutineScope()
+    var openState by remember { mutableStateOf<AnchoredDraggableState<RowAnchor>?>(null) }
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -117,7 +121,19 @@ fun ListifyListItemScreen(
                             LazyColumn(modifier = Modifier.padding(vertical = 16.dp, horizontal = 8.dp)) {
                                 items(results) {item ->
                                     // TODO: ItemRow
-                                    ListItemRow(item)
+                                    SwipeToReveal(
+                                        onOpened = { newState ->
+                                            // close previously open row immediately
+                                            openState?.let { prev -> if (prev != newState) scope.launch { prev.snapTo(RowAnchor.Closed) } }
+                                            openState = newState
+                                        },
+                                        onClosed = { state -> if (openState == state) openState = null },
+                                        isShare = false,
+                                        onClickEdit = { viewModel.openItemEdit(item.id) },
+                                        onClickDelete = { viewModel.deleteListItem(listId = item.listId, itemId = item.id) },
+                                        mainContent = { ListItemRow(item) }
+                                    )
+                                    HorizontalDivider()
                                 }
                             }
                         }
