@@ -34,7 +34,6 @@ import com.example.listifyjetapp.widgets.texts.EmptyList
 import com.example.listifyjetapp.utils.filterListItems
 import com.example.listifyjetapp.widgets.bars.ListifySearchBar
 import com.example.listifyjetapp.widgets.bars.ListifyTopBar
-import com.example.listifyjetapp.widgets.bottomMenus.ShareToForm
 import com.example.listifyjetapp.widgets.buttons.FloatingButton
 import com.example.listifyjetapp.widgets.refresh.PullToRefresh
 import kotlinx.coroutines.launch
@@ -125,13 +124,6 @@ fun ListifyListItemScreen(
                         }
                     )
                 }
-            }
-
-            if (isOpenShare) {
-                ShareToForm(
-                    listId = listId,
-                    closeShareForm = { isOpenShare = false },
-                )
             }
         }
     }
