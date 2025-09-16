@@ -14,6 +14,7 @@ import com.example.listifyjetapp.model.ListItem
 import com.example.listifyjetapp.model.BasicItemInfo
 import com.example.listifyjetapp.repository.ListItemRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,7 +25,12 @@ class ListItemViewModel @Inject constructor(
     val listItems = mutableStateListOf<ListItem>()
     var isLoading  by mutableStateOf(false)
     var errorMessage by mutableStateOf<String?>(null)
-    var activeItemDescription by mutableStateOf("")
+
+    // null = closed; otherwise the list.id currently being edited
+    var editingItemId = MutableStateFlow<Int?>(null)
+        private set
+    fun openItemEdit(listId: Int) { editingItemId.value = listId }
+    fun closeItemEdit() { editingItemId.value = null }
 
     fun getAllItems(listId: Int) {
         viewModelScope.launch {
