@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -16,6 +17,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -25,12 +27,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.listifyjetapp.model.ShareWithEmail
 import com.example.listifyjetapp.ui.screens.lists.ListsViewModel
 import com.example.listifyjetapp.ui.theme.ButtonShape
 import com.example.listifyjetapp.ui.theme.ListifyColor
@@ -41,75 +42,51 @@ import com.example.listifyjetapp.widgets.texts.InputLabelText
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShareToForm(
-    viewModel: ListsViewModel = hiltViewModel(),
-    listId: Int,
-    closeShareForm: () -> Unit,
+    viewModel: ListsViewModel,
+    email: String,
+    isEmailBlank: Boolean,
+    emailHasError: Boolean,
+    listName: String = "",
+    onValueChange: (String) -> Unit,
+    onShareClick: () -> Unit,
+    onDismissRequest: () -> Unit,
 ) {
-    val content = LocalContext.current
-    LaunchedEffect(viewModel.isShareSucceed) {
-        if (viewModel.isShareSucceed) {
-            Toast.makeText(content, "Share successfully", Toast.LENGTH_SHORT)
-                .apply { setGravity(Gravity.CENTER, 0, 0)}
-                .show()
-            closeShareForm()
-            viewModel.isShareSucceed = false // Reset
-        }
-    }
-
-    var email by remember { mutableStateOf("") }
-    var isEmailBlank by remember { mutableStateOf(false) }
-    val emailHasError by remember { derivedStateOf{
-        if (email.isNotEmpty()) {
-            // Email is considered erroneous until it completely matches EMAIL_ADDRESS.
-            !Patterns.EMAIL_ADDRESS.matcher(email).matches()
-        } else {
-            false
-        }
-    } }
-
-    fun onAddUserClick() {
-        if (email.isBlank()) {
-            isEmailBlank = true
-        } else {
-            viewModel.shareListById(listId, ShareWithEmail(email))
-        }
-    }
-
 
     ModalBottomSheet(
         modifier = Modifier.fillMaxWidth(),
         dragHandle = null,
         containerColor = Color.White,
-        onDismissRequest = {
-            closeShareForm()
-            email = ""
-            isEmailBlank = false
-            viewModel.errorMessage = null
-        },
+        shape = RoundedCornerShape(16.dp),
+        onDismissRequest = { onDismissRequest() },
 
     ) {
-        Column (modifier = Modifier.fillMaxWidth(),
+        Column (
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp, bottom = 8.dp),
                 textAlign = TextAlign.Center,
-                text = "Shared to",
-                style = MaterialTheme.typography.bodyMedium
-            )
+                text = listName,
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Bold
 
+            )
             Column(
-                modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp),
                 horizontalAlignment = Alignment.Start,
                 verticalArrangement = Arrangement.Center
             ) {
                 OutlinedTextField(
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
                     value = email,
-                    onValueChange = {
-                        email = it
-                        isEmailBlank = false
-                        viewModel.errorMessage = null
-                    },
+                    onValueChange = { onValueChange(it) },
                     textStyle = MaterialTheme.typography.bodyMedium,
                     label = { InputLabelText(text="Email") },
                     isError = isEmailBlank || emailHasError || viewModel.errorMessage != null ,
@@ -118,16 +95,13 @@ fun ShareToForm(
                             emailHasError -> InputLabelText(text = "Incorrect email format.", isError = emailHasError)
                             isEmailBlank -> InputLabelText(text = "Email cannot be empty.", isError = isEmailBlank)
                             viewModel.errorMessage != null -> InputLabelText(text = viewModel.errorMessage!!, isError = viewModel.errorMessage != null)
-                            else -> null
                         }
                     },
                     keyboardOptions = KeyboardOptions(
                         imeAction = ImeAction.Next, // ** Go to next **
                         keyboardType = KeyboardType.Email
                     ),
-                    keyboardActions = KeyboardActions(
-                        onNext = { onAddUserClick() }
-                    )
+                    keyboardActions = KeyboardActions(onNext = { onShareClick() })
                 )
 
                 FilledButton(
@@ -135,8 +109,8 @@ fun ShareToForm(
                     shape = ButtonShape,
                     containerColor = ListifyColor.SplashYellow,
                     contentColor = ListifyColor.TextDark,
-                    text = "Add user",
-                    onClick = { onAddUserClick() },
+                    text = "Share",
+                    onClick = { onShareClick() },
                 )
             }
         }
