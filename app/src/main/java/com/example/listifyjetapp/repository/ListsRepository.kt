@@ -67,9 +67,10 @@ class ListsRepository @Inject constructor(private val api: ListifyAPI) {
         }
     }
 
-    suspend fun shareListById(listId: Int, emailData:ShareWithEmail): ListifyResult<ListModel> {
+    suspend fun shareListById(listId: Int, email: String, userId: Int): ListifyResult<ListModel> {
         try {
-            val response = api.shareAList(listId, emailData)
+            val request = ShareWithEmail(email = email, userId = userId)
+            val response = api.shareAList(listId = listId, request = request)
             return ListifyResult.Success(data = response)
         } catch(e: HttpException) {
             val errorBody = e.response()?.errorBody()?.string()
