@@ -56,6 +56,7 @@ fun SwipeToReveal(
     actionWidth: Dp = 80.dp,
     onOpened: (AnchoredDraggableState<RowAnchor>) -> Unit,
     onClosed: (AnchoredDraggableState<RowAnchor>) -> Unit = {},
+    isShare: Boolean = true,
     onClickEdit: () -> Unit = {},
     onClickShare: () -> Unit = {},
     onClickDelete: () -> Unit = {},
@@ -66,7 +67,8 @@ fun SwipeToReveal(
     val actionWidthPx = with(LocalDensity.current) { actionWidth.toPx() }
 
     // ========================= add more options ==================================================
-    val actionCount = 3 // Edit, Share, Delete
+    val actions = if (isShare) listOf("edit", "share", "delete") else listOf("edit", "delete")
+    val actionCount = actions.size // Edit, Share, Delete
     val totalActionWidthPx = actionWidthPx * actionCount
     val totalActionWidth = actionWidth * actionCount
 
@@ -121,6 +123,18 @@ fun SwipeToReveal(
         }
     }
 
+    // Optional: stagger alphas per action (reveal from right to left)
+    // first to show, then share, then delete
+    // val editAlpha   = (progress - 0f).coerceIn(0f, 1f)
+    // val shareAlpha  = if (isShare) {(progress - 1f / 3f).coerceIn(0f, 1f) } else null
+    // val deleteAlpha =  if (isShare) {(progress - 2f / 3f).coerceIn(0f, 1f)} else {(progress - 1f / 2f).coerceIn(0f, 1f) }
+    // Helper: staggered reveal (index 0 shows first, then 1, ...)
+    fun alphaFor(index: Int): Float {
+        val step = index.toFloat() / actionCount
+        return (progress - step).coerceIn(0f, 1f)
+    }
+    val deleteIndex = if (isShare) 2 else 1
+
     Box(modifier = modifier.fillMaxWidth())// let content define height
      {
         // Behind layer: the red delete area
@@ -133,13 +147,8 @@ fun SwipeToReveal(
             verticalAlignment = Alignment.CenterVertically
         ) {
 
-            // Optional: stagger alphas per action (reveal from right to left)
-            val editAlpha   = (progress - 0f).coerceIn(0f, 1f)        // first to show
-            val shareAlpha  = (progress - 1f / 3f).coerceIn(0f, 1f)   // then share
-            val deleteAlpha = (progress - 2f / 3f).coerceIn(0f, 1f)   // then delete
-
             Box(
-                modifier = Modifier.width(actionWidth).fillMaxHeight().background(ListifyColor.blue).alpha(editAlpha),
+                modifier = Modifier.width(actionWidth).fillMaxHeight().background(ListifyColor.blue).alpha(alphaFor(0)),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
@@ -152,23 +161,25 @@ fun SwipeToReveal(
                     }
                 )
             }
-            Box(
-                modifier = Modifier.width(actionWidth).fillMaxHeight().background(ListifyColor.orange).alpha(shareAlpha),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Share,
-                    contentDescription = "Share",
-                    tint = Color.White,
-                    modifier = Modifier.clip(RoundedCornerShape(8.dp)).clickable {
-                        onClickShare()
-                        scope.launch { dragState.snapTo(RowAnchor.Closed) } // instant close
-                    }
-                )
+            if (isShare) {
+                Box(
+                    modifier = Modifier.width(actionWidth).fillMaxHeight().background(ListifyColor.orange).alpha(alphaFor(1)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Share,
+                        contentDescription = "Share",
+                        tint = Color.White,
+                        modifier = Modifier.clip(RoundedCornerShape(8.dp)).clickable {
+                            onClickShare()
+                            scope.launch { dragState.snapTo(RowAnchor.Closed) } // instant close
+                        }
+                    )
+                }
             }
 
             Box(
-                modifier = Modifier.width(actionWidth).fillMaxHeight().background(ListifyColor.errorRed).alpha(deleteAlpha),
+                modifier = Modifier.width(actionWidth).fillMaxHeight().background(ListifyColor.errorRed).alpha(alphaFor(deleteIndex)),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
