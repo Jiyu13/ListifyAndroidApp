@@ -54,7 +54,7 @@ fun ListifySearchBar(
 
         value = searchTextValue.value,
         onValueChange = onValueChange,
-        placeholder = { Text(text="Search", style = MaterialTheme.typography.labelLarge) },
+        placeholder = { Text(text="Search", style = MaterialTheme.typography.labelLarge, color = ListifyColor.labelGrey) },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),  // Sets the keyboard to normal text input.
         keyboardActions = keyboardAction,
     )
