@@ -117,7 +117,7 @@ private fun MainNav(
         bottomBar = {
             if (showBottomBar) {
                 NavigationBar(
-                    modifier = Modifier.height(72.dp),
+                    modifier = Modifier.height(70.dp),
                     windowInsets = NavigationBarDefaults.windowInsets
                 ) {
                     NavBarItems.entries.forEach { tab ->
