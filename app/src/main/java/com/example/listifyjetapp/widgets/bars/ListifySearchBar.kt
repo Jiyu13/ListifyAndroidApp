@@ -31,7 +31,7 @@ fun ListifySearchBar(
     keyboardAction: KeyboardActions = KeyboardActions.Default // what to do when an action is triggered
 ) {
     TextField(
-        modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
+        modifier = Modifier.fillMaxWidth().padding(top = 16.dp, bottom = 8.dp),
         shape = RoundedCornerShape(12.dp),
         colors = TextFieldDefaults.colors(
             unfocusedIndicatorColor = Color.Transparent,
