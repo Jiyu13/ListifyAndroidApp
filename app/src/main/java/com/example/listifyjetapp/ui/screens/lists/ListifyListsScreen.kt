@@ -125,7 +125,7 @@ fun ListifyListsScreen(
                         isRefreshing = isRefreshing,
                         onRefresh = { onRefresh() },
                         itemContent = {
-                            LazyColumn(modifier = Modifier.padding(vertical = 16.dp, horizontal = 8.dp)) {
+                            LazyColumn(modifier = Modifier.padding(horizontal = 8.dp)) {
                                 items(results) { list ->
                                     val listName = list.name.replace(" ", "-")
                                     SwipeToReveal(
