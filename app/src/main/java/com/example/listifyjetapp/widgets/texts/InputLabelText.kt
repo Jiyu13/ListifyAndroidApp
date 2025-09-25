@@ -14,6 +14,6 @@ fun InputLabelText(
     Text(
         text = text,
         style = if (isError) MaterialTheme.typography.bodySmall else MaterialTheme.typography.bodyMedium,
-        color = if (isError) ListifyColor.errorRed else MaterialTheme.colorScheme.onSurface,
+        color = if (isError) ListifyColor.errorRed else ListifyColor.labelGrey,
     )
 }
