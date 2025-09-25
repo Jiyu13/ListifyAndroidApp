@@ -15,6 +15,7 @@ object ListifyColor {
     val TextBlack = Color(0xff000000)
     val TextDark = Color(0xff3e4e50)
     val TextGrey = Color(0xff858585)
+    val labelGrey = Color(0xffa4b0be)
     val IconGreen = Color(0xff0cc25f)
     val errorRed = Color(0xFFE43636) //0xffB12C00
     val blue = Color(0xFF0D92F4)
