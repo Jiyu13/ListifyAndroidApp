@@ -99,7 +99,7 @@ fun ListItemRow (
                     )
                 }
 
-                Column(modifier = Modifier.padding(horizontal = 16.dp).weight(1f).background(Color.Red)) {
+                Column(modifier = Modifier.padding(horizontal = 16.dp).weight(1f)) {
                     Text(
                         text = description,
                         color = if (isChecked) { ListifyColor.TextGrey } else { ListifyColor.TextBlack },
