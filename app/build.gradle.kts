@@ -5,6 +5,9 @@ plugins {
 
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
+
+    // Kotlin serialization plugin for type safe routes and navigation arguments
+    kotlin("plugin.serialization") version "2.0.21"
 }
 
 android {
@@ -13,7 +16,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.listifyjetapp"
-        minSdk = 31
+        minSdk = 26
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -28,6 +31,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
@@ -57,6 +61,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.compose.material)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -104,5 +109,30 @@ dependencies {
 
     // google font
     implementation(libs.androidx.ui.text.google.fonts)
+
+    // material icons
+    implementation (libs.androidx.material.icons.extended)
+
+    // ================= Kotlin serialization =======================
+    // Jetpack Compose integration
+    implementation(libs.androidx.navigation.compose)
+
+    // Views/Fragments integration
+    implementation(libs.androidx.navigation.fragment)
+    implementation(libs.androidx.navigation.ui)
+
+    // Feature module support for Fragments
+    implementation(libs.androidx.navigation.dynamic.features.fragment)
+
+    // Testing Navigation
+    androidTestImplementation(libs.androidx.navigation.testing)
+
+    // JSON serialization library, works with the Kotlin serialization plugin
+    implementation(libs.kotlinx.serialization.json)
+
+    // Typed DataStore (Typed API surface, such as Proto)
+    implementation(libs.androidx.datastore.preferences)
+
+    implementation(libs.androidx.foundation)   // androidx.compose.foundation:foundation
 
 }

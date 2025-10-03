@@ -12,6 +12,12 @@ val Pink40 = Color(0xFF7D5260)
 
 object ListifyColor {
     val SplashYellow = Color(0xFFFFCA3A)
+    val TextBlack = Color(0xff000000)
     val TextDark = Color(0xff3e4e50)
     val TextGrey = Color(0xff858585)
+    val labelGrey = Color(0xffa4b0be)
+    val IconGreen = Color(0xff0cc25f)
+    val errorRed = Color(0xFFE43636) //0xffB12C00
+    val blue = Color(0xFF0D92F4)
+    val orange = Color(0xffFBA518)
 }

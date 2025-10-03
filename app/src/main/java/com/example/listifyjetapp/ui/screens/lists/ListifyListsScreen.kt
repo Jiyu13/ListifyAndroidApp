@@ -1,41 +1,158 @@
 package com.example.listifyjetapp.ui.screens.lists
 
+import androidx.compose.foundation.gestures.AnchoredDraggableState
+import androidx.compose.foundation.gestures.snapTo
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.listifyjetapp.R
+import com.example.listifyjetapp.widgets.texts.EmptyList
+import com.example.listifyjetapp.utils.filterLists
+import com.example.listifyjetapp.widgets.bars.ListifySearchBar
+import com.example.listifyjetapp.widgets.bars.ListifyTopBar
+import com.example.listifyjetapp.widgets.refresh.PullToRefresh
+import com.example.listifyjetapp.widgets.swipTo.RowAnchor
+import com.example.listifyjetapp.widgets.swipTo.SwipeToReveal
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun ListifyListsScreen(
-    viewModel: ListsViewModel = hiltViewModel()
+    viewModel: ListsViewModel = hiltViewModel(),
+    onListRowClick: (listId: Int, listName: String) -> Unit,
+    onAddNewListClick: () -> Unit,
+    onNavigateToSplash: () -> Unit,
 ) {
-    LaunchedEffect(Unit) { viewModel.getUserLists(4) }
+    val authError by viewModel.authError.collectAsState()
+    LaunchedEffect(authError) {
+        if (authError) { onNavigateToSplash() }
+    }
 
-    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-        Surface(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-        ) {
-            if (viewModel.lists.isEmpty()) {
-                Text(text = stringResource(R.string.no_lists))
-            } else {
-                LazyColumn {
-                    items(viewModel.lists) { list ->
-                        Text(text = list.name)
-                    }
-                }
-            }
+    LaunchedEffect(Unit) { viewModel.getUserLists() }
+
+    var isRefreshing by remember { mutableStateOf(false) }
+    val coroutineScope = rememberCoroutineScope()
+    fun onRefresh() {
+        isRefreshing = true
+        coroutineScope.launch {
+            delay(1000)
+            viewModel.getUserLists()
+            isRefreshing = false
         }
     }
 
+    val scope = rememberCoroutineScope()
+    var openState by remember { mutableStateOf<AnchoredDraggableState<RowAnchor>?>(null) }
+
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        topBar = { ListifyTopBar(
+            title = "Lists",
+            isListsScreen = true,
+            rightIcon = Icons.Default.Add,
+            onRightButtonClick = { onAddNewListClick() }
+        ) }
+    ) { innerPadding ->
+
+        Surface(
+            modifier = Modifier.fillMaxSize().padding(innerPadding)
+        ) {
+            Column(
+                modifier = Modifier.padding(horizontal = 16.dp),
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+
+                val searchTextState = remember { mutableStateOf("") }
+                val keyboardController = LocalSoftwareKeyboardController.current
+
+                ListifySearchBar(
+                    searchTextValue = searchTextState,
+                    onValueChange = {searchTextState.value = it},
+                    keyboardAction = KeyboardActions{
+                        // Trigger search logic or hide keyboard
+                        searchTextState.value.trim()            // perform the search
+                        keyboardController?.hide()              // hide keyboard
+                    }
+                )
+
+                //viewModel.errorMessage?.let { msg ->
+                //    Text(msg,
+                //        Modifier.padding(16.dp),
+                //        color = MaterialTheme.colorScheme.error
+                //    )
+                //}
+
+                if (viewModel.isLoading) {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
+                } else if (viewModel.lists.isEmpty()) {
+                    EmptyList(stringResource(R.string.no_lists))
+                } else {
+                    // Filter lists by search input
+                    val results = filterLists(searchTextState.value, viewModel.lists)
+                    PullToRefresh(
+                        items = results,
+                        isRefreshing = isRefreshing,
+                        onRefresh = { onRefresh() },
+                        itemContent = {
+                            LazyColumn(modifier = Modifier.padding(horizontal = 8.dp)) {
+                                items(results) { list ->
+                                    val listName = list.name.replace(" ", "-")
+                                    SwipeToReveal(
+                                        onOpened = { newState ->
+                                            // close previously open row immediately
+                                            openState?.let { prev -> if (prev != newState) scope.launch { prev.snapTo(RowAnchor.Closed) } }
+                                            openState = newState
+                                        },
+                                        onClosed = { state -> if (openState == state) openState = null },
+                                        onClickEdit = { viewModel.openEdit(list.id) },
+                                        onClickShare = { viewModel.openShare(list.id) },
+                                        onClickDelete = { viewModel.deleteListById(listId = list.id) },
+                                        mainContent = {
+                                            ListRow(
+                                                list = list,
+                                                onListRowClick = { onListRowClick(list.id, list.name) }
+                                            )
+                                        }
+                                    )
+                                    HorizontalDivider()
+                                }
+                            }
+                        }
+                    )
+                }
+            }
+
+        }
+    }
 }
