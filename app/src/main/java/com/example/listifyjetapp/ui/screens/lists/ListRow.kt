@@ -1,5 +1,6 @@
 package com.example.listifyjetapp.ui.screens.lists
 
+import android.util.Log
 import android.util.Patterns
 import android.view.Gravity
 import android.widget.Toast
@@ -43,6 +44,7 @@ fun ListRow(
     viewModel: ListsViewModel = hiltViewModel(),
     onListRowClick: () -> Unit
 ) {
+    Log.d("list", list.toString())
 
     val editingId by viewModel.editingListId.collectAsState()
     val sharingId by viewModel.sharingListId.collectAsState()
@@ -153,7 +155,7 @@ fun ListRow(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = list.itemCount.toString(),
+                    text = "${list.checkedItems}/${list.itemCount}",
                     color = ListifyColor.TextGrey,
                     style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier.padding(end = 16.dp)
