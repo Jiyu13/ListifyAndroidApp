@@ -38,8 +38,8 @@ fun ListItemRow (
     item: ListItem,
     viewModel: ListItemViewModel = hiltViewModel()
 ) {
-    val description = if (item.description.length >= 20) {
-        item.description.substring(0, 20) + "..."
+    val description = if (item.description.length > 29) {
+        item.description.take(29) + "..."
     } else {
         item.description
     }
@@ -99,7 +99,7 @@ fun ListItemRow (
                     )
                 }
 
-                Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+                Column(modifier = Modifier.padding(horizontal = 16.dp).weight(1f).background(Color.Red)) {
                     Text(
                         text = description,
                         color = if (isChecked) { ListifyColor.TextGrey } else { ListifyColor.TextBlack },
