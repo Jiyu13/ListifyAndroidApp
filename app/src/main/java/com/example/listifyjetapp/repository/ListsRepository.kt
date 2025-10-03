@@ -31,6 +31,7 @@ class ListsRepository @Inject constructor(private val api: ListifyAPI) {
                 sharedCode = response.sharedCode,
                 createdAt = response.createdAt,
                 itemCount = 0,
+                checkedItems = 0,
                 sharedWith= emptyList()
             )
             return ListifyResult.Success(data = formatedResponse)
@@ -49,6 +50,7 @@ class ListsRepository @Inject constructor(private val api: ListifyAPI) {
                 sharedCode = response.sharedCode,
                 createdAt = response.createdAt,
                 itemCount = 0,
+                checkedItems = 0,
                 sharedWith= emptyList()
             )
             return ListifyResult.Success(data = formatedResponse)
